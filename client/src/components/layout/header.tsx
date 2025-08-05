@@ -112,7 +112,7 @@ export function Header() {
                     {item.submenu.map((subItem) => (
                       <Link
                         key={subItem.href}
-                        href={`${item.href}#${subItem.href.split('/').pop()}`}
+                        href={subItem.href}
                         className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary"
                       >
                         {subItem.label}

@@ -1,4 +1,5 @@
 import { Switch, Route } from "wouter";
+import { lazy, Suspense } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -20,12 +21,20 @@ import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
-    <Switch>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Switch>
       <Route path="/" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/solutions" component={Solutions} />
+      <Route path="/solutions/eflow-bpm" component={lazy(() => import('./pages/solutions/eflow-bpm'))} />
+      <Route path="/solutions/document-management" component={lazy(() => import('./pages/solutions/document-management'))} />
+      <Route path="/solutions/integration" component={lazy(() => import('./pages/solutions/integration'))} />
       <Route path="/solutions/:slug" component={Solutions} />
       <Route path="/sectors" component={Sectors} />
+      <Route path="/sectors/manufacturing" component={lazy(() => import('./pages/sectors/manufacturing'))} />
+      <Route path="/sectors/service" component={lazy(() => import('./pages/sectors/service'))} />
+      <Route path="/sectors/energy" component={lazy(() => import('./pages/sectors/energy'))} />
+      <Route path="/sectors/retail" component={lazy(() => import('./pages/sectors/retail'))} />
       <Route path="/sectors/:slug" component={Sectors} />
       <Route path="/references" component={References} />
       <Route path="/blog" component={Blog} />
@@ -34,7 +43,8 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/demo-request" component={DemoRequest} />
       <Route component={NotFound} />
-    </Switch>
+      </Switch>
+    </Suspense>
   );
 }
 
