@@ -1,0 +1,191 @@
+Yazılım Sektörü Kurumsal Web Sitesi Tasarım Analizi
+
+1. ANA SAYFA (Homepage)
+
+Ana sayfa şirketi ilk temsil eden yerdir ve ziyaretçiye hem kurumsal güven hem de hızlı yönlendirme sağlamalıdır.
+
+Üst Banner (Header) Bölümü
+
+Logo (sol üstte): Şirketin kurumsal kimliğini temsil eder, tıklandığında ana sayfaya döndürür.
+
+Dil Seçenekleri (sağ üstte): Türkçe | İngilizce | Fransızca | Arapça | Rusca | Alamanca
+
+Ana Menü Sekmeleri (header menü barı):
+
+Hakkımızda
+
+Ürünler / Çözümler
+
+Sektörler
+
+Referanslar
+
+Blog / Haberler
+
+İK / Kariyer
+
+İletişim
+
+Demo Talep Et / Teklif Al (call-to-action butonu şeklinde, menü dışında vurgulu görsel)
+
+Açılış Bannerı (Hero Section)
+
+Büyük, dikkat çekici görsel ya da kısa tanıtım videosu
+
+Ana slogan: (örnek) “Süreçlerinizi Dijitalleştirin, Geleceğe Hazır Olun.”
+
+Altında kısa açıklama cümlesi (1 satır)
+
+"Hemen İncele" & "Demo Talep Et" butonları
+
+Çözümler / Ürünler Öne Çıkarma Alanı
+
+İkonlu kart yapısıyla 3-6 adet çözüm öne çıkarılabilir
+
+Her kart üzerine tıklanınca çözümler detay sayfasına gider
+
+Hakkımızda Kısa Tanıtım Kutusu
+
+2-3 satırlık şirket özeti
+
+“Daha fazla” linki ile Hakkımızda sayfasına yönlendirme
+
+Referans Logo Alanı
+
+Logo slider (müşteri logoları yatay kayan şekilde)
+
+Blog / Haber Akışı
+
+Son 3 blog/haber kutusu (resimli): tıklanınca Blog sayfasına gider
+
+İletişim CTA (Call to Action)
+
+Banner: “Çözümlerimizle tanışmak ister misiniz?”
+
+Buton: Teklif Al / Demo Talep Et
+
+Alt Bilgi (Footer)
+
+Şirket adresi bilgisi
+
+Telefon / e-posta / harita linki
+
+Hızlı menü: Hakkımızda | Çözümler | Blog | KVKK | Gizlilik Politikası | Sosyal medya ikonları (LinkedIn, Instagram, X)
+
+2. MENÜ SEKME DETAY ANALİZİ
+
+1. Hakkımızda
+
+Alt Sayfada şu bölümler olmalıdır:
+
+MİSYON / VİZYON
+
+Şirket tarihçesi (timeline görseli)
+
+Yönetim Ekibi (foto ve kısa bio’lar)
+
+Değerlerimiz
+
+2. Ürünler / Çözümler
+
+Açılır alt menü:
+
+e-Flow BPM
+
+Döküman Yönetim Sistemi
+
+Entegrasyon Çözümleri (örneğin: WhatsApp Entegrasyonu, LOGO Entegrasyonu)
+
+Her çözümün kendi detay sayfası:
+
+Ürün görselleri
+
+Özellikler maddeler hâlinde
+
+Avantajlar
+
+Neden Biz?
+
+Sıkça Sorulan Sorular
+
+Demo Talep Formu (sayfa sonunda basit form: isim, mail, şirket, mesaj)
+
+(Demo Talep Formu (Ürün/Çözüm Sayfalarında ve Demo Talep Et Sayfasında)
+
+1-Basit form alanları: İsim, E-posta, Şirket Adı, Mesaj
+
+2-Form gönderildiğinde, girilen tüm müşteri bilgileri otomatik olarak destek@algotrom.com.tr adresine e-posta olarak iletilmeli
+
+3-Gönderim sonrası kullanıcıya teşekkür ve en kısa zamanda dönüş yapılacağına dair bilgilendirme mesajı gösterilmeli )
+
+3. Sektörler
+
+Açılır alt menü:
+
+Üretim
+
+Hizmet
+
+Enerji
+
+Perakende vb.
+
+Her sektör altında ilgili kullanım senaryoları/basari hikayeleri
+
+4. Referanslar
+
+Grid görünümünde logo + filter (sektöre göre filtreleme)
+
+"Başarı Hikayeleri" şeklinde detay sayfalara link (case study)
+
+5. Blog / Haberler
+
+Kategori filtreli blog listesi
+
+Arama kutusu
+
+Detay sayfasında sosyal medya paylaş butonları, etiket sistemi
+
+6. Kariyer
+
+Kurum kültürü anlatımı + neden burada çalışmalısınız
+
+Açık pozisyonlar tablosu + başvuru formu (CV yükleme, kariyer@ maili)
+
+7. İletişim
+
+Bilgi kutusu: adres, telefon, mail
+
+Google Maps entegre harita
+
+İletişim Formu (isim, soyisim, mail, telefon, mesaj kutusu)
+
+8. Demo Talep Et (CTA Page)
+
+Kısa bilgilendirme texti + form
+
+Call center iletişim bilgisi
+
+3. TEKNİK/KURGUSAL DİKKAT EDİLECEKLER
+
+Çok dilli yapıya uygun (header’da dropdown dil seçici)
+
+Responsive mobil uyumlu olmalı
+
+Hızlı performans için optimize (lazy load, CDN)
+
+Yönetilebilir CMS altyapısı (içeriklerin kolay güncellenebilir olması)
+
+SEO dostu URL ve teknik kurgu: (örn: /hakkimizda, /cozumler/e-flow)
+
+GDPR/KVKK uyumlu gizlilik ve çerez politikası modalları
+
+4. TASARIM TARZI (Mood & UI Önerisi)
+
+Kurumsal ama dinamik (modern flat tasarım + canlı renk detayları)
+
+Bol beyaz alan, okunabilirlik ön planda
+
+Ana renk: kurumsal logoya göre, destek renkler vurgularda kullanılabilir
+
+Animasyonlar micro-interaction seviyesinde (hover geçişleri, slider geçişi)
