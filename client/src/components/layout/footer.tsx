@@ -1,5 +1,5 @@
 import { Link } from 'wouter';
-import { Code, MapPin, Phone, Mail, Headphones, Linkedin, Instagram, Twitter } from 'lucide-react';
+import { Code, MapPin, Phone, Mail, Headphones, Linkedin, Instagram, X, Youtube } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { t } from '@/lib/i18n';
 
@@ -21,14 +21,17 @@ export function Footer() {
               İş süreçlerinizi optimize ediyor, geleceğe hazırlıyoruz.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-primary transition-colors">
+              <a href="https://www.linkedin.com/company/algotromyazilim" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-primary transition-colors">
+              <a href="https://www.instagram.com/algotromyazilim" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-primary transition-colors">
-                <Twitter className="w-5 h-5" />
+              <a href="https://x.com/algotromyazilim" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
+                <X className="w-5 h-5" />
+              </a>
+              <a href="https://www.youtube.com/@AlgotromYazilim" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
+                <Youtube className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -114,13 +117,14 @@ export function Footer() {
               <div className="flex items-start">
                 <MapPin className="w-5 h-5 text-primary mt-1 mr-3 flex-shrink-0" />
                 <span className="text-gray-300">
-                  Maslak Mahallesi, Büyükdere Cad.<br />
-                  No: 123, 34485 Sarıyer/İstanbul
+                  Barbaros Mah. Begonya Sok.<br />
+                  Nidakule Ataşehir Batı No: 1 İç Kapı No: 2<br />
+                  ATAŞEHİR / İSTANBUL
                 </span>
               </div>
               <div className="flex items-center">
                 <Phone className="w-5 h-5 text-primary mr-3" />
-                <span className="text-gray-300">+90 212 XXX XX XX</span>
+                <span className="text-gray-300">+90 545 514 74 02</span>
               </div>
               <div className="flex items-center">
                 <Mail className="w-5 h-5 text-primary mr-3" />

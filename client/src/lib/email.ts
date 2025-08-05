@@ -11,20 +11,20 @@ export const EMAIL_ADDRESSES = {
 } as const;
 
 export const PHONE_NUMBERS = {
-  MAIN: '+90 212 XXX XX XX',
+  MAIN: '+90 545 514 74 02',
   SUPPORT: '+90 212 XXX XX 02',
   SALES: '+90 212 XXX XX 01',
   CORPORATE: '+90 212 XXX XX 03',
-  WHATSAPP: '+90 5XX XXX XX XX',
+  WHATSAPP: '+90 545 514 74 02',
 } as const;
 
 export const COMPANY_INFO = {
   NAME: 'Algotrom',
   FULL_NAME: 'Algotrom Bilişim Teknolojileri A.Ş.',
   ADDRESS: {
-    STREET: 'Maslak Mahallesi, Büyükdere Cad.',
-    BUILDING: 'No: 123, Kat: 8',
-    DISTRICT: '34485 Sarıyer/İstanbul',
+    STREET: 'Barbaros Mah. Begonya Sok.',
+    BUILDING: 'Nidakule Ataşehir Batı No: 1 İç Kapı No: 2',
+    DISTRICT: 'ATAŞEHİR / İSTANBUL',
     COUNTRY: 'Türkiye',
   },
   WORKING_HOURS: {
@@ -33,9 +33,10 @@ export const COMPANY_INFO = {
     SUNDAY: 'Pazar: Kapalı',
   },
   SOCIAL_MEDIA: {
-    LINKEDIN: 'https://linkedin.com/company/algotrom',
-    INSTAGRAM: 'https://instagram.com/algotrom',
-    TWITTER: 'https://twitter.com/algotrom',
+    LINKEDIN: 'https://www.linkedin.com/company/algotromyazilim',
+    INSTAGRAM: 'https://www.instagram.com/algotromyazilim',
+    TWITTER: 'https://x.com/algotromyazilim',
+    YOUTUBE: 'https://www.youtube.com/@AlgotromYazilim',
   },
 } as const;
 

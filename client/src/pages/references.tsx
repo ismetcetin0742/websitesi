@@ -299,8 +299,8 @@ export default function References() {
             >
               Proje Danışmanlığı Al
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
-              <a href="/contact">İletişime Geç</a>
+            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary bg-transparent">
+              <a href="/contact" className="text-white hover:text-primary">İletişime Geç</a>
             </Button>
           </div>
         </div>

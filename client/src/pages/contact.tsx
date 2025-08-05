@@ -78,16 +78,16 @@ export default function Contact() {
       icon: MapPin,
       title: 'Adres',
       content: [
-        'Maslak Mahallesi, Büyükdere Cad.',
-        'No: 123, Kat: 8',
-        '34485 Sarıyer/İstanbul'
+        'Barbaros Mah. Begonya Sok.',
+        'Nidakule Ataşehir Batı No: 1 İç Kapı No: 2',
+        'ATAŞEHİR / İSTANBUL'
       ]
     },
     {
       icon: Phone,
       title: 'Telefon',
       content: [
-        '+90 212 XXX XX XX',
+        '+90 545 514 74 02',
         '+90 212 XXX XX XX (Fax)'
       ]
     },
@@ -117,21 +117,21 @@ export default function Contact() {
       title: 'Satış Danışmanlığı',
       description: 'Ürün ve çözümlerimiz hakkında bilgi almak için',
       contact: 'satis@algotrom.com.tr',
-      phone: '+90 212 XXX XX 01'
+      phone: '+90 545 514 74 02'
     },
     {
       icon: Headphones,
       title: 'Teknik Destek',
       description: 'Mevcut ürünlerinizle ilgili teknik destek için',
       contact: 'destek@algotrom.com.tr',
-      phone: '+90 212 XXX XX 02'
+      phone: '+90 545 514 74 02'
     },
     {
       icon: Building,
       title: 'Kurumsal İşbirlikleri',
       description: 'İş ortaklıkları ve kurumsal projeler için',
       contact: 'kurumsal@algotrom.com.tr',
-      phone: '+90 212 XXX XX 03'
+      phone: '+90 545 514 74 02'
     }
   ];
 
@@ -314,9 +314,9 @@ export default function Contact() {
                         Ofisimizin konumunu görmek için haritayı kullanın
                       </p>
                       <div className="text-sm text-gray-500">
-                        <p>Maslak Mahallesi, Büyükdere Cad.</p>
-                        <p>No: 123, Kat: 8</p>
-                        <p>34485 Sarıyer/İstanbul</p>
+                        <p>Barbaros Mah. Begonya Sok.</p>
+                        <p>Nidakule Ataşehir Batı No: 1 İç Kapı No: 2</p>
+                        <p>ATAŞEHİR / İSTANBUL</p>
                       </div>
                     </div>
                   </div>

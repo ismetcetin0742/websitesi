@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useParams } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -28,6 +28,15 @@ export default function Solutions() {
   const params = useParams();
   const { language } = useLanguage();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+  const [selectedSolution, setSelectedSolution] = useState<string | null>(null);
+
+  // Handle fragment navigation
+  React.useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash && solutions[hash as keyof typeof solutions]) {
+      setSelectedSolution(hash);
+    }
+  }, []);
 
   const solutions = {
     'eflow-bpm': {

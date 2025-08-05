@@ -3,7 +3,7 @@ import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Code, Menu, Phone, Mail, Linkedin, Instagram, Twitter } from 'lucide-react';
+import { Code, Menu, Phone, Mail, Linkedin, Instagram, X, Youtube } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { languages, t, Language } from '@/lib/i18n';
 
@@ -48,7 +48,7 @@ export function Header() {
             <div className="text-sm text-gray-600 flex items-center space-x-4">
               <div className="flex items-center">
                 <Phone className="w-4 h-4 mr-2" />
-                <span>+90 212 XXX XX XX</span>
+                <span>+90 545 514 74 02</span>
               </div>
               <div className="flex items-center">
                 <Mail className="w-4 h-4 mr-2" />
@@ -69,14 +69,17 @@ export function Header() {
                 </SelectContent>
               </Select>
               <div className="flex space-x-2">
-                <a href="#" className="text-gray-400 hover:text-primary transition-colors">
+                <a href="https://www.linkedin.com/company/algotromyazilim" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
                   <Linkedin className="w-4 h-4" />
                 </a>
-                <a href="#" className="text-gray-400 hover:text-primary transition-colors">
+                <a href="https://www.instagram.com/algotromyazilim" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
                   <Instagram className="w-4 h-4" />
                 </a>
-                <a href="#" className="text-gray-400 hover:text-primary transition-colors">
-                  <Twitter className="w-4 h-4" />
+                <a href="https://x.com/algotromyazilim" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
+                  <X className="w-4 h-4" />
+                </a>
+                <a href="https://www.youtube.com/@AlgotromYazilim" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
+                  <Youtube className="w-4 h-4" />
                 </a>
               </div>
             </div>
@@ -105,11 +108,11 @@ export function Header() {
                   {item.label}
                 </Link>
                 {item.submenu && (
-                  <div className="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg py-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none group-hover:pointer-events-auto">
+                  <div className="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg py-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none group-hover:pointer-events-auto z-50">
                     {item.submenu.map((subItem) => (
                       <Link
                         key={subItem.href}
-                        href={subItem.href}
+                        href={`${item.href}#${subItem.href.split('/').pop()}`}
                         className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary"
                       >
                         {subItem.label}
