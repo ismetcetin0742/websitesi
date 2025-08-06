@@ -99,9 +99,11 @@ export default function Contact() {
       icon: Clock,
       title: 'Çalışma Saatleri',
       content: [
-        'Pazartesi - Cuma: 09:00 - 18:00',
-        'Cumartesi: 09:00 - 14:00',
-        'Pazar: Kapalı'
+        'Hafta İçi',
+        '09:00 - 18:00',
+        'Cumartesi',
+        '09:00 - 14:00',
+        'Pazar Kapalı'
       ]
     }
   ];
