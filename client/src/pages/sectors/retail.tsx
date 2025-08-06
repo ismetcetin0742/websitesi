@@ -54,7 +54,7 @@ export default function Retail() {
     'Satış cirolarında %35 artış',
     'Stok maliyetlerinde %25 azalma',
     'Müşteri memnuniyetinde %45 iyileşme',
-    'Operasyonel verimlilikte %30 artış'
+    'Operasyonel verimlilikte %86 artış'
   ];
 
   const caseStudies = [

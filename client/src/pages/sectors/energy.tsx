@@ -51,7 +51,7 @@ export default function Energy() {
   ];
 
   const benefits = [
-    'Enerji verimliliğinde %30 artış',
+    'Enerji verimliliğinde %86 artış',
     'Operasyonel maliyetlerde %25 azalma',
     'Arıza süresinde %50 iyileşme',
     'Karbon emisyonunda %40 azalma'

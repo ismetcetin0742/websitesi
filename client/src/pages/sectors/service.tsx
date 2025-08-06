@@ -53,7 +53,7 @@ export default function Service() {
   const benefits = [
     'Müşteri memnuniyetinde %45 artış',
     'Çözüm süresinde %60 azalma',
-    'Agent verimliliğinde %35 iyileşme',
+    'Agent verimliliğinde %86 iyileşme',
     'Operasyonel maliyetlerde %25 tasarruf'
   ];
 

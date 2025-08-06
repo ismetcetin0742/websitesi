@@ -75,10 +75,10 @@ export default function DocumentManagement() {
               <FileText className="w-12 h-12 text-primary" />
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
-              Döküman Yönetim Sistemi
+              E-Flow DMS
             </h1>
             <p className="text-xl text-gray-600 mb-4">
-              Dijital Belge Yönetimi Çözümü
+              Döküman Yönetim Sistemi
             </p>
             <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
               Kurumsal belgelerinizi güvenle dijital ortamda saklayın, kategorize edin ve paylaşın. 
@@ -102,7 +102,7 @@ export default function DocumentManagement() {
           <div className="max-w-6xl mx-auto">
             <img 
               src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
-              alt="Döküman Yönetim Sistemi" 
+              alt="E-Flow DMS" 
               className="w-full h-96 object-cover rounded-lg shadow-lg"
             />
           </div>

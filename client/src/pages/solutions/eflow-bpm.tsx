@@ -82,7 +82,7 @@ export default function EFlowBPM() {
               <ChartGantt className="w-12 h-12 text-primary" />
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
-              e-Flow BPM
+              E-Flow BPM
             </h1>
             <p className="text-xl text-gray-600 mb-4">
               İş Süreçleri Yönetimi Çözümü
@@ -109,7 +109,7 @@ export default function EFlowBPM() {
           <div className="max-w-6xl mx-auto">
             <img 
               src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
-              alt="e-Flow BPM Dashboard" 
+              alt="E-Flow BPM Dashboard" 
               className="w-full h-96 object-cover rounded-lg shadow-lg"
             />
           </div>

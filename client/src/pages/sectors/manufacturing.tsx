@@ -51,7 +51,7 @@ export default function Manufacturing() {
   ];
 
   const benefits = [
-    'Üretim verimliliğinde %35 artış',
+    'Üretim verimliliğinde %86 artış',
     'Kalite maliyetlerinde %45 azalma',
     'Planlama süresinde %50 iyileşme',
     'Stok seviyelerinde %30 optimizasyon'
@@ -61,7 +61,7 @@ export default function Manufacturing() {
     {
       company: 'ABC Otomotiv A.Ş.',
       challenge: 'Manuel üretim planlama ve takip süreçleri',
-      solution: 'e-Flow BPM ile entegre üretim yönetim sistemi',
+      solution: 'E-Flow BPM ile entegre üretim yönetim sistemi',
       results: ['%40 verimlilik artışı', '%25 maliyet azalması', '%60 hızlı raporlama']
     },
     {

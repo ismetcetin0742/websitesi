@@ -10,8 +10,8 @@ Bu klasör Algotrom kurumsal websitesinin statik HTML dosyalarını içerir.
 - `demo-request.html` - Demo talep formu
 
 ### Çözüm Sayfaları
-- `eflow-bpm.html` - e-Flow BPM çözümü
-- `document-management.html` - Döküman Yönetim Sistemi
+- `eflow-bpm.html` - E-Flow BPM çözümü
+- `document-management.html` - E-Flow DMS çözümü
 - `integration.html` - Entegrasyon Çözümleri (gelecekte eklenecek)
 
 ### Sektör Sayfaları

@@ -41,7 +41,7 @@ export default function Solutions() {
   const solutions = {
     'eflow-bpm': {
       icon: ChartGantt,
-      title: 'e-Flow BPM',
+      title: 'E-Flow BPM',
       subtitle: 'İş Süreçleri Yönetimi',
       description: 'Kurumsal iş süreçlerinizi modelleyin, otomatikleştirin ve sürekli optimize edin. Tam entegre BPM çözümü ile verimliliğinizi maksimize edin.',
       image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
@@ -70,8 +70,8 @@ export default function Solutions() {
     },
     'document-management': {
       icon: FileText,
-      title: 'Döküman Yönetim Sistemi',
-      subtitle: 'Dijital Belge Yönetimi',
+      title: 'E-Flow DMS',
+      subtitle: 'Döküman Yönetim Sistemi',
       description: 'Kurumsal belgelerinizi güvenle dijital ortamda saklayın, kategorize edin ve paylaşın. KVKK uyumlu güvenlik önlemleri ile.',
       image: 'https://images.unsplash.com/photo-1568992687947-868a62a9f521?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
       features: [
