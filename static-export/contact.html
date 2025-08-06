@@ -43,6 +43,14 @@
         .hover-lift:hover {
             transform: translateY(-4px);
         }
+        .dropdown-arrow {
+            transition: transform 0.3s ease;
+        }
+        .dropdown-menu {
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="bg-white">
@@ -62,8 +70,38 @@
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="index.html" class="text-gray-700 hover:text-primary-600 font-medium">Ana Sayfa</a>
                     <a href="about.html" class="text-gray-700 hover:text-primary-600 font-medium">Hakkımızda</a>
-                    <a href="solutions.html" class="text-gray-700 hover:text-primary-600 font-medium">Çözümler</a>
-                    <a href="sectors.html" class="text-gray-700 hover:text-primary-600 font-medium">Sektörler</a>
+                    
+                    <!-- Solutions Dropdown -->
+                    <div class="relative dropdown">
+                        <button class="text-gray-700 hover:text-primary-600 font-medium flex items-center dropdown-toggle" data-dropdown="solutions">
+                            Çözümler
+                            <svg class="w-4 h-4 ml-1 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg py-2 hidden dropdown-menu z-50" id="solutions-menu">
+                            <a href="eflow-bpm.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600">e-Flow BPM</a>
+                            <a href="document-management.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600">Döküman Yönetimi</a>
+                            <a href="integration.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600">Entegrasyon Çözümleri</a>
+                        </div>
+                    </div>
+
+                    <!-- Sectors Dropdown -->
+                    <div class="relative dropdown">
+                        <button class="text-gray-700 hover:text-primary-600 font-medium flex items-center dropdown-toggle" data-dropdown="sectors">
+                            Sektörler
+                            <svg class="w-4 h-4 ml-1 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg py-2 hidden dropdown-menu z-50" id="sectors-menu">
+                            <a href="manufacturing.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600">Üretim Sektörü</a>
+                            <a href="service.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600">Hizmet Sektörü</a>
+                            <a href="energy.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600">Enerji Sektörü</a>
+                            <a href="retail.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600">Perakende Sektörü</a>
+                        </div>
+                    </div>
+
                     <a href="references.html" class="text-gray-700 hover:text-primary-600 font-medium">Referanslar</a>
                     <a href="blog.html" class="text-gray-700 hover:text-primary-600 font-medium">Blog</a>
                     <a href="career.html" class="text-gray-700 hover:text-primary-600 font-medium">Kariyer</a>
@@ -318,6 +356,70 @@
 
     <!-- JavaScript -->
     <script>
+        // Dropdown functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            
+            dropdownToggles.forEach(toggle => {
+                const dropdown = toggle.dataset.dropdown;
+                const menu = document.getElementById(dropdown + '-menu');
+                const arrow = toggle.querySelector('.dropdown-arrow');
+                
+                // Toggle dropdown on click
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Close all other dropdowns
+                    dropdownToggles.forEach(otherToggle => {
+                        if (otherToggle !== toggle) {
+                            const otherDropdown = otherToggle.dataset.dropdown;
+                            const otherMenu = document.getElementById(otherDropdown + '-menu');
+                            const otherArrow = otherToggle.querySelector('.dropdown-arrow');
+                            otherMenu.classList.add('hidden');
+                            otherArrow.style.transform = 'rotate(0deg)';
+                        }
+                    });
+                    
+                    // Toggle current dropdown
+                    if (menu.classList.contains('hidden')) {
+                        menu.classList.remove('hidden');
+                        arrow.style.transform = 'rotate(180deg)';
+                    } else {
+                        menu.classList.add('hidden');
+                        arrow.style.transform = 'rotate(0deg)';
+                    }
+                });
+                
+                // Show dropdown on hover
+                toggle.parentElement.addEventListener('mouseenter', function() {
+                    menu.classList.remove('hidden');
+                    arrow.style.transform = 'rotate(180deg)';
+                });
+                
+                // Hide dropdown when mouse leaves
+                toggle.parentElement.addEventListener('mouseleave', function() {
+                    setTimeout(() => {
+                        if (!toggle.parentElement.matches(':hover')) {
+                            menu.classList.add('hidden');
+                            arrow.style.transform = 'rotate(0deg)';
+                        }
+                    }, 100);
+                });
+            });
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function() {
+                dropdownToggles.forEach(toggle => {
+                    const dropdown = toggle.dataset.dropdown;
+                    const menu = document.getElementById(dropdown + '-menu');
+                    const arrow = toggle.querySelector('.dropdown-arrow');
+                    menu.classList.add('hidden');
+                    arrow.style.transform = 'rotate(0deg)';
+                });
+            });
+        });
+
         document.getElementById('contact-form').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('Mesajınız alınmıştır. En kısa zamanda size dönüş yapacağız.');

@@ -37,6 +37,14 @@
             backdrop-filter: blur(10px);
             background: rgba(255, 255, 255, 0.95);
         }
+        .dropdown-arrow {
+            transition: transform 0.3s ease;
+        }
+        .dropdown-menu {
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
         .gradient-cta {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
@@ -59,8 +67,38 @@
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="index.html" class="text-gray-700 hover:text-primary-600 font-medium">Ana Sayfa</a>
                     <a href="about.html" class="text-gray-700 hover:text-primary-600 font-medium">Hakkımızda</a>
-                    <a href="solutions.html" class="text-gray-700 hover:text-primary-600 font-medium">Çözümler</a>
-                    <a href="sectors.html" class="text-gray-700 hover:text-primary-600 font-medium">Sektörler</a>
+                    
+                    <!-- Solutions Dropdown -->
+                    <div class="relative dropdown">
+                        <button class="text-gray-700 hover:text-primary-600 font-medium flex items-center dropdown-toggle" data-dropdown="solutions">
+                            Çözümler
+                            <svg class="w-4 h-4 ml-1 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg py-2 hidden dropdown-menu z-50" id="solutions-menu">
+                            <a href="eflow-bpm.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600">e-Flow BPM</a>
+                            <a href="document-management.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600">Döküman Yönetimi</a>
+                            <a href="integration.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600">Entegrasyon Çözümleri</a>
+                        </div>
+                    </div>
+
+                    <!-- Sectors Dropdown -->
+                    <div class="relative dropdown">
+                        <button class="text-gray-700 hover:text-primary-600 font-medium flex items-center dropdown-toggle" data-dropdown="sectors">
+                            Sektörler
+                            <svg class="w-4 h-4 ml-1 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg py-2 hidden dropdown-menu z-50" id="sectors-menu">
+                            <a href="manufacturing.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600">Üretim Sektörü</a>
+                            <a href="service.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600">Hizmet Sektörü</a>
+                            <a href="energy.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600">Enerji Sektörü</a>
+                            <a href="retail.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600">Perakende Sektörü</a>
+                        </div>
+                    </div>
+
                     <a href="references.html" class="text-gray-700 hover:text-primary-600 font-medium">Referanslar</a>
                     <a href="blog.html" class="text-gray-700 hover:text-primary-600 font-medium">Blog</a>
                     <a href="career.html" class="text-gray-700 hover:text-primary-600 font-medium">Kariyer</a>
