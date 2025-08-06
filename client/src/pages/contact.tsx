@@ -253,7 +253,7 @@ export default function Contact() {
                 <CardContent className="p-0 h-full min-h-[600px]">
                   <div className="w-full h-full rounded-lg overflow-hidden">
                     <iframe 
-                      src="https://maps.google.com/maps?q=Barbaros+Mah.+Begonya+Sok.+Nidakule+Ata%C5%9Fehir+Bat%C4%B1+No:+1+%C4%B0%C3%A7+Kap%C4%B1+No:+2+ATA%C5%9EEH%C4%B0R+%C4%B0STANBUL&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                      src="https://maps.google.com/maps?q=Algotrom+Bilgi+Teknolojileri+Barbaros+Mah.+Begonya+Sok.+Nidakule+Ata%C5%9Fehir+Bat%C4%B1+No:+1+%C4%B0%C3%A7+Kap%C4%B1+No:+2+ATA%C5%9EEH%C4%B0R+%C4%B0STANBUL&t=&z=15&ie=UTF8&iwloc=&output=embed"
                       width="100%" 
                       height="100%" 
                       style={{ border: 0, minHeight: '600px' }}
@@ -265,7 +265,7 @@ export default function Contact() {
                   </div>
                   <div className="p-6 text-center">
                     <a 
-                      href="https://maps.app.goo.gl/agAi999NKUb6V9i57" 
+                      href="https://www.google.com/maps/search/Algotrom+Bilgi+Teknolojileri+Barbaros+Mah.+Begonya+Sok.+Nidakule+Ataşehir+Batı+No:+1+İç+Kapı+No:+2+ATAŞEHİR+İSTANBUL/" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition"
