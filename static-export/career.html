@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kariyer - Algotrom</title>
+    <meta name="description" content="Algotrom'da kariyer fırsatları. Dinamik ekibimize katılın ve dijital dönüşüm alanında kariyerinizi geliştirin.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .gradient-cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .hover-lift {
+            transition: transform 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+        }
+        .navbar-blur {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 navbar-blur border-b border-gray-200">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <img src="attached_assets/algotrom_1754472906355.png" alt="Algotrom Logo" class="h-10 mr-3">
+                        <span class="text-xl font-bold text-gray-900">Algotrom</span>
+                    </a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-primary-600 font-medium">Ana Sayfa</a>
+                    <a href="about.html" class="text-gray-700 hover:text-primary-600 font-medium">Hakkımızda</a>
+                    <a href="solutions.html" class="text-gray-700 hover:text-primary-600 font-medium">Çözümler</a>
+                    <a href="sectors.html" class="text-gray-700 hover:text-primary-600 font-medium">Sektörler</a>
+                    <a href="references.html" class="text-gray-700 hover:text-primary-600 font-medium">Referanslar</a>
+                    <a href="blog.html" class="text-gray-700 hover:text-primary-600 font-medium">Blog</a>
+                    <a href="career.html" class="text-primary-600 font-medium">Kariyer</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-primary-600 font-medium">İletişim</a>
+                    <a href="demo-request.html" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition">Demo İsteyin</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-16">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-gray-50 to-white py-20">
+            <div class="container mx-auto px-4">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h1 class="text-5xl font-bold text-gray-900 mb-6">Kariyer</h1>
+                    <p class="text-xl text-gray-600 mb-8">
+                        Algotrom'da dinamik ekibimize katılın ve dijital dönüşüm alanında kariyerinizi geliştirin.
+                    </p>
+                    <button onclick="openCVModal()" class="bg-primary-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary-700 transition">
+                        CV Gönder
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Company Values -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Şirket Değerlerimiz</h2>
+                    <p class="text-lg text-gray-600">Algotrom'da çalışmak sadece bir iş değil, bir yaşam tarzıdır</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Takım Ruhu</h3>
+                        <p class="text-gray-600">
+                            Birlikte çalışmayı seven, bilgiyi paylaşan ve ortak hedeflere odaklanan bir ekip.
+                        </p>
+                    </div>
+
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">İnovasyon</h3>
+                        <p class="text-gray-600">
+                            Sürekli öğrenme, gelişim ve yenilikçi çözümler üretme kültürü.
+                        </p>
+                    </div>
+
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Müşteri Odaklılık</h3>
+                        <p class="text-gray-600">
+                            Müşteri memnuniyetini ön planda tutan, kaliteli çözümler üreten anlayış.
+                        </p>
+                    </div>
+
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">İş-Yaşam Dengesi</h3>
+                        <p class="text-gray-600">
+                            Çalışanlarımızın kişisel gelişimini ve mutluluğunu destekleyen esnek çalışma ortamı.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Work With Us -->
+        <section class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Neden Algotrom?</h2>
+                    <p class="text-lg text-gray-600">Ekibimizin bir parçası olmanın avantajları</p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div class="bg-white p-8 rounded-lg shadow-sm hover-lift">
+                        <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Kariyer Gelişimi</h3>
+                        <p class="text-gray-600">
+                            Sürekli eğitim fırsatları, sertifikasyon programları ve mentorship ile kariyer hedeflerinize ulaşın.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-lg shadow-sm hover-lift">
+                        <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Global Projeler</h3>
+                        <p class="text-gray-600">
+                            Uluslararası müşteriler ve projelerle çalışarak global perspektif kazanın.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-lg shadow-sm hover-lift">
+                        <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Rekabetçi Maaş</h3>
+                        <p class="text-gray-600">
+                            Sektör standartlarının üzerinde maaş, primler ve ek sosyal haklar.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-lg shadow-sm hover-lift">
+                        <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Modern Ofis</h3>
+                        <p class="text-gray-600">
+                            Ataşehir'de modern teknolojilerle donatılmış, konforlu çalışma ortamı.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-lg shadow-sm hover-lift">
+                        <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Eğitim & Gelişim</h3>
+                        <p class="text-gray-600">
+                            Konferanslar, workshoplar ve online eğitim platformlarına erişim.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-lg shadow-sm hover-lift">
+                        <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Esnek Çalışma</h3>
+                        <p class="text-gray-600">
+                            Hibrit çalışma modeli ve esnek mesai saatleri ile iş-yaşam dengenizi koruyun.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CV Application Section -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Başvuru Yapın</h2>
+                    <p class="text-lg text-gray-600 mb-8">
+                        Açık pozisyonumuz olmasa bile, yetenekli kişileri her zaman değerlendiriyoruz. 
+                        CV'nizi gönderin, size uygun fırsat çıktığında iletişime geçelim.
+                    </p>
+                    <button onclick="openCVModal()" class="bg-primary-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary-700 transition">
+                        CV Gönder
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- CV Modal -->
+    <div id="cvModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900">CV Gönder</h3>
+                <button onclick="closeCVModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="cvForm" onsubmit="submitCV(event)">
+                <div class="space-y-4">
+                    <div>
+                        <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">Ad *</label>
+                        <input type="text" id="firstName" name="firstName" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
+                    </div>
+                    
+                    <div>
+                        <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Soyad *</label>
+                        <input type="text" id="lastName" name="lastName" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">E-posta *</label>
+                        <input type="email" id="email" name="email" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
+                    </div>
+                    
+                    <div>
+                        <label for="cv" class="block text-sm font-medium text-gray-700 mb-2">CV Dosyası *</label>
+                        <input type="file" id="cv" name="cv" required accept=".pdf,.doc,.docx,.txt"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        <p class="text-sm text-gray-500 mt-1">PDF, DOC, DOCX veya TXT formatında, maksimum 15MB</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 mt-8">
+                    <button type="submit" class="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition">
+                        Gönder
+                    </button>
+                    <button type="button" onclick="closeCVModal()" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition">
+                        İptal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-6">
+                        <img src="attached_assets/algotrom_1754472906355.png" alt="Algotrom Logo" class="h-10 mr-3">
+                        <span class="text-xl font-bold">Algotrom</span>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Kurumsal yazılım çözümlerinde 15+ yıllık deneyimimizle dijital dönüşümünüzün güvenilir ortağı.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Hızlı Bağlantılar</h3>
+                    <ul class="space-y-3">
+                        <li><a href="about.html" class="text-gray-300 hover:text-white">Hakkımızda</a></li>
+                        <li><a href="solutions.html" class="text-gray-300 hover:text-white">Çözümlerimiz</a></li>
+                        <li><a href="sectors.html" class="text-gray-300 hover:text-white">Sektörler</a></li>
+                        <li><a href="references.html" class="text-gray-300 hover:text-white">Referanslar</a></li>
+                        <li><a href="blog.html" class="text-gray-300 hover:text-white">Blog</a></li>
+                        <li><a href="career.html" class="text-gray-300 hover:text-white">Kariyer</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Çözümler</h3>
+                    <ul class="space-y-3">
+                        <li><a href="eflow-bpm.html" class="text-gray-300 hover:text-white">E-Flow BPM</a></li>
+                        <li><a href="document-management.html" class="text-gray-300 hover:text-white">E-Flow DMS</a></li>
+                        <li><a href="integration.html" class="text-gray-300 hover:text-white">Entegrasyon</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">İletişim</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-primary-500 mt-1 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="text-gray-300">
+                                Barbaros Mah. Begonya Sok.<br>
+                                Nidakule Ataşehir Batı No: 1 İç Kapı No: 2<br>
+                                ATAŞEHİR / İSTANBUL
+                            </span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <span class="text-gray-300">+90 545 514 74 02</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <span class="text-gray-300">info@algotrom.com.tr</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400">© 2024 Algotrom. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function openCVModal() {
+            document.getElementById('cvModal').classList.add('show');
+        }
+
+        function closeCVModal() {
+            document.getElementById('cvModal').classList.remove('show');
+            document.getElementById('cvForm').reset();
+        }
+
+        function submitCV(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const cvFile = formData.get('cv');
+            
+            // Dosya boyutu kontrolü (15MB = 15 * 1024 * 1024 bytes)
+            if (cvFile.size > 15 * 1024 * 1024) {
+                alert('CV dosyası 15MB\'dan küçük olmalıdır.');
+                return;
+            }
+            
+            // Dosya formatı kontrolü
+            const allowedTypes = [
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'text/plain'
+            ];
+            
+            if (!allowedTypes.includes(cvFile.type)) {
+                alert('Sadece PDF, DOC, DOCX ve TXT dosyaları kabul edilir.');
+                return;
+            }
+            
+            // Form verilerini topla
+            const firstName = formData.get('firstName');
+            const lastName = formData.get('lastName');
+            const email = formData.get('email');
+            
+            // Basit validasyon
+            if (!firstName || firstName.length < 2) {
+                alert('Ad en az 2 karakter olmalıdır.');
+                return;
+            }
+            
+            if (!lastName || lastName.length < 2) {
+                alert('Soyad en az 2 karakter olmalıdır.');
+                return;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Geçerli bir e-posta adresi giriniz.');
+                return;
+            }
+            
+            // Başarı mesajı göster
+            alert('CV başvurunuz başarıyla gönderildi! Size en kısa sürede dönüş yapacağız.');
+            closeCVModal();
+        }
+
+        // Modal dışına tıklayınca kapat
+        document.getElementById('cvModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCVModal();
+            }
+        });
+    </script>
+</body>
+</html>
