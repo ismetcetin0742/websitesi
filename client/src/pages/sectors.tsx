@@ -236,7 +236,7 @@ export default function Sectors() {
               </div>
               <div className="bg-white p-8 rounded-lg shadow-sm">
                 <TrendingUp className="w-12 h-12 text-primary mx-auto mb-4" />
-                <div className="text-3xl font-bold text-gray-900 mb-2">%45</div>
+                <div className="text-3xl font-bold text-gray-900 mb-2">%86</div>
                 <div className="text-gray-600">Ortalama Verimlilik Artışı</div>
               </div>
               <div className="bg-white p-8 rounded-lg shadow-sm">
