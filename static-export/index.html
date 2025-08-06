@@ -60,6 +60,13 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(0, 0, 0, 0.1);
         }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-toggle:hover + .dropdown-menu,
+        .dropdown-menu:hover {
+            display: block;
+        }
     </style>
 </head>
 <body class="bg-white">
@@ -361,19 +368,31 @@
 
     <!-- JavaScript -->
     <script>
-        // Dropdown functionality
+        // Dropdown functionality with improved debugging
         document.addEventListener('DOMContentLoaded', function() {
-            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            console.log('DOM loaded, initializing dropdowns...');
             
-            dropdownToggles.forEach(toggle => {
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            console.log('Found dropdown toggles:', dropdownToggles.length);
+            
+            dropdownToggles.forEach((toggle, index) => {
                 const dropdown = toggle.dataset.dropdown;
                 const menu = document.getElementById(dropdown + '-menu');
                 const arrow = toggle.querySelector('.dropdown-arrow');
+                
+                console.log(`Dropdown ${index}:`, dropdown, 'Menu:', menu, 'Arrow:', arrow);
+                
+                if (!menu || !arrow) {
+                    console.error(`Missing elements for dropdown ${dropdown}`);
+                    return;
+                }
                 
                 // Toggle dropdown on click
                 toggle.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
+                    
+                    console.log(`Clicked on ${dropdown} dropdown`);
                     
                     // Close all other dropdowns
                     dropdownToggles.forEach(otherToggle => {
@@ -381,8 +400,8 @@
                             const otherDropdown = otherToggle.dataset.dropdown;
                             const otherMenu = document.getElementById(otherDropdown + '-menu');
                             const otherArrow = otherToggle.querySelector('.dropdown-arrow');
-                            otherMenu.classList.add('hidden');
-                            otherArrow.style.transform = 'rotate(0deg)';
+                            if (otherMenu) otherMenu.classList.add('hidden');
+                            if (otherArrow) otherArrow.style.transform = 'rotate(0deg)';
                         }
                     });
                     
@@ -390,9 +409,11 @@
                     if (menu.classList.contains('hidden')) {
                         menu.classList.remove('hidden');
                         arrow.style.transform = 'rotate(180deg)';
+                        console.log(`Opened ${dropdown} dropdown`);
                     } else {
                         menu.classList.add('hidden');
                         arrow.style.transform = 'rotate(0deg)';
+                        console.log(`Closed ${dropdown} dropdown`);
                     }
                 });
                 
@@ -409,26 +430,32 @@
                             menu.classList.add('hidden');
                             arrow.style.transform = 'rotate(0deg)';
                         }
-                    }, 100);
+                    }, 200);
                 });
             });
             
             // Close dropdowns when clicking outside
-            document.addEventListener('click', function() {
-                dropdownToggles.forEach(toggle => {
-                    const dropdown = toggle.dataset.dropdown;
-                    const menu = document.getElementById(dropdown + '-menu');
-                    const arrow = toggle.querySelector('.dropdown-arrow');
-                    menu.classList.add('hidden');
-                    arrow.style.transform = 'rotate(0deg)';
-                });
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.dropdown')) {
+                    dropdownToggles.forEach(toggle => {
+                        const dropdown = toggle.dataset.dropdown;
+                        const menu = document.getElementById(dropdown + '-menu');
+                        const arrow = toggle.querySelector('.dropdown-arrow');
+                        if (menu) menu.classList.add('hidden');
+                        if (arrow) arrow.style.transform = 'rotate(0deg)';
+                    });
+                }
             });
         });
 
         // Mobile menu toggle
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            // Add mobile menu functionality here
-            console.log('Mobile menu clicked');
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            if (mobileBtn) {
+                mobileBtn.addEventListener('click', function() {
+                    console.log('Mobile menu clicked');
+                });
+            }
         });
 
         // Smooth scrolling for anchor links
