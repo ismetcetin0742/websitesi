@@ -79,12 +79,12 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link href="/solutions/eflow-bpm" className="text-gray-300 hover:text-white transition-colors">
-                  e-Flow BPM
+                  E-Flow BPM
                 </Link>
               </li>
               <li>
                 <Link href="/solutions/document-management" className="text-gray-300 hover:text-white transition-colors">
-                  Döküman Yönetimi
+                  E-Flow DMS
                 </Link>
               </li>
               <li>

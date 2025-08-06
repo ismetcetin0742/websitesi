@@ -30,13 +30,13 @@ export default function Home() {
   const solutions = [
     {
       icon: ChartGantt,
-      title: 'e-Flow BPM',
+      title: 'E-Flow BPM',
       description: 'İş süreçlerinizi modelleyin, otomatikleştirin ve optimize edin. Kurumsal süreç yönetimi için kapsamlı çözüm.',
       href: '/solutions/eflow-bpm'
     },
     {
       icon: FileText,
-      title: 'Döküman Yönetim Sistemi',
+      title: 'E-Flow DMS',
       description: 'Kurumsal belgelerinizi dijital ortamda güvenle saklayın, organize edin ve paylaşın.',
       href: '/solutions/document-management'
     },
@@ -240,10 +240,10 @@ export default function Home() {
                       </span>
                     </div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-3 hover:text-primary transition-colors cursor-pointer">
-                      {typeof post.title === 'object' ? post.title[language] || post.title.tr : post.title}
+                      {typeof post.title === 'object' && post.title ? (post.title as any)[language] || (post.title as any).tr : post.title || ''}
                     </h3>
                     <p className="text-gray-600 mb-4">
-                      {typeof post.excerpt === 'object' ? post.excerpt[language] || post.excerpt.tr : post.excerpt}
+                      {typeof post.excerpt === 'object' && post.excerpt ? (post.excerpt as any)[language] || (post.excerpt as any).tr : post.excerpt || ''}
                     </p>
                     <Link 
                       href={`/blog/${post.id}`}

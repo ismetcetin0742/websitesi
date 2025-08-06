@@ -327,24 +327,23 @@ export default function Blog() {
         </div>
       </section>
 
-      {/* Newsletter Signup */}
+      {/* LinkedIn Integration */}
       <section className="py-20 bg-primary text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-4">Blog yazılarımızı kaçırmayın</h2>
+          <h2 className="text-4xl font-bold mb-4">LinkedIn'de Takip Edin</h2>
           <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-            Teknoloji ve dijital dönüşüm konularındaki en güncel içerikleri e-postanızda alın.
+            En güncel içeriklerimizi ve sektör haberlerini LinkedIn sayfamızdan takip edebilirsiniz.
+            Blog yazılarımız otomatik olarak LinkedIn'de paylaşılır.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-            <Input 
-              placeholder="E-posta adresiniz" 
-              className="bg-white text-gray-900"
-            />
-            <Button variant="secondary">
-              Abone Ol
-            </Button>
-          </div>
+          <Button variant="secondary" size="lg" asChild>
+            <a href="https://linkedin.com/company/algotrom" target="_blank" rel="noopener noreferrer" className="inline-flex items-center">
+              <Linkedin className="w-5 h-5 mr-2" />
+              LinkedIn'de Takip Et
+            </a>
+          </Button>
         </div>
       </section>
+
     </div>
   );
 }

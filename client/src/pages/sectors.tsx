@@ -48,7 +48,7 @@ export default function Sectors() {
         'Gerçek zamanlı üretim izleme'
       ],
       benefits: [
-        'Üretim verimliliğinde %35 artış',
+        'Üretim verimliliğinde %86 artış',
         'Kalite hatalarında %70 azalma',
         'Makine duruş sürelerinde %45 düşüş',
         'Operasyonel maliyetlerde %25 tasarruf'
@@ -85,7 +85,7 @@ export default function Sectors() {
       benefits: [
         'Müşteri memnuniyetinde %50 artış',
         'Hizmet süresinde %40 kısalma',
-        'Operasyonel verimlilikte %30 iyileşme',
+        'Operasyonel verimlilikte %86 iyileşme',
         'Müşteri kaybında %60 azalma'
       ],
       caseStudies: [

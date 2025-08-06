@@ -31,7 +31,7 @@ export default function References() {
       sector: 'manufacturing',
       logo: 'https://via.placeholder.com/120x60/1E40AF/ffffff?text=ABC',
       project: 'Üretim Süreç Yönetimi',
-      description: 'e-Flow BPM ile üretim süreçlerinin dijitalleştirilmesi ve kalite kontrol sistemlerinin entegrasyonu.',
+      description: 'E-Flow BPM ile üretim süreçlerinin dijitalleştirilmesi ve kalite kontrol sistemlerinin entegrasyonu.',
       results: [
         '%40 üretim verimliliği artışı',
         '%60 kalite kontrol süresinde azalma',
@@ -182,82 +182,7 @@ export default function References() {
         </div>
       </section>
 
-      {/* References Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-12">
-            <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">Başarı Hikayeleri</h2>
-              <p className="text-lg text-gray-600">
-                Müşterilerimizin dijital dönüşüm yolculuğundaki başarı hikayeleri
-              </p>
-            </div>
-            <div className="mt-6 md:mt-0">
-              <Select value={selectedSector} onValueChange={setSelectedSector}>
-                <SelectTrigger className="w-48">
-                  <SelectValue placeholder="Sektör seçin" />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.entries(sectors).map(([key, sector]) => (
-                    <SelectItem key={key} value={key}>
-                      {sector.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
-            {filteredReferences.map((reference) => (
-              <Card key={reference.id} className="hover-lift border-gray-100">
-                <CardContent className="p-8">
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex items-center">
-                      <img 
-                        src={reference.logo} 
-                        alt={reference.company}
-                        className="w-16 h-8 object-contain mr-4"
-                      />
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900">{reference.company}</h3>
-                        <Badge variant="secondary">{sectors[reference.sector as keyof typeof sectors]?.label}</Badge>
-                      </div>
-                    </div>
-                    <span className="text-sm text-gray-500">{reference.year}</span>
-                  </div>
-
-                  <h4 className="text-xl font-semibold text-primary mb-3">{reference.project}</h4>
-                  <p className="text-gray-700 mb-6">{reference.description}</p>
-
-                  <div className="space-y-3 mb-6">
-                    <h5 className="font-semibold text-gray-900">Elde Edilen Sonuçlar:</h5>
-                    {reference.results.map((result, index) => (
-                      <div key={index} className="flex items-center">
-                        <Star className="w-4 h-4 text-yellow-500 mr-2 flex-shrink-0" />
-                        <span className="text-gray-700 text-sm">{result}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="bg-gray-50 p-4 rounded-lg mb-6">
-                    <p className="text-gray-700 italic">"{reference.testimonial}"</p>
-                  </div>
-
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">
-                      Proje Süresi: <span className="font-medium">{reference.duration}</span>
-                    </span>
-                    <Button variant="outline" size="sm">
-                      Detayları Gör <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Client Logos Section */}
       <section className="py-20 bg-white">
@@ -269,14 +194,13 @@ export default function References() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center opacity-60">
-            {Array.from({ length: 12 }).map((_, index) => (
-              <div key={index} className="flex items-center justify-center h-16 grayscale hover:grayscale-0 transition-all cursor-pointer">
-                <div className="bg-gray-200 h-12 w-24 rounded flex items-center justify-center text-xs text-gray-500">
-                  CLIENT LOGO
-                </div>
+          <div className="flex justify-center">
+            <div className="flex items-center justify-center h-20 p-4 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+              <div className="text-center text-gray-500">
+                <div className="text-sm font-medium">LOGO ALANI</div>
+                <div className="text-xs">Yakında eklenecek</div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>

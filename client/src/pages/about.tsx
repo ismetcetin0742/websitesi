@@ -16,9 +16,9 @@ export default function About() {
 
   const timeline = [
     { year: '2009', event: 'Algotrom kuruldu. İlk BPM projeleri başladı.' },
-    { year: '2012', event: 'e-Flow BPM ürünü geliştirilerek piyasaya sunuldu.' },
+    { year: '2012', event: 'E-Flow BPM ürünü geliştirilerek piyasaya sunuldu.' },
     { year: '2015', event: '50+ kurumsal müşteri portföyüne ulaşıldı.' },
-    { year: '2018', event: 'Döküman Yönetim Sistemi ve Entegrasyon çözümleri eklendi.' },
+    { year: '2018', event: 'E-Flow DMS ve Entegrasyon çözümleri eklendi.' },
     { year: '2020', event: 'Dijital dönüşüm hizmetlerinde uzmanlaşma.' },
     { year: '2022', event: 'İş Zekası ve Mobil çözümler portföye katıldı.' },
     { year: '2024', event: 'AI destekli süreç optimizasyonu çözümleri geliştirildi.' }
@@ -32,22 +32,22 @@ export default function About() {
       bio: '15 yıllık teknoloji sektörü deneyimi. Dijital dönüşüm konusunda uzman.'
     },
     {
-      name: 'Elif Demir',
-      position: 'Teknik Direktör',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face',
-      bio: 'Yazılım geliştirme ve sistem mimarisi alanında 12 yıllık deneyim.'
-    },
-    {
-      name: 'Mehmet Kaya',
+      name: 'Yıldırım Özyakışır',
       position: 'Proje Yöneticisi',
       image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face',
       bio: 'Kurumsal projelerin yönetimi ve müşteri ilişkilerinde uzman.'
     },
     {
-      name: 'Ayşe Özkan',
-      position: 'İş Analisti',
-      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face',
-      bio: 'İş süreçleri analizi ve optimizasyonu konusunda 8 yıllık deneyim.'
+      name: 'İsmet Çetin',
+      position: 'Proje Yöneticisi',
+      image: 'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=300&h=300&fit=crop&crop=face',
+      bio: 'Teknik proje yönetimi ve çözüm geliştirme konusunda deneyimli.'
+    },
+    {
+      name: 'Sedef Nihal',
+      position: 'Finans Yöneticisi',
+      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face',
+      bio: 'Finans yönetimi ve stratejik planlama alanında uzman.'
     }
   ];
 
