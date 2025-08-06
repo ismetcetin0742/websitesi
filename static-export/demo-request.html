@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo İsteyin - Algotrom</title>
+    <meta name="description" content="Algotrom çözümlerini ücretsiz demo ile test edin. Uzmanlarımızla randevu alın.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        .navbar-blur {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .gradient-cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 navbar-blur border-b border-gray-200">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <div class="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center mr-3">
+                            <span class="text-white font-bold text-xl">A</span>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">Algotrom</span>
+                    </a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-primary-600 font-medium">Ana Sayfa</a>
+                    <a href="about.html" class="text-gray-700 hover:text-primary-600 font-medium">Hakkımızda</a>
+                    <a href="solutions.html" class="text-gray-700 hover:text-primary-600 font-medium">Çözümler</a>
+                    <a href="sectors.html" class="text-gray-700 hover:text-primary-600 font-medium">Sektörler</a>
+                    <a href="references.html" class="text-gray-700 hover:text-primary-600 font-medium">Referanslar</a>
+                    <a href="blog.html" class="text-gray-700 hover:text-primary-600 font-medium">Blog</a>
+                    <a href="career.html" class="text-gray-700 hover:text-primary-600 font-medium">Kariyer</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-primary-600 font-medium">İletişim</a>
+                    <a href="demo-request.html" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition">Demo İsteyin</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-16">
+        <!-- Hero Section -->
+        <section class="gradient-cta text-white py-20">
+            <div class="container mx-auto px-4">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h1 class="text-5xl font-bold mb-6">Ücretsiz Demo İsteyin</h1>
+                    <p class="text-xl mb-8 opacity-90">
+                        Çözümlerimizi canlı demo ile deneyimleyin ve işletmenize nasıl değer katabileceğimizi keşfedin.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Demo Form -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="max-w-4xl mx-auto">
+                    <div class="grid lg:grid-cols-2 gap-12">
+                        <!-- Form -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-6">Demo Randevusu Alın</h2>
+                            <p class="text-lg text-gray-600 mb-8">
+                                Formu doldurun, uzmanlarımız en kısa zamanda sizinle iletişime geçsin.
+                            </p>
+
+                            <form id="demo-form" class="space-y-6">
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">Ad *</label>
+                                        <input type="text" id="firstName" name="firstName" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                    </div>
+                                    <div>
+                                        <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Soyad *</label>
+                                        <input type="text" id="lastName" name="lastName" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">E-posta *</label>
+                                    <input type="email" id="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                </div>
+
+                                <div>
+                                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Telefon *</label>
+                                    <input type="tel" id="phone" name="phone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                </div>
+
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="company" class="block text-sm font-medium text-gray-700 mb-2">Şirket Adı *</label>
+                                        <input type="text" id="company" name="company" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                    </div>
+                                    <div>
+                                        <label for="position" class="block text-sm font-medium text-gray-700 mb-2">Pozisyon</label>
+                                        <input type="text" id="position" name="position" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                    </div>
+                                </div>
+
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="sector" class="block text-sm font-medium text-gray-700 mb-2">Sektör</label>
+                                        <select id="sector" name="sector" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                            <option value="">Sektör seçiniz</option>
+                                            <option value="manufacturing">Üretim</option>
+                                            <option value="service">Hizmet</option>
+                                            <option value="energy">Enerji</option>
+                                            <option value="retail">Perakende</option>
+                                            <option value="finance">Finans</option>
+                                            <option value="healthcare">Sağlık</option>
+                                            <option value="education">Eğitim</option>
+                                            <option value="other">Diğer</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="employeeCount" class="block text-sm font-medium text-gray-700 mb-2">Çalışan Sayısı</label>
+                                        <select id="employeeCount" name="employeeCount" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                            <option value="">Seçiniz</option>
+                                            <option value="1-10">1-10</option>
+                                            <option value="11-50">11-50</option>
+                                            <option value="51-100">51-100</option>
+                                            <option value="101-500">101-500</option>
+                                            <option value="500+">500+</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="interest" class="block text-sm font-medium text-gray-700 mb-2">İlgilendiğiniz Çözüm *</label>
+                                    <select id="interest" name="interest" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                        <option value="">Çözüm seçiniz</option>
+                                        <option value="eflow-bpm">e-Flow BPM</option>
+                                        <option value="document-management">Döküman Yönetimi</option>
+                                        <option value="integration">Entegrasyon Çözümleri</option>
+                                        <option value="all">Tüm Çözümler</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Mesaj</label>
+                                    <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" placeholder="Demo sırasında görmek istediğiniz özel konular varsa belirtebilirsiniz..."></textarea>
+                                </div>
+
+                                <div>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" required class="mr-2">
+                                        <span class="text-sm text-gray-600">
+                                            <a href="#" class="text-primary-600 hover:underline">Kişisel Verilerin Korunması Kanunu</a> kapsamında verilerimin işlenmesini kabul ediyorum.
+                                        </span>
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="w-full bg-primary-600 text-white py-4 px-6 rounded-lg text-lg font-semibold hover:bg-primary-700 transition">
+                                    Demo Talebi Gönder
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Info -->
+                        <div>
+                            <div class="bg-gray-50 p-8 rounded-lg">
+                                <h3 class="text-2xl font-bold text-gray-900 mb-6">Demo Sürecinde Neler Olacak?</h3>
+                                
+                                <div class="space-y-6">
+                                    <div class="flex items-start">
+                                        <div class="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center mr-4 mt-1 text-sm font-semibold">1</div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-900 mb-2">İhtiyaç Analizi</h4>
+                                            <p class="text-gray-600">Uzmanlarımız işletmenizin ihtiyaçlarını anlayacak ve size özel bir demo senaryosu hazırlayacak.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start">
+                                        <div class="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center mr-4 mt-1 text-sm font-semibold">2</div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-900 mb-2">Canlı Demo</h4>
+                                            <p class="text-gray-600">30-45 dakikalık canlı demo seansında çözümlerimizi detaylı olarak göreceksiniz.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start">
+                                        <div class="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center mr-4 mt-1 text-sm font-semibold">3</div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-900 mb-2">Soru & Cevap</h4>
+                                            <p class="text-gray-600">Demo sonrasında tüm sorularınızı yanıtlayacak ve size özel çözüm önerilerini paylaşacağız.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start">
+                                        <div class="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center mr-4 mt-1 text-sm font-semibold">4</div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-900 mb-2">Teknik Destek</h4>
+                                            <p class="text-gray-600">Demo sonrasında da size destek olmaya devam edeceğiz ve implementasyon sürecinde yanınızda olacağız.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-8 p-6 bg-primary-50 rounded-lg border border-primary-200">
+                                    <h4 class="font-semibold text-primary-900 mb-2">💡 Demo Avantajları</h4>
+                                    <ul class="text-sm text-primary-800 space-y-1">
+                                        <li>✓ Tamamen ücretsiz</li>
+                                        <li>✓ Size özel senaryolar</li>
+                                        <li>✓ Uzman rehberliği</li>
+                                        <li>✓ Teknik detaylar</li>
+                                        <li>✓ ROI hesaplaması</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 text-center">
+                                <p class="text-gray-600 mb-4">Hemen konuşmak isterseniz:</p>
+                                <div class="flex items-center justify-center space-x-4">
+                                    <a href="tel:+905455147402" class="flex items-center text-primary-600 hover:text-primary-700">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                        </svg>
+                                        +90 545 514 74 02
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center mr-3">
+                            <span class="text-white font-bold text-xl">A</span>
+                        </div>
+                        <span class="text-xl font-bold">Algotrom</span>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Kurumsal yazılım çözümlerinde 15+ yıllık deneyimimizle dijital dönüşümünüzün güvenilir ortağı.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Hızlı Bağlantılar</h3>
+                    <ul class="space-y-3">
+                        <li><a href="about.html" class="text-gray-300 hover:text-white">Hakkımızda</a></li>
+                        <li><a href="solutions.html" class="text-gray-300 hover:text-white">Çözümlerimiz</a></li>
+                        <li><a href="sectors.html" class="text-gray-300 hover:text-white">Sektörler</a></li>
+                        <li><a href="references.html" class="text-gray-300 hover:text-white">Referanslar</a></li>
+                        <li><a href="blog.html" class="text-gray-300 hover:text-white">Blog</a></li>
+                        <li><a href="career.html" class="text-gray-300 hover:text-white">Kariyer</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Çözümler</h3>
+                    <ul class="space-y-3">
+                        <li><a href="eflow-bpm.html" class="text-gray-300 hover:text-white">e-Flow BPM</a></li>
+                        <li><a href="document-management.html" class="text-gray-300 hover:text-white">Döküman Yönetimi</a></li>
+                        <li><a href="integration.html" class="text-gray-300 hover:text-white">Entegrasyon</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">İletişim</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-primary-500 mt-1 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="text-gray-300">
+                                Barbaros Mah. Begonya Sok.<br>
+                                Nidakule Ataşehir Batı No: 1 İç Kapı No: 2<br>
+                                ATAŞEHİR / İSTANBUL
+                            </span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <span class="text-gray-300">+90 545 514 74 02</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <span class="text-gray-300">info@algotrom.com.tr</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400">© 2024 Algotrom. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.getElementById('demo-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Demo talebiniz alınmıştır. Uzmanlarımız en kısa zamanda sizinle iletişime geçecektir.');
+        });
+    </script>
+</body>
+</html>

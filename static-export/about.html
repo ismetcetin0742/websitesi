@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakkımızda - Algotrom</title>
+    <meta name="description" content="Algotrom hakkında bilgi edinin. 15+ yıllık deneyimimizle kurumsal yazılım çözümlerinde öncü konumdayız.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        .navbar-blur {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .gradient-cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .hover-lift {
+            transition: transform 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 navbar-blur border-b border-gray-200">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <div class="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center mr-3">
+                            <span class="text-white font-bold text-xl">A</span>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">Algotrom</span>
+                    </a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-primary-600 font-medium">Ana Sayfa</a>
+                    <a href="about.html" class="text-primary-600 font-medium">Hakkımızda</a>
+                    <a href="solutions.html" class="text-gray-700 hover:text-primary-600 font-medium">Çözümler</a>
+                    <a href="sectors.html" class="text-gray-700 hover:text-primary-600 font-medium">Sektörler</a>
+                    <a href="references.html" class="text-gray-700 hover:text-primary-600 font-medium">Referanslar</a>
+                    <a href="blog.html" class="text-gray-700 hover:text-primary-600 font-medium">Blog</a>
+                    <a href="career.html" class="text-gray-700 hover:text-primary-600 font-medium">Kariyer</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-primary-600 font-medium">İletişim</a>
+                    <a href="demo-request.html" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition">Demo İsteyin</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-16">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-gray-50 to-white py-20">
+            <div class="container mx-auto px-4">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h1 class="text-5xl font-bold text-gray-900 mb-6">Hakkımızda</h1>
+                    <p class="text-xl text-gray-600 mb-8">
+                        2009'dan beri Türkiye'nin lider kurumsal yazılım şirketlerinden biriyiz.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Company Story -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-6">Hikayemiz</h2>
+                            <p class="text-lg text-gray-600 mb-6">
+                                Algotrom, 2009 yılında kurumsal yazılım çözümleri alanında faaliyet göstermek üzere kurulmuştur. 
+                                15+ yıllık deneyimimizle, Türkiye'nin önde gelen şirketlerine dijital dönüşüm yolculuklarında 
+                                rehberlik etmekteyiz.
+                            </p>
+                            <p class="text-lg text-gray-600 mb-6">
+                                İş süreçleri yönetimi (BPM), döküman yönetimi ve sistem entegrasyonu alanlarında uzmanlaşmış 
+                                ekibimizle, müşterilerimizin operasyonel verimliliğini artırmaya odaklanıyoruz.
+                            </p>
+                            <p class="text-lg text-gray-600">
+                                Yenilikçi çözümlerimiz ve müşteri odaklı yaklaşımımızla sektöre değer katmaya devam ediyoruz.
+                            </p>
+                        </div>
+                        <div>
+                            <img 
+                                src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
+                                alt="Algotrom Ekibi" 
+                                class="w-full h-96 object-cover rounded-lg shadow-lg"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Values -->
+        <section class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-4">Değerlerimiz</h2>
+                    <p class="text-xl text-gray-600">Çalışma prensiplerimiz ve kurumsal değerlerimiz</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                    <div class="text-center bg-white p-8 rounded-lg shadow-lg hover-lift">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Güvenilirlik</h3>
+                        <p class="text-gray-600">Sözümüzü tutarız ve güvenilir çözümler sunarız</p>
+                    </div>
+
+                    <div class="text-center bg-white p-8 rounded-lg shadow-lg hover-lift">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Yenilikçilik</h3>
+                        <p class="text-gray-600">Teknolojik gelişmeleri takip eder, yenilikçi çözümler geliştiririz</p>
+                    </div>
+
+                    <div class="text-center bg-white p-8 rounded-lg shadow-lg hover-lift">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Müşteri Odaklılık</h3>
+                        <p class="text-gray-600">Müşteri memnuniyeti her zaman önceliğimizdir</p>
+                    </div>
+
+                    <div class="text-center bg-white p-8 rounded-lg shadow-lg hover-lift">
+                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Sürekli Öğrenme</h3>
+                        <p class="text-gray-600">Kendimizi sürekli geliştiririz ve öğrenmeye devam ederiz</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Rakamlarla Algotrom</h2>
+                    <p class="text-lg text-gray-600">15+ yıllık yolculuğumuzda elde ettiğimiz başarılar</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center bg-gray-50 p-8 rounded-lg">
+                        <div class="text-4xl font-bold text-primary-600 mb-2">15+</div>
+                        <p class="text-gray-600">Yıllık Deneyim</p>
+                    </div>
+                    <div class="text-center bg-gray-50 p-8 rounded-lg">
+                        <div class="text-4xl font-bold text-primary-600 mb-2">200+</div>
+                        <p class="text-gray-600">Başarılı Proje</p>
+                    </div>
+                    <div class="text-center bg-gray-50 p-8 rounded-lg">
+                        <div class="text-4xl font-bold text-primary-600 mb-2">150+</div>
+                        <p class="text-gray-600">Kurumsal Müşteri</p>
+                    </div>
+                    <div class="text-center bg-gray-50 p-8 rounded-lg">
+                        <div class="text-4xl font-bold text-primary-600 mb-2">50+</div>
+                        <p class="text-gray-600">Uzman Ekip</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team -->
+        <section class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-4">Ekibimiz</h2>
+                    <p class="text-xl text-gray-600">Alanında uzman, deneyimli ekibimizle sizlere hizmet veriyoruz</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div class="text-center bg-white p-8 rounded-lg shadow-lg hover-lift">
+                        <div class="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-6"></div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Ahmet Yılmaz</h3>
+                        <p class="text-primary-600 mb-3">Genel Müdür</p>
+                        <p class="text-sm text-gray-600">15+ yıllık yazılım sektörü deneyimi</p>
+                    </div>
+
+                    <div class="text-center bg-white p-8 rounded-lg shadow-lg hover-lift">
+                        <div class="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-6"></div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Zeynep Kaya</h3>
+                        <p class="text-primary-600 mb-3">Teknik Direktör</p>
+                        <p class="text-sm text-gray-600">Yazılım mimarisi ve BPM uzmanı</p>
+                    </div>
+
+                    <div class="text-center bg-white p-8 rounded-lg shadow-lg hover-lift">
+                        <div class="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-6"></div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Mehmet Demir</h3>
+                        <p class="text-primary-600 mb-3">Satış Müdürü</p>
+                        <p class="text-sm text-gray-600">Kurumsal satış ve müşteri ilişkileri uzmanı</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Vision -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid lg:grid-cols-2 gap-12">
+                        <div class="bg-gray-50 p-8 rounded-lg">
+                            <h2 class="text-3xl font-bold text-gray-900 mb-6">Misyonumuz</h2>
+                            <p class="text-lg text-gray-600 mb-4">
+                                Türkiye'deki işletmelerin dijital dönüşüm süreçlerinde rehberlik ederek, 
+                                iş süreçlerini optimize eden, verimliliği artıran ve rekabet gücünü 
+                                güçlendiren yazılım çözümleri sunmak.
+                            </p>
+                            <p class="text-lg text-gray-600">
+                                Müşterilerimizin başarısını kendi başarımız olarak görüyor ve 
+                                sürdürülebilir çözümlerle uzun vadeli ortaklıklar kurmayı hedefliyoruz.
+                            </p>
+                        </div>
+
+                        <div class="bg-primary-50 p-8 rounded-lg">
+                            <h2 class="text-3xl font-bold text-gray-900 mb-6">Vizyonumuz</h2>
+                            <p class="text-lg text-gray-600 mb-4">
+                                Türkiye'nin kurumsal yazılım alanında lider şirketlerinden biri olmak 
+                                ve dijital dönüşümde referans noktası haline gelmek.
+                            </p>
+                            <p class="text-lg text-gray-600">
+                                Sürekli gelişim ve yenilikçi yaklaşımımızla sektörde standartları 
+                                belirleyen, müşteri memnuniyetinde öncü konumda olan bir organizasyon olmak.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-20 gradient-cta text-white">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl font-bold mb-4">Bizimle Çalışın</h2>
+                <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+                    15+ yıllık deneyimimizle dijital dönüşüm yolculuğunuzda yanınızdayız. 
+                    Gelin birlikte projelerinizi hayata geçirelim.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="demo-request.html" class="bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition">
+                        Demo Talep Edin
+                    </a>
+                    <a href="contact.html" class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-primary-600 transition">
+                        İletişime Geçin
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center mr-3">
+                            <span class="text-white font-bold text-xl">A</span>
+                        </div>
+                        <span class="text-xl font-bold">Algotrom</span>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Kurumsal yazılım çözümlerinde 15+ yıllık deneyimimizle dijital dönüşümünüzün güvenilir ortağı.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Hızlı Bağlantılar</h3>
+                    <ul class="space-y-3">
+                        <li><a href="about.html" class="text-gray-300 hover:text-white">Hakkımızda</a></li>
+                        <li><a href="solutions.html" class="text-gray-300 hover:text-white">Çözümlerimiz</a></li>
+                        <li><a href="sectors.html" class="text-gray-300 hover:text-white">Sektörler</a></li>
+                        <li><a href="references.html" class="text-gray-300 hover:text-white">Referanslar</a></li>
+                        <li><a href="blog.html" class="text-gray-300 hover:text-white">Blog</a></li>
+                        <li><a href="career.html" class="text-gray-300 hover:text-white">Kariyer</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Çözümler</h3>
+                    <ul class="space-y-3">
+                        <li><a href="eflow-bpm.html" class="text-gray-300 hover:text-white">e-Flow BPM</a></li>
+                        <li><a href="document-management.html" class="text-gray-300 hover:text-white">Döküman Yönetimi</a></li>
+                        <li><a href="integration.html" class="text-gray-300 hover:text-white">Entegrasyon</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">İletişim</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-primary-500 mt-1 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="text-gray-300">
+                                Barbaros Mah. Begonya Sok.<br>
+                                Nidakule Ataşehir Batı No: 1 İç Kapı No: 2<br>
+                                ATAŞEHİR / İSTANBUL
+                            </span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <span class="text-gray-300">+90 545 514 74 02</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <span class="text-gray-300">info@algotrom.com.tr</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400">© 2024 Algotrom. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
