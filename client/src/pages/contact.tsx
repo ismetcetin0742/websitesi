@@ -87,8 +87,7 @@ export default function Contact() {
       icon: Phone,
       title: 'Telefon',
       content: [
-        '+90 545 514 74 02',
-        '+90 212 XXX XX XX (Fax)'
+        '+90 545 514 74 02'
       ]
     },
     {
@@ -96,8 +95,7 @@ export default function Contact() {
       title: 'E-posta',
       content: [
         'info@algotrom.com.tr',
-        'destek@algotrom.com.tr',
-        'kariyer@algotrom.com.tr'
+        'destek@algotrom.com.tr'
       ]
     },
     {
@@ -304,21 +302,28 @@ export default function Contact() {
             <div>
               <Card className="h-full">
                 <CardContent className="p-0 h-full min-h-[600px]">
-                  <div className="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center">
-                    <div className="text-center p-8">
-                      <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                      <h4 className="text-lg font-semibold text-gray-700 mb-2">
-                        Google Maps Entegrasyonu
-                      </h4>
-                      <p className="text-gray-600 mb-4">
-                        Ofisimizin konumunu görmek için haritayı kullanın
-                      </p>
-                      <div className="text-sm text-gray-500">
-                        <p>Barbaros Mah. Begonya Sok.</p>
-                        <p>Nidakule Ataşehir Batı No: 1 İç Kapı No: 2</p>
-                        <p>ATAŞEHİR / İSTANBUL</p>
-                      </div>
-                    </div>
+                  <div className="w-full h-full rounded-lg overflow-hidden">
+                    <iframe 
+                      src="https://maps.google.com/maps?q=Barbaros+Mah.+Begonya+Sok.+Nidakule+Ata%C5%9Fehir+Bat%C4%B1+No:+1+%C4%B0%C3%A7+Kap%C4%B1+No:+2+ATA%C5%9EEH%C4%B0R+%C4%B0STANBUL&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                      width="100%" 
+                      height="100%" 
+                      style={{ border: 0, minHeight: '600px' }}
+                      allowFullScreen 
+                      loading="lazy" 
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Algotrom Ofis Konumu"
+                    />
+                  </div>
+                  <div className="p-6 text-center">
+                    <a 
+                      href="https://maps.app.goo.gl/agAi999NKUb6V9i57" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition"
+                    >
+                      <MapPin className="w-5 h-5 mr-2" />
+                      Google Maps'te Aç
+                    </a>
                   </div>
                 </CardContent>
               </Card>
