@@ -118,7 +118,7 @@ export default function Sectors() {
         'Tahminleme ve planlama algoritmaları'
       ],
       benefits: [
-        'Enerji verimliliğinde %25 artış',
+        'Enerji verimliliğinde %86 artış',
         'Operasyonel maliyetlerde %30 azalma',
         'Grid kararlılığında %40 iyileşme',
         'Sürdürülebilirlik skorunda %50 artış'
@@ -128,7 +128,7 @@ export default function Sectors() {
           company: 'Enerji A.Ş.',
           challenge: 'Rüzgar enerjisi üretim tahminlemesi ve grid entegrasyonu',
           solution: 'AI destekli tahminleme sistemi ve smart grid entegrasyonu',
-          result: '%35 üretim verimliliği artışı'
+          result: '%86 üretim verimliliği artışı'
         }
       ]
     },
@@ -156,7 +156,7 @@ export default function Sectors() {
         'Satış büyümesinde %40 artış',
         'Müşteri sadakatinde %55 iyileşme',
         'Stok maliyetlerinde %30 azalma',
-        'Operasyonel verimlilikte %35 artış'
+        'Operasyonel verimlilikte %86 artış'
       ],
       caseStudies: [
         {
