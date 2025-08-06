@@ -299,10 +299,6 @@ export default function Contact() {
                 answer: 'Evet, ürün demolarımız tamamen ücretsizdir. Uzmanlarımız size ürünlerimizi detaylı olarak tanıtır.'
               },
               {
-                question: 'Implementasyon süresi ne kadar?',
-                answer: 'Proje büyüklüğüne göre değişmekle birlikte, ortalama 4-12 hafta arasında tamamlanmaktadır.'
-              },
-              {
                 question: 'Teknik destek hizmeti var mı?',
                 answer: 'Evet, 7/24 teknik destek hizmeti sunuyoruz. Telefon, e-posta ve uzaktan erişim ile destek alabilirsiniz.'
               },
