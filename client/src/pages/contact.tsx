@@ -100,10 +100,9 @@ export default function Contact() {
       title: 'Çalışma Saatleri',
       content: [
         'Hafta İçi',
-        '09:00 - 18:00',
-        'Cumartesi',
-        '09:00 - 14:00',
-        'Pazar Kapalı'
+        '09:00 - 17:00',
+        'Hafta Sonu',
+        'Kapalı'
       ]
     }
   ];
