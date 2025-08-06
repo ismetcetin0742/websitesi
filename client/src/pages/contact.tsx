@@ -282,41 +282,7 @@ export default function Contact() {
 
 
 
-      {/* FAQ Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Sıkça Sorulan Sorular</h2>
-            <p className="text-lg text-gray-600">
-              En çok merak edilen konulara hızlı yanıtlar
-            </p>
-          </div>
 
-          <div className="max-w-3xl mx-auto space-y-6">
-            {[
-              {
-                question: 'Demo talep etmek ücretsiz mi?',
-                answer: 'Evet, ürün demolarımız tamamen ücretsizdir. Uzmanlarımız size ürünlerimizi detaylı olarak tanıtır.'
-              },
-              {
-                question: 'Teknik destek hizmeti var mı?',
-                answer: 'Evet, 7/24 teknik destek hizmeti sunuyoruz. Telefon, e-posta ve uzaktan erişim ile destek alabilirsiniz.'
-              },
-              {
-                question: 'Mevcut sistemlerimizle entegre olabilir mi?',
-                answer: 'Evet, çözümlerimiz mevcut ERP, CRM ve diğer sistemlerle sorunsuz entegre olabilir.'
-              }
-            ].map((faq, index) => (
-              <Card key={index} className="border-gray-100">
-                <CardContent className="p-6">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-3">{faq.question}</h4>
-                  <p className="text-gray-700">{faq.answer}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
