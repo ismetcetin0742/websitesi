@@ -140,7 +140,7 @@ export default function EFlowBPM() {
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6">Neden e-Flow BPM?</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6">Neden E-Flow BPM?</h3>
                   <div className="space-y-4">
                     {whyUs.map((reason, index) => (
                       <div key={index} className="flex items-start">
@@ -200,7 +200,7 @@ export default function EFlowBPM() {
       {/* CTA Section */}
       <section className="py-20 gradient-cta text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-4">e-Flow BPM ile Başlayın</h2>
+          <h2 className="text-4xl font-bold mb-4">E-Flow BPM ile Başlayın</h2>
           <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
             İş süreçlerinizi dijitalleştirin ve verimliliğinizi artırın. 
             Uzmanlarımızla konuşarak işletmenize özel çözümü keşfedin.

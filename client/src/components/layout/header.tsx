@@ -18,7 +18,7 @@ export function Header() {
       href: '/solutions', 
       label: t('nav.solutions', language),
       submenu: [
-        { href: '/solutions/eflow-bpm', label: 'e-Flow BPM' },
+        { href: '/solutions/eflow-bpm', label: 'E-Flow BPM' },
         { href: '/solutions/document-management', label: 'Döküman Yönetim Sistemi' },
         { href: '/solutions/integration', label: 'Entegrasyon Çözümleri' }
       ]
