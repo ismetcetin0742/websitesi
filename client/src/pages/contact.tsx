@@ -18,10 +18,7 @@ import {
   Mail,
   Clock,
   Send,
-  MessageSquare,
-  Headphones,
-  Users,
-  Building
+  MessageSquare
 } from 'lucide-react';
 
 const contactSchema = z.object({
@@ -109,30 +106,6 @@ export default function Contact() {
     }
   ];
 
-  const departments = [
-    {
-      icon: Users,
-      title: 'Satış Danışmanlığı',
-      description: 'Ürün ve çözümlerimiz hakkında bilgi almak için',
-      contact: 'satis@algotrom.com.tr',
-      phone: '+90 545 514 74 02'
-    },
-    {
-      icon: Headphones,
-      title: 'Teknik Destek',
-      description: 'Mevcut ürünlerinizle ilgili teknik destek için',
-      contact: 'destek@algotrom.com.tr',
-      phone: '+90 545 514 74 02'
-    },
-    {
-      icon: Building,
-      title: 'Kurumsal İşbirlikleri',
-      description: 'İş ortaklıkları ve kurumsal projeler için',
-      contact: 'kurumsal@algotrom.com.tr',
-      phone: '+90 545 514 74 02'
-    }
-  ];
-
   return (
     <div className="py-12">
       {/* Hero Section */}
@@ -174,32 +147,7 @@ export default function Contact() {
             })}
           </div>
 
-          {/* Departments */}
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Departmanlarımız</h2>
-            <p className="text-lg text-gray-600">İhtiyacınıza göre doğru departmanla iletişime geçin</p>
-          </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {departments.map((dept, index) => {
-              const Icon = dept.icon;
-              return (
-                <Card key={index} className="hover-lift border-gray-100">
-                  <CardContent className="p-8 text-center">
-                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <Icon className="w-8 h-8 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-3">{dept.title}</h3>
-                    <p className="text-gray-600 mb-4">{dept.description}</p>
-                    <div className="space-y-2 text-sm">
-                      <p className="font-medium text-primary">{dept.contact}</p>
-                      <p className="text-gray-600">{dept.phone}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
         </div>
       </section>
 
