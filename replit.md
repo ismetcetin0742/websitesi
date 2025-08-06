@@ -6,6 +6,14 @@ This is a full-stack corporate website for Algotrom, a Turkish software company 
 
 **Important Update (January 2025)**: The website has been exported as static HTML files for Turhost hosting. All essential pages have been converted to standalone HTML files using Tailwind CSS CDN, maintaining the original design and functionality while being optimized for static hosting environments.
 
+**Latest Updates (January 2025)**:
+- Implemented comprehensive CV upload system on career page with file restrictions (PDF, DOCX, DOC, TXT under 15MB)
+- Added LinkedIn integration to blog page for automatic post sharing
+- Updated management team: Yıldırım Özyakışır (Proje Yöneticisi), İsmet Çetin (Proje Yöneticisi), Sedef Nihal (Finans Yöneticisi)
+- Corrected all product names to "E-Flow BPM" and "E-Flow DMS - Döküman Yönetim Sistemi"
+- Updated efficiency rates to 86% across all industry solutions
+- Removed newsletter section from blog page and simplified references page structure
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
