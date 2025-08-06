@@ -1,13 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
-import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { DemoModal } from '@/components/demo-modal';
 import { useLanguage } from '@/components/language-provider';
 import { t } from '@/lib/i18n';
-import { BlogPost } from '@shared/schema';
 import {
   ChartGantt,
   FileText,
@@ -23,9 +20,7 @@ export default function Home() {
   const { language } = useLanguage();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
-  const { data: blogPosts, isLoading: blogLoading } = useQuery<BlogPost[]>({
-    queryKey: ['/api/blog'],
-  });
+
 
   const solutions = [
     {
@@ -189,83 +184,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Client Logos */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Güvenilen Çözüm Ortağınız</h2>
-            <p className="text-lg text-gray-600">Türkiye'nin önde gelen şirketleri bizimle çalışıyor</p>
-          </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center opacity-60">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <div key={index} className="flex items-center justify-center h-16 grayscale hover:grayscale-0 transition-all cursor-pointer">
-                <div className="bg-gray-200 h-12 w-24 rounded flex items-center justify-center text-xs text-gray-500">
-                  CLIENT LOGO
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Blog News */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Blog & Haberler</h2>
-            <p className="text-xl text-gray-600">Teknoloji dünyasından son gelişmeler ve uzman görüşleri</p>
-          </div>
 
-          {blogLoading ? (
-            <div className="text-center">
-              <p className="text-gray-600">{t('common.loading', language)}</p>
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {blogPosts?.slice(0, 3).map((post) => (
-                <Card key={post.id} className="hover-lift overflow-hidden">
-                  <div className="aspect-video">
-                    <img 
-                      src={post.image || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&h=600"} 
-                      alt="Blog post" 
-                      className="w-full h-full object-cover" 
-                    />
-                  </div>
-                  <CardContent className="p-6">
-                    <div className="flex items-center mb-3">
-                      <Badge variant="secondary">{post.category}</Badge>
-                      <span className="text-gray-500 text-sm ml-auto">
-                        {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('tr-TR') : ''}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-3 hover:text-primary transition-colors cursor-pointer">
-                      {typeof post.title === 'object' && post.title ? (post.title as any)[language] || (post.title as any).tr : post.title || ''}
-                    </h3>
-                    <p className="text-gray-600 mb-4">
-                      {typeof post.excerpt === 'object' && post.excerpt ? (post.excerpt as any)[language] || (post.excerpt as any).tr : post.excerpt || ''}
-                    </p>
-                    <Link 
-                      href={`/blog/${post.id}`}
-                      className="text-primary font-semibold hover:text-blue-700 transition-colors inline-flex items-center"
-                    >
-                      {t('common.readMore', language)} <ArrowRight className="w-4 h-4 ml-2" />
-                    </Link>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-
-          <div className="text-center mt-12">
-            <Button asChild>
-              <Link href="/blog">
-                Tüm Blog Yazıları
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
 
       {/* Contact CTA */}
       <section className="py-20 gradient-cta text-white">

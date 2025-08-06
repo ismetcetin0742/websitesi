@@ -13,6 +13,10 @@ This is a full-stack corporate website for Algotrom, a Turkish software company 
 - Corrected all product names to "E-Flow BPM" and "E-Flow DMS - Döküman Yönetim Sistemi"
 - Updated efficiency rates to 86% across all industry solutions
 - Removed newsletter section from blog page and simplified references page structure
+- Removed Ahmet Yılmaz from management team and replaced all team member photos with placeholder icons
+- Added English position titles under Turkish titles for management team
+- Removed company timeline/history section from about page
+- Removed blog haberler and güvenilen çözüm ortağınız sections from homepage
 
 ## User Preferences
 
