@@ -53,10 +53,12 @@ export default function AdminSolutions() {
 
   const handleSave = async (data: any) => {
     try {
+      const token = localStorage.getItem('adminToken');
       const response = await fetch(`/api/admin/solutions/${data.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });
@@ -69,12 +71,14 @@ export default function AdminSolutions() {
         // Update local data to reflect changes
         // In a real app, you would refetch the data or update the cache
       } else {
-        throw new Error('Güncelleme başarısız');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Güncelleme başarısız');
       }
     } catch (error) {
+      console.error('Update error:', error);
       toast({
         title: "Hata",
-        description: "Güncelleme sırasında bir hata oluştu.",
+        description: error instanceof Error ? error.message : "Güncelleme sırasında bir hata oluştu.",
         variant: "destructive",
       });
     }
