@@ -130,7 +130,7 @@ export default function AdminJobPositions() {
   };
 
   const getTypeLabel = (type: string) => {
-    const types = {
+    const types: Record<string, string> = {
       'full-time': 'Tam Zamanlı',
       'part-time': 'Yarı Zamanlı',
       'contract': 'Sözleşmeli',

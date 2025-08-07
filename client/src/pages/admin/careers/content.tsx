@@ -24,8 +24,10 @@ import {
   Target,
   Upload,
   Plus,
-  Trash2
+  Trash2,
+  ArrowLeft
 } from 'lucide-react';
+import { Link } from 'wouter';
 import type { CareerContent, CareerBenefit } from '@shared/schema';
 
 const contentUpdateSchema = z.object({
@@ -242,10 +244,20 @@ export default function CareerContentManagement() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Kariyer İçerik Yönetimi</h1>
-        <p className="text-gray-600 mt-2">
-          Kariyer sayfasının içeriklerini ve özelliklerini yönetin
-        </p>
+        <div className="flex items-center gap-4 mb-4">
+          <Link href="/admin/careers">
+            <Button variant="outline" size="sm">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Geri
+            </Button>
+          </Link>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Kariyer İçerik Yönetimi</h1>
+            <p className="text-gray-600 mt-2">
+              Kariyer sayfasının içeriklerini ve özelliklerini yönetin
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Career Content Sections */}
