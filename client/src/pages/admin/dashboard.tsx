@@ -80,6 +80,13 @@ export default function AdminDashboard() {
       color: "bg-pink-500",
     },
     {
+      title: "Şirket Değerleri",
+      description: "Müşteri Odaklılık, İnovasyon, Takım Çalışması vb.",
+      icon: <Target className="h-6 w-6" />,
+      href: "/admin/company-values",
+      color: "bg-emerald-500",
+    },
+    {
       title: "Çözümler",
       description: "E-Flow BPM ve DMS çözümlerini yönetin",
       icon: <Target className="h-6 w-6" />,

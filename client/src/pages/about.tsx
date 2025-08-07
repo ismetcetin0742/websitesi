@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/components/language-provider';
 import { t } from '@/lib/i18n';
 import { useQuery } from '@tanstack/react-query';
-import type { TeamMember, AboutContent } from '@shared/schema';
+import type { TeamMember, AboutContent, CompanyValue } from '@shared/schema';
 import {
   Target,
   Eye,
@@ -27,34 +27,29 @@ export default function About() {
     queryKey: ['/api/about-content'],
   });
 
+  // Fetch company values from API
+  const { data: companyValues = [], isLoading: valuesLoading } = useQuery<CompanyValue[]>({
+    queryKey: ['/api/company-values'],
+  });
+
   // Helper function to get content by section
   const getContentBySection = (section: string) => {
     return aboutContent.find(content => content.section === section);
   };
 
-  // Get dynamic values from content or use default structure
-  const valuesContent = getContentBySection('values')?.content || 'Müşteri Odaklılık, İnovasyon, Takım Çalışması, Kalite, Sürdürülebilirlik';
-  
-  // Extract the pure value names from the content (remove any descriptive text)
-  const valuesList = valuesContent.split(/[,،]/g).map(v => v.trim().replace(/temel değerlerimizdir?/gi, '').trim()).filter(v => v.length > 0);
-  
-  const defaultDescriptions = [
-    'Müşterilerimizin başarısını kendi başarımız olarak görür, onların hedeflerine ulaşması için çalışırız.',
-    'Sürekli gelişim ve yenilik anlayışıyla teknolojinin son trendlerini takip ederiz.',
-    'Güçlü ekip ruhu ile birlikte çalışarak en iyi sonuçları elde ederiz.',
-    'Yüksek kalite standartlarında hizmet sunarak müşteri memnuniyetini önceliklendiririz.',
-    'Çevreye duyarlı, sürdürülebilir teknoloji çözümleri geliştiririz.'
-  ];
+  // Get icon component by name
+  const getIconComponent = (iconName: string) => {
+    switch (iconName) {
+      case 'Target': return Target;
+      case 'Lightbulb': return Lightbulb;
+      case 'Users': return Users;
+      case 'Award': return Award;
+      case 'Globe': return Globe;
+      default: return Target;
+    }
+  };
 
-  const icons = [Target, Lightbulb, Users, Award, Globe];
-  
-  const values = valuesList.slice(0, 5).map((title, index) => ({
-    icon: icons[index] || Target,
-    title: title,
-    description: defaultDescriptions[index] || 'Bu değer bizim için önemlidir.'
-  }));
-
-  if (contentLoading) {
+  if (contentLoading || valuesLoading) {
     return (
       <div className="py-12">
         <div className="container mx-auto px-4">
@@ -176,10 +171,10 @@ export default function About() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {values.map((value, index) => {
-              const Icon = value.icon;
+            {companyValues.map((value) => {
+              const Icon = getIconComponent(value.iconName);
               return (
-                <Card key={index} className="hover-lift border-gray-100">
+                <Card key={value.id} className="hover-lift border-gray-100">
                   <CardContent className="p-8 text-center">
                     <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                       <Icon className="w-8 h-8 text-primary" />

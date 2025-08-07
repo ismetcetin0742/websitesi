@@ -151,6 +151,24 @@ export const insertSectorSchema = createInsertSchema(sectors).omit({
   createdAt: true,
 });
 
+// Company Values Table
+export const companyValues = pgTable("company_values", {
+  id: text("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  iconName: text("icon_name").notNull(),
+  displayOrder: integer("display_order").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertCompanyValueSchema = createInsertSchema(companyValues).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -191,3 +209,5 @@ export const insertAboutContentSchema = createInsertSchema(aboutContent).omit({
 
 export type AboutContent = typeof aboutContent.$inferSelect;
 export type InsertAboutContent = z.infer<typeof insertAboutContentSchema>;
+export type CompanyValue = typeof companyValues.$inferSelect;
+export type InsertCompanyValue = z.infer<typeof insertCompanyValueSchema>;

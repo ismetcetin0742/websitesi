@@ -10,7 +10,10 @@ import {
   type JobApplication,
   type InsertJobApplication,
   type TeamMember,
-  type InsertTeamMember
+  type InsertTeamMember,
+  type AboutContent,
+  type CompanyValue,
+  type InsertCompanyValue
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -40,6 +43,12 @@ export interface IStorage {
   
   getAboutContent(): Promise<AboutContent[]>;
   updateAboutContent(section: string, updates: { title: string; content: string }): Promise<AboutContent>;
+  
+  getCompanyValues(): Promise<CompanyValue[]>;
+  getCompanyValue(id: string): Promise<CompanyValue | undefined>;
+  updateCompanyValue(id: string, data: Partial<CompanyValue>): Promise<CompanyValue>;
+  createCompanyValue(data: InsertCompanyValue): Promise<CompanyValue>;
+  deleteCompanyValue(id: string): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -50,6 +59,7 @@ export class MemStorage implements IStorage {
   private jobApplications: Map<string, JobApplication>;
   private teamMembers: Map<string, TeamMember>;
   private aboutContent: Map<string, AboutContent>;
+  private companyValues: Map<string, CompanyValue>;
 
   constructor() {
     this.users = new Map();
@@ -59,11 +69,13 @@ export class MemStorage implements IStorage {
     this.jobApplications = new Map();
     this.teamMembers = new Map();
     this.aboutContent = new Map();
+    this.companyValues = new Map();
     
     // Initialize with sample data
     this.initializeBlogPosts();
     this.initializeTeamMembers();
     this.initializeAboutContent();
+    this.initializeCompanyValues();
   }
 
   private initializeBlogPosts() {
@@ -420,6 +432,107 @@ export class MemStorage implements IStorage {
       this.aboutContent.set(section, newContent);
       return newContent;
     }
+  }
+
+  private initializeCompanyValues() {
+    const defaultValues: CompanyValue[] = [
+      {
+        id: "1",
+        title: "Müşteri Odaklılık",
+        description: "Müşterilerimizin başarısını kendi başarımız olarak görür, onların hedeflerine ulaşması için çalışırız.",
+        iconName: "Target",
+        displayOrder: 1,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: "2", 
+        title: "İnovasyon",
+        description: "Sürekli gelişim ve yenilik anlayışıyla teknolojinin son trendlerini takip ederiz.",
+        iconName: "Lightbulb",
+        displayOrder: 2,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: "3",
+        title: "Takım Çalışması", 
+        description: "Güçlü ekip ruhu ile birlikte çalışarak en iyi sonuçları elde ederiz.",
+        iconName: "Users",
+        displayOrder: 3,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: "4",
+        title: "Kalite",
+        description: "Yüksek kalite standartlarında hizmet sunarak müşteri memnuniyetini önceliklendiririz.",
+        iconName: "Award",
+        displayOrder: 4,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: "5",
+        title: "Sürdürülebilirlik", 
+        description: "Çevreye duyarlı, sürdürülebilir teknoloji çözümleri geliştiririz.",
+        iconName: "Globe",
+        displayOrder: 5,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+    ];
+
+    defaultValues.forEach(value => {
+      this.companyValues.set(value.id, value);
+    });
+  }
+
+  async getCompanyValues(): Promise<CompanyValue[]> {
+    return Array.from(this.companyValues.values())
+      .filter(value => value.isActive)
+      .sort((a, b) => a.displayOrder - b.displayOrder);
+  }
+
+  async getCompanyValue(id: string): Promise<CompanyValue | undefined> {
+    return this.companyValues.get(id);
+  }
+
+  async updateCompanyValue(id: string, data: Partial<CompanyValue>): Promise<CompanyValue> {
+    const existing = this.companyValues.get(id);
+    if (!existing) {
+      throw new Error("Company value not found");
+    }
+    
+    const updated = {
+      ...existing,
+      ...data,
+      updatedAt: new Date()
+    };
+    this.companyValues.set(id, updated);
+    return updated;
+  }
+
+  async createCompanyValue(data: InsertCompanyValue): Promise<CompanyValue> {
+    const newValue: CompanyValue = {
+      id: randomUUID(),
+      ...data,
+      displayOrder: data.displayOrder || Array.from(this.companyValues.values()).length + 1,
+      isActive: data.isActive !== undefined ? data.isActive : true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.companyValues.set(newValue.id, newValue);
+    return newValue;
+  }
+
+  async deleteCompanyValue(id: string): Promise<void> {
+    this.companyValues.delete(id);
   }
 }
 

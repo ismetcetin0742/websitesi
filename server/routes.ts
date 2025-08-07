@@ -174,6 +174,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Company Values endpoints
+  app.get('/api/company-values', async (req, res) => {
+    try {
+      const values = await storage.getCompanyValues();
+      res.json(values);
+    } catch (error) {
+      console.error('Error fetching company values:', error);
+      res.status(500).json({ message: 'Failed to fetch company values' });
+    }
+  });
+
+  app.get('/api/admin/company-values', authenticateAdmin, async (req, res) => {
+    try {
+      const values = await storage.getCompanyValues();
+      res.json(values);
+    } catch (error) {
+      console.error('Error fetching company values:', error);
+      res.status(500).json({ message: 'Failed to fetch company values' });
+    }
+  });
+
+  app.put('/api/admin/company-values/:id', authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+      
+      const updatedValue = await storage.updateCompanyValue(id, updateData);
+      res.json({ success: true, data: updatedValue });
+    } catch (error) {
+      console.error('Error updating company value:', error);
+      res.status(500).json({ message: 'Failed to update company value' });
+    }
+  });
+
+  app.post('/api/admin/company-values', authenticateAdmin, async (req, res) => {
+    try {
+      const newValue = await storage.createCompanyValue(req.body);
+      res.json({ success: true, data: newValue });
+    } catch (error) {
+      console.error('Error creating company value:', error);
+      res.status(500).json({ message: 'Failed to create company value' });
+    }
+  });
+
+  app.delete('/api/admin/company-values/:id', authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteCompanyValue(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error deleting company value:', error);
+      res.status(500).json({ message: 'Failed to delete company value' });
+    }
+  });
+
   // Single blog post endpoint
   app.get("/api/blog/:id", async (req, res) => {
     try {
