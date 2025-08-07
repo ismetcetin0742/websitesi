@@ -66,25 +66,11 @@ export default function AdminDashboard() {
       color: "bg-green-500",
     },
     {
-      title: "Takım Üyeleri",
-      description: "Ekip üyelerini yönetin ve güncelleyin",
+      title: "Hakkımızda Yönetimi",
+      description: "Tüm hakkımızda bölümlerini tek yerden yönetin",
       icon: <Users className="h-6 w-6" />,
-      href: "/admin/team",
+      href: "/admin/about",
       color: "bg-purple-500",
-    },
-    {
-      title: "Hakkımızda İçerik",
-      description: "Hakkımızda, Misyon, Vizyon, Değerler",
-      icon: <FileText className="h-6 w-6" />,
-      href: "/admin/about-content",
-      color: "bg-pink-500",
-    },
-    {
-      title: "Şirket Değerleri",
-      description: "Müşteri Odaklılık, İnovasyon, Takım Çalışması vb.",
-      icon: <Target className="h-6 w-6" />,
-      href: "/admin/company-values",
-      color: "bg-emerald-500",
     },
     {
       title: "Çözümler",

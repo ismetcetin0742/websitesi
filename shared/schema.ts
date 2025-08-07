@@ -211,3 +211,23 @@ export type AboutContent = typeof aboutContent.$inferSelect;
 export type InsertAboutContent = z.infer<typeof insertAboutContentSchema>;
 export type CompanyValue = typeof companyValues.$inferSelect;
 export type InsertCompanyValue = z.infer<typeof insertCompanyValueSchema>;
+
+// Company Stats schema
+export const companyStats = pgTable("company_stats", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  experienceYears: integer("experience_years").notNull().default(15),
+  completedProjects: integer("completed_projects").notNull().default(500),
+  happyCustomers: integer("happy_customers").notNull().default(100),
+  teamSize: integer("team_size").notNull().default(50),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertCompanyStatsSchema = createInsertSchema(companyStats).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type CompanyStats = typeof companyStats.$inferSelect;
+export type InsertCompanyStats = z.infer<typeof insertCompanyStatsSchema>;

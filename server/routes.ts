@@ -229,6 +229,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Company Stats endpoints
+  app.get('/api/company-stats', async (req, res) => {
+    try {
+      const stats = await storage.getCompanyStats();
+      res.json(stats);
+    } catch (error) {
+      console.error('Error fetching company stats:', error);
+      res.status(500).json({ message: 'Failed to fetch company stats' });
+    }
+  });
+
+  app.get('/api/admin/company-stats', authenticateAdmin, async (req, res) => {
+    try {
+      const stats = await storage.getCompanyStats();
+      res.json(stats);
+    } catch (error) {
+      console.error('Error fetching company stats:', error);
+      res.status(500).json({ message: 'Failed to fetch company stats' });
+    }
+  });
+
+  app.put('/api/admin/company-stats', authenticateAdmin, async (req, res) => {
+    try {
+      const updateData = req.body;
+      const updatedStats = await storage.updateCompanyStats(updateData);
+      res.json({ success: true, data: updatedStats });
+    } catch (error) {
+      console.error('Error updating company stats:', error);
+      res.status(500).json({ message: 'Failed to update company stats' });
+    }
+  });
+
   // Single blog post endpoint
   app.get("/api/blog/:id", async (req, res) => {
     try {

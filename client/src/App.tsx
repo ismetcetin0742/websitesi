@@ -25,9 +25,12 @@ import AdminContacts from "@/pages/admin/contacts";
 import AdminDemos from "@/pages/admin/demos";
 import AdminApplications from "@/pages/admin/applications";
 import AdminBlog from "@/pages/admin/blog";
-import AdminTeam from "@/pages/admin/team";
-import AdminAboutContent from "@/pages/admin/about-content";
-import AdminCompanyValues from "@/pages/admin/company-values";
+
+import AboutManagement from "@/pages/admin/about/index";
+import AdminAboutContent from "@/pages/admin/about/content";
+import AdminCompanyValues from "@/pages/admin/about/values";
+import AdminTeamPage from "@/pages/admin/about/team";
+import AdminAboutStats from "@/pages/admin/about/stats";
 import AdminSolutions from "@/pages/admin/solutions";
 import AdminSectors from "@/pages/admin/sectors";
 import AdminContent from "@/pages/admin/content";
@@ -65,19 +68,29 @@ function Router() {
             <AdminBlog />
           </AdminLayout>
         </Route>
-        <Route path="/admin/team">
+        <Route path="/admin/about">
           <AdminLayout>
-            <AdminTeam />
+            <AboutManagement />
           </AdminLayout>
         </Route>
-        <Route path="/admin/about-content">
+        <Route path="/admin/about/content">
           <AdminLayout>
             <AdminAboutContent />
           </AdminLayout>
         </Route>
-        <Route path="/admin/company-values">
+        <Route path="/admin/about/values">
           <AdminLayout>
             <AdminCompanyValues />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/about/team">
+          <AdminLayout>
+            <AdminTeamPage />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/about/stats">
+          <AdminLayout>
+            <AdminAboutStats />
           </AdminLayout>
         </Route>
         <Route path="/admin/solutions">

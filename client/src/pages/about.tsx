@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/components/language-provider';
 import { t } from '@/lib/i18n';
 import { useQuery } from '@tanstack/react-query';
-import type { TeamMember, AboutContent, CompanyValue } from '@shared/schema';
+import type { TeamMember, AboutContent, CompanyValue, CompanyStats } from '@shared/schema';
 import {
   Target,
   Eye,
@@ -32,6 +32,11 @@ export default function About() {
     queryKey: ['/api/company-values'],
   });
 
+  // Fetch company stats from API
+  const { data: companyStats, isLoading: statsLoading } = useQuery<CompanyStats>({
+    queryKey: ['/api/company-stats'],
+  });
+
   // Helper function to get content by section
   const getContentBySection = (section: string) => {
     return aboutContent.find(content => content.section === section);
@@ -49,7 +54,7 @@ export default function About() {
     }
   };
 
-  if (contentLoading || valuesLoading) {
+  if (contentLoading || valuesLoading || statsLoading) {
     return (
       <div className="py-12">
         <div className="container mx-auto px-4">
@@ -194,19 +199,19 @@ export default function About() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-5xl font-bold mb-2">15+</div>
+              <div className="text-5xl font-bold mb-2">{companyStats?.experienceYears || 15}+</div>
               <div className="text-xl opacity-90">Yıl Deneyim</div>
             </div>
             <div>
-              <div className="text-5xl font-bold mb-2">500+</div>
+              <div className="text-5xl font-bold mb-2">{companyStats?.completedProjects || 500}+</div>
               <div className="text-xl opacity-90">Başarılı Proje</div>
             </div>
             <div>
-              <div className="text-5xl font-bold mb-2">100+</div>
+              <div className="text-5xl font-bold mb-2">{companyStats?.happyCustomers || 100}+</div>
               <div className="text-xl opacity-90">Mutlu Müşteri</div>
             </div>
             <div>
-              <div className="text-5xl font-bold mb-2">50+</div>
+              <div className="text-5xl font-bold mb-2">{companyStats?.teamSize || 50}+</div>
               <div className="text-xl opacity-90">Uzman Takım</div>
             </div>
           </div>

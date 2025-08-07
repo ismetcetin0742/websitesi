@@ -13,7 +13,9 @@ import {
   type InsertTeamMember,
   type AboutContent,
   type CompanyValue,
-  type InsertCompanyValue
+  type InsertCompanyValue,
+  type CompanyStats,
+  type InsertCompanyStats
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -49,6 +51,9 @@ export interface IStorage {
   updateCompanyValue(id: string, data: Partial<CompanyValue>): Promise<CompanyValue>;
   createCompanyValue(data: InsertCompanyValue): Promise<CompanyValue>;
   deleteCompanyValue(id: string): Promise<void>;
+  
+  getCompanyStats(): Promise<CompanyStats | undefined>;
+  updateCompanyStats(data: Partial<CompanyStats>): Promise<CompanyStats>;
 }
 
 export class MemStorage implements IStorage {
@@ -60,6 +65,7 @@ export class MemStorage implements IStorage {
   private teamMembers: Map<string, TeamMember>;
   private aboutContent: Map<string, AboutContent>;
   private companyValues: Map<string, CompanyValue>;
+  private companyStats: CompanyStats | null;
 
   constructor() {
     this.users = new Map();
@@ -70,12 +76,14 @@ export class MemStorage implements IStorage {
     this.teamMembers = new Map();
     this.aboutContent = new Map();
     this.companyValues = new Map();
+    this.companyStats = null;
     
     // Initialize with sample data
     this.initializeBlogPosts();
     this.initializeTeamMembers();
     this.initializeAboutContent();
     this.initializeCompanyValues();
+    this.initializeCompanyStats();
   }
 
   private initializeBlogPosts() {
@@ -533,6 +541,43 @@ export class MemStorage implements IStorage {
 
   async deleteCompanyValue(id: string): Promise<void> {
     this.companyValues.delete(id);
+  }
+
+  private initializeCompanyStats() {
+    this.companyStats = {
+      id: "1",
+      experienceYears: 15,
+      completedProjects: 500,
+      happyCustomers: 100,
+      teamSize: 50,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+  }
+
+  async getCompanyStats(): Promise<CompanyStats | undefined> {
+    return this.companyStats || undefined;
+  }
+
+  async updateCompanyStats(data: Partial<CompanyStats>): Promise<CompanyStats> {
+    if (!this.companyStats) {
+      this.companyStats = {
+        id: "1",
+        experienceYears: data.experienceYears || 15,
+        completedProjects: data.completedProjects || 500,
+        happyCustomers: data.happyCustomers || 100,
+        teamSize: data.teamSize || 50,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+    } else {
+      this.companyStats = {
+        ...this.companyStats,
+        ...data,
+        updatedAt: new Date()
+      };
+    }
+    return this.companyStats;
   }
 }
 
