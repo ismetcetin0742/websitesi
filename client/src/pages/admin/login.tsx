@@ -32,19 +32,32 @@ export default function AdminLogin() {
 
   const loginMutation = useMutation({
     mutationFn: async (data: LoginForm) => {
-      const response = await apiRequest("/api/admin/login", {
+      console.log('Attempting login with:', data);
+      const response = await fetch("/api/admin/login", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
       });
-      return response;
+      
+      console.log('Login response status:', response.status);
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Giriş başarısız");
+      }
+      
+      return response.json();
     },
     onSuccess: (data) => {
-      console.log('Login successful, setting token:', data.token);
+      console.log('Login successful, received data:', data);
       localStorage.setItem("adminToken", data.token);
       localStorage.setItem("adminUser", JSON.stringify(data.user));
       navigate("/admin/dashboard");
     },
     onError: (error: Error) => {
+      console.error('Login error:', error);
       setError(error.message || "Giriş başarısız. Lütfen bilgilerinizi kontrol edin.");
     },
   });
