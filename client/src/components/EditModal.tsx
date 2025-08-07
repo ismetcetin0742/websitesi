@@ -15,13 +15,15 @@ interface EditModalProps {
   fields: Array<{
     key: string;
     label: string;
-    type: 'text' | 'textarea' | 'email' | 'number';
+    type: 'text' | 'textarea' | 'email' | 'number' | 'file';
     required?: boolean;
+    accept?: string;
   }>;
 }
 
 export function EditModal({ isOpen, onClose, title, data, onSave, fields }: EditModalProps) {
   const [formData, setFormData] = useState(data);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   // Update form data when data prop changes
   useEffect(() => {
@@ -38,6 +40,23 @@ export function EditModal({ isOpen, onClose, title, data, onSave, fields }: Edit
       ...prev,
       [key]: value
     }));
+  };
+
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const result = event.target?.result as string;
+        setImagePreview(result);
+        setFormData(prev => ({
+          ...prev,
+          image: result
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   // Helper function to extract string value from potentially multilingual content
@@ -82,6 +101,24 @@ export function EditModal({ isOpen, onClose, title, data, onSave, fields }: Edit
                   rows={4}
                   className="resize-none"
                 />
+              ) : field.type === 'file' ? (
+                <div className="space-y-2">
+                  <Input
+                    id={field.key}
+                    type="file"
+                    accept={field.accept || "image/*"}
+                    onChange={handleImageSelect}
+                  />
+                  {(imagePreview || formData.image) && (
+                    <div className="mt-2">
+                      <img
+                        src={imagePreview || formData.image}
+                        alt="Görsel önizleme"
+                        className="max-w-xs h-32 object-cover rounded border"
+                      />
+                    </div>
+                  )}
+                </div>
               ) : (
                 <Input
                   id={field.key}

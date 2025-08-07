@@ -34,10 +34,35 @@ export default function AdminBlogPosts() {
 
   const handleSave = async (data: any) => {
     try {
-      await apiRequest(`/api/admin/blog/${data.id}`, {
+      console.log('Sending blog update data:', data);
+      
+      // Clean the data to ensure proper serialization
+      const cleanData = {
+        id: data.id,
+        title: data.title,
+        content: data.content,
+        excerpt: data.excerpt,
+        category: data.category,
+        image: data.image
+      };
+      
+      const response = await fetch(`/api/admin/blog/${data.id}`, {
         method: 'PUT',
-        body: data,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
+        },
+        body: JSON.stringify(cleanData),
       });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Server response:', errorText);
+        throw new Error(`Server error: ${response.status} - ${errorText}`);
+      }
+
+      const result = await response.json();
+      console.log('Update result:', result);
 
       queryClient.invalidateQueries({ queryKey: ["/api/blog"] });
       setEditModalOpen(false);
@@ -69,6 +94,7 @@ export default function AdminBlogPosts() {
     { key: 'category', label: 'Kategori', type: 'text' as const, required: true },
     { key: 'excerpt', label: 'Özet', type: 'textarea' as const },
     { key: 'content', label: 'İçerik', type: 'textarea' as const, required: true },
+    { key: 'image', label: 'Blog Görseli', type: 'file' as const, accept: 'image/*' },
   ];
 
   if (isLoading) {

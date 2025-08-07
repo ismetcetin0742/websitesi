@@ -557,15 +557,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/admin/blog/:id", authenticateAdmin, async (req, res) => {
     try {
       const { id } = req.params;
-      const updateData = req.body;
+      let updateData = req.body;
       
-      // Here you would update the blog post in database
-      // const updatedPost = await storage.updateBlogPost(id, updateData);
+      console.log("Blog update request - ID:", id);
+      console.log("Blog update request - Data:", updateData);
       
-      res.json({ success: true, message: "Blog yazısı güncellendi" });
+      // Convert multilingual fields if they're strings to objects
+      if (typeof updateData.title === 'string') {
+        updateData.title = { tr: updateData.title };
+      }
+      if (typeof updateData.content === 'string') {
+        updateData.content = { tr: updateData.content };
+      }
+      if (typeof updateData.excerpt === 'string') {
+        updateData.excerpt = { tr: updateData.excerpt };
+      }
+      
+      const updatedPost = await storage.updateBlogPost(id, updateData);
+      
+      res.json({ success: true, message: "Blog yazısı güncellendi", data: updatedPost });
     } catch (error) {
       console.error("Error updating blog post:", error);
-      res.status(500).json({ error: "Güncelleme başarısız" });
+      res.status(500).json({ error: "Güncelleme başarısız: " + (error instanceof Error ? error.message : "Bilinmeyen hata") });
     }
   });
 

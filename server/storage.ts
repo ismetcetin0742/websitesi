@@ -392,6 +392,23 @@ export class MemStorage implements IStorage {
     return blogPost;
   }
 
+  async updateBlogPost(id: string, data: Partial<BlogPost>): Promise<BlogPost> {
+    const existingPost = this.blogPosts.get(id);
+    if (!existingPost) {
+      throw new Error('Blog post not found');
+    }
+    
+    const updatedPost: BlogPost = {
+      ...existingPost,
+      ...data,
+      id: existingPost.id, // Keep original ID
+      publishedAt: existingPost.publishedAt // Keep original publish date
+    };
+    
+    this.blogPosts.set(id, updatedPost);
+    return updatedPost;
+  }
+
   async createJobApplication(application: InsertJobApplication): Promise<JobApplication> {
     const id = randomUUID();
     const jobApplication: JobApplication = { 
