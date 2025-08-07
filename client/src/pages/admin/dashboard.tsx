@@ -53,18 +53,11 @@ export default function AdminDashboard() {
 
   const adminSections = [
     {
-      title: "Site İçerikleri",
-      description: "Ana sayfa, hakkımızda ve diğer sayfa içeriklerini düzenleyin",
-      icon: <Globe className="h-6 w-6" />,
-      href: "/admin/content",
-      color: "bg-blue-500",
-    },
-    {
-      title: "Blog Yazıları",
-      description: "Blog yazılarını yönetin ve yeni yazılar ekleyin",
-      icon: <FileText className="h-6 w-6" />,
-      href: "/admin/blog",
-      color: "bg-green-500",
+      title: "Ana Sayfa Yönetimi",
+      description: "Ana sayfa bileşenleri ve istatistikler",
+      icon: <Home className="h-6 w-6" />,
+      href: "/admin/homepage",
+      color: "bg-indigo-500",
     },
     {
       title: "Hakkımızda Yönetimi",
@@ -81,11 +74,18 @@ export default function AdminDashboard() {
       color: "bg-orange-500",
     },
     {
-      title: "Ana Sayfa Yönetimi",
-      description: "Ana sayfa bileşenleri ve istatistikler",
-      icon: <Home className="h-6 w-6" />,
-      href: "/admin/homepage",
+      title: "Site İçerikleri",
+      description: "Ana sayfa, hakkımızda ve diğer sayfa içeriklerini düzenleyin",
+      icon: <Globe className="h-6 w-6" />,
+      href: "/admin/content",
       color: "bg-blue-500",
+    },
+    {
+      title: "Blog Yazıları",
+      description: "Blog yazılarını yönetin ve yeni yazılar ekleyin",
+      icon: <FileText className="h-6 w-6" />,
+      href: "/admin/blog",
+      color: "bg-green-500",
     },
     {
       title: "Çözümler",
