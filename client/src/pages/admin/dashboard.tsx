@@ -73,6 +73,13 @@ export default function AdminDashboard() {
       color: "bg-purple-500",
     },
     {
+      title: "Hakkımızda İçerik",
+      description: "Hakkımızda, Misyon, Vizyon, Değerler",
+      icon: <FileText className="h-6 w-6" />,
+      href: "/admin/about-content",
+      color: "bg-pink-500",
+    },
+    {
       title: "Çözümler",
       description: "E-Flow BPM ve DMS çözümlerini yönetin",
       icon: <Target className="h-6 w-6" />,

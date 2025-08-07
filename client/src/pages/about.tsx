@@ -109,7 +109,7 @@ export default function About() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Yönetim Ekibi (Dinamik)</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Yönetim Ekibi</h2>
             <p className="text-xl text-gray-600">Deneyimli ve uzman kadromuzla tanışın</p>
           </div>
 
