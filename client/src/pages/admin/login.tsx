@@ -26,7 +26,7 @@ export default function AdminLogin() {
     resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "admin",
-      password: "admin123",
+      password: "a123",
     },
   });
 
