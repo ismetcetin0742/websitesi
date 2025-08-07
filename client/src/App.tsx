@@ -19,6 +19,7 @@ import Contact from "@/pages/contact";
 import DemoRequest from "@/pages/demo-request";
 import NotFound from "@/pages/not-found";
 import AdminLogin from "@/pages/admin/login";
+import TestLogin from "@/pages/admin/test-login";
 import AdminDashboard from "@/pages/admin/dashboard";
 import AdminContacts from "@/pages/admin/contacts";
 import AdminDemos from "@/pages/admin/demos";
@@ -36,6 +37,7 @@ function Router() {
       <Switch>
         {/* Admin Routes */}
         <Route path="/admin/login" component={AdminLogin} />
+        <Route path="/admin/test-login" component={TestLogin} />
         <Route path="/admin/dashboard">
           <AdminLayout>
             <AdminDashboard />

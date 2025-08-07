@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+// import { apiRequest } from "@/lib/queryClient";
 import { useLocation } from "wouter";
 
 const loginSchema = z.object({
@@ -54,7 +54,10 @@ export default function AdminLogin() {
       console.log('Login successful, received data:', data);
       localStorage.setItem("adminToken", data.token);
       localStorage.setItem("adminUser", JSON.stringify(data.user));
-      navigate("/admin/dashboard");
+      console.log('Navigating to dashboard...');
+      setTimeout(() => {
+        window.location.href = "/admin/dashboard";
+      }, 100);
     },
     onError: (error: Error) => {
       console.error('Login error:', error);
@@ -63,6 +66,7 @@ export default function AdminLogin() {
   });
 
   const onSubmit = (data: LoginForm) => {
+    console.log('Form submitted with data:', data);
     setError(null);
     loginMutation.mutate(data);
   };
