@@ -60,6 +60,13 @@ export default function AdminDashboard() {
       color: "bg-purple-500",
     },
     {
+      title: "Blog Yönetimi",
+      description: "Blog yazıları, yeni içerik oluşturma ve blog ayarları",
+      icon: <FileText className="h-6 w-6" />,
+      href: "/admin/blog",
+      color: "bg-blue-500",
+    },
+    {
       title: "Referanslar Yönetimi",
       description: "Referanslar, partner logoları, projeler ve ana sayfa istatistikleri",
       icon: <Building className="h-6 w-6" />,

@@ -24,7 +24,10 @@ import AdminDashboard from "@/pages/admin/dashboard";
 import AdminContacts from "@/pages/admin/contacts";
 import AdminDemos from "@/pages/admin/demos";
 import AdminApplications from "@/pages/admin/applications";
-import AdminBlog from "@/pages/admin/blog";
+import BlogManagement from "@/pages/admin/blog/index";
+import AdminBlogPosts from "@/pages/admin/blog/posts";
+import CreateBlogPost from "@/pages/admin/blog/create";
+import BlogSettings from "@/pages/admin/blog/settings";
 
 import AboutManagement from "@/pages/admin/about/index";
 import AdminAboutContent from "@/pages/admin/about/content";
@@ -71,7 +74,22 @@ function Router() {
         </Route>
         <Route path="/admin/blog">
           <AdminLayout>
-            <AdminBlog />
+            <BlogManagement />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/blog/posts">
+          <AdminLayout>
+            <AdminBlogPosts />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/blog/create">
+          <AdminLayout>
+            <CreateBlogPost />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/blog/settings">
+          <AdminLayout>
+            <BlogSettings />
           </AdminLayout>
         </Route>
         <Route path="/admin/about">
