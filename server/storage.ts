@@ -8,7 +8,9 @@ import {
   type BlogPost,
   type InsertBlogPost,
   type JobApplication,
-  type InsertJobApplication
+  type InsertJobApplication,
+  type TeamMember,
+  type InsertTeamMember
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -29,6 +31,12 @@ export interface IStorage {
   
   createJobApplication(application: InsertJobApplication): Promise<JobApplication>;
   getJobApplications(): Promise<JobApplication[]>;
+  
+  getTeamMembers(): Promise<TeamMember[]>;
+  getTeamMember(id: string): Promise<TeamMember | undefined>;
+  updateTeamMember(id: string, data: Partial<TeamMember>): Promise<TeamMember>;
+  createTeamMember(data: InsertTeamMember): Promise<TeamMember>;
+  deleteTeamMember(id: string): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -37,6 +45,7 @@ export class MemStorage implements IStorage {
   private contactMessages: Map<string, ContactMessage>;
   private blogPosts: Map<string, BlogPost>;
   private jobApplications: Map<string, JobApplication>;
+  private teamMembers: Map<string, TeamMember>;
 
   constructor() {
     this.users = new Map();
@@ -44,9 +53,11 @@ export class MemStorage implements IStorage {
     this.contactMessages = new Map();
     this.blogPosts = new Map();
     this.jobApplications = new Map();
+    this.teamMembers = new Map();
     
-    // Initialize with sample blog posts
+    // Initialize with sample data
     this.initializeBlogPosts();
+    this.initializeTeamMembers();
   }
 
   private initializeBlogPosts() {
@@ -148,6 +159,57 @@ export class MemStorage implements IStorage {
     });
   }
 
+  private initializeTeamMembers() {
+    const teamData: TeamMember[] = [
+      {
+        id: "1",
+        name: "Yıldırım Özyakışır",
+        position: "Proje Yöneticisi",
+        positionEn: "Project Manager",
+        department: "Yönetim",
+        email: "yildirim@algotrom.com.tr",
+        phone: null,
+        image: null,
+        bio: null,
+        displayOrder: 1,
+        isActive: true,
+        createdAt: new Date()
+      },
+      {
+        id: "2",
+        name: "İsmet Çetin",
+        position: "Proje Yöneticisi",
+        positionEn: "Project Manager",
+        department: "Yönetim",
+        email: "ismet@algotrom.com.tr",
+        phone: null,
+        image: null,
+        bio: null,
+        displayOrder: 2,
+        isActive: true,
+        createdAt: new Date()
+      },
+      {
+        id: "3",
+        name: "Sedef Nihal",
+        position: "Finans Yöneticisi",
+        positionEn: "Finance Manager",
+        department: "Finans",
+        email: "sedef@algotrom.com.tr",
+        phone: null,
+        image: null,
+        bio: null,
+        displayOrder: 3,
+        isActive: true,
+        createdAt: new Date()
+      }
+    ];
+
+    teamData.forEach(member => {
+      this.teamMembers.set(member.id, member);
+    });
+  }
+
   async getUser(id: string): Promise<User | undefined> {
     return this.users.get(id);
   }
@@ -229,6 +291,48 @@ export class MemStorage implements IStorage {
 
   async getJobApplications(): Promise<JobApplication[]> {
     return Array.from(this.jobApplications.values());
+  }
+
+  async getTeamMembers(): Promise<TeamMember[]> {
+    return Array.from(this.teamMembers.values()).sort(
+      (a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)
+    );
+  }
+
+  async getTeamMember(id: string): Promise<TeamMember | undefined> {
+    return this.teamMembers.get(id);
+  }
+
+  async updateTeamMember(id: string, data: Partial<TeamMember>): Promise<TeamMember> {
+    const existingMember = this.teamMembers.get(id);
+    if (!existingMember) {
+      throw new Error('Team member not found');
+    }
+    
+    const updatedMember: TeamMember = {
+      ...existingMember,
+      ...data,
+      id: existingMember.id, // Keep original ID
+      createdAt: existingMember.createdAt // Keep original creation date
+    };
+    
+    this.teamMembers.set(id, updatedMember);
+    return updatedMember;
+  }
+
+  async createTeamMember(data: InsertTeamMember): Promise<TeamMember> {
+    const id = randomUUID();
+    const teamMember: TeamMember = {
+      ...data,
+      id,
+      createdAt: new Date()
+    };
+    this.teamMembers.set(id, teamMember);
+    return teamMember;
+  }
+
+  async deleteTeamMember(id: string): Promise<void> {
+    this.teamMembers.delete(id);
   }
 }
 

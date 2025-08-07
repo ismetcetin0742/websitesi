@@ -2,41 +2,25 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/components/language-provider';
 import { t } from '@/lib/i18n';
+import { useQuery } from '@tanstack/react-query';
+import type { TeamMember } from '@shared/schema';
 import {
   Target,
   Eye,
   Users,
   Award,
   Globe,
-  Lightbulb
+  Lightbulb,
+  Loader2
 } from 'lucide-react';
 
 export default function About() {
   const { language } = useLanguage();
 
-  const team = [
-    {
-      name: 'Yıldırım Özyakışır',
-      position: 'Proje Yöneticisi',
-      positionEn: 'Project Manager',
-      image: null,
-      bio: 'Kurumsal projelerin yönetimi ve müşteri ilişkilerinde uzman.'
-    },
-    {
-      name: 'İsmet Çetin',
-      position: 'Proje Yöneticisi',
-      positionEn: 'Project Manager',
-      image: null,
-      bio: 'Teknik proje yönetimi ve çözüm geliştirme konusunda deneyimli.'
-    },
-    {
-      name: 'Sedef Nihal',
-      position: 'Finans Yöneticisi',
-      positionEn: 'Finance Manager',
-      image: null,
-      bio: 'Finans yönetimi ve stratejik planlama alanında uzman.'
-    }
-  ];
+  // Fetch team members from API
+  const { data: teamMembers = [], isLoading: teamLoading } = useQuery<TeamMember[]>({
+    queryKey: ['/api/team'],
+  });
 
   const values = [
     {
@@ -125,25 +109,36 @@ export default function About() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Yönetim Ekibi</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Yönetim Ekibi (Dinamik)</h2>
             <p className="text-xl text-gray-600">Deneyimli ve uzman kadromuzla tanışın</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            {team.map((member, index) => (
-              <Card key={index} className="hover-lift text-center">
-                <CardContent className="p-8">
-                  <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto mb-6 flex items-center justify-center">
-                    <Users className="w-16 h-16 text-gray-400" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
-                  <p className="text-primary font-medium mb-1">{member.position}</p>
-                  <p className="text-gray-500 text-sm mb-4">{member.positionEn}</p>
-                  <p className="text-gray-600 text-sm">{member.bio}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {teamLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-primary mr-2" />
+              <span className="text-gray-600">Takım üyeleri yükleniyor...</span>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
+              {teamMembers.filter(member => member.isActive).map((member) => (
+                <Card key={member.id} className="hover-lift text-center">
+                  <CardContent className="p-8">
+                    <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto mb-6 flex items-center justify-center">
+                      <Users className="w-16 h-16 text-gray-400" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
+                    <p className="text-primary font-medium mb-1">{member.position}</p>
+                    {member.positionEn && (
+                      <p className="text-gray-500 text-sm mb-4">{member.positionEn}</p>
+                    )}
+                    {member.email && (
+                      <p className="text-gray-600 text-sm">{member.email}</p>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

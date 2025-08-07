@@ -135,6 +135,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Public team members endpoint (for About page)
+  app.get("/api/team", async (req, res) => {
+    try {
+      const teamMembers = await storage.getTeamMembers();
+      res.json(teamMembers);
+    } catch (error) {
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
   // Single blog post endpoint
   app.get("/api/blog/:id", async (req, res) => {
     try {
@@ -219,21 +229,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Admin content management routes
+  // Team management endpoints
+  app.get("/api/admin/team", authenticateAdmin, async (req, res) => {
+    try {
+      const teamMembers = await storage.getTeamMembers();
+      res.json(teamMembers);
+    } catch (error) {
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  app.get("/api/admin/team/:id", authenticateAdmin, async (req, res) => {
+    try {
+      const teamMember = await storage.getTeamMember(req.params.id);
+      if (!teamMember) {
+        return res.status(404).json({ message: "Takım üyesi bulunamadı" });
+      }
+      res.json(teamMember);
+    } catch (error) {
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
   app.put("/api/admin/team/:id", authenticateAdmin, async (req, res) => {
     try {
-      // In a real app, this would update the database
-      // For now, we'll just return success
-      const { id } = req.params;
-      const updateData = req.body;
-      
-      // Here you would update the team member in database
-      // const updatedMember = await storage.updateTeamMember(id, updateData);
-      
-      res.json({ success: true, message: "Takım üyesi güncellendi" });
+      const updatedMember = await storage.updateTeamMember(req.params.id, req.body);
+      res.json({
+        success: true,
+        message: "Takım üyesi güncellendi",
+        data: updatedMember
+      });
     } catch (error) {
-      console.error("Error updating team member:", error);
-      res.status(500).json({ error: "Güncelleme başarısız" });
+      if (error instanceof Error && error.message === 'Team member not found') {
+        return res.status(404).json({ message: "Takım üyesi bulunamadı" });
+      }
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  app.post("/api/admin/team", authenticateAdmin, async (req, res) => {
+    try {
+      const newMember = await storage.createTeamMember(req.body);
+      res.status(201).json({
+        success: true,
+        message: "Takım üyesi eklendi",
+        data: newMember
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  app.delete("/api/admin/team/:id", authenticateAdmin, async (req, res) => {
+    try {
+      await storage.deleteTeamMember(req.params.id);
+      res.json({
+        success: true,
+        message: "Takım üyesi silindi"
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Sunucu hatası" });
     }
   });
 

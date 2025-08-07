@@ -2,83 +2,61 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Users, Plus, Edit, User } from "lucide-react";
+import { ArrowLeft, Users, Plus, Edit, User, Loader2 } from "lucide-react";
 import { Link } from "wouter";
 import { EditModal } from "@/components/EditModal";
 import { useToast } from "@/hooks/use-toast";
-
-// Static team data - in a real app this would come from the database
-const teamMembers = [
-  {
-    id: "1",
-    name: "Yıldırım Özyakışır",
-    position: "Proje Yöneticisi",
-    positionEn: "Project Manager",
-    email: "yildirim@algotrom.com.tr",
-    image: null
-  },
-  {
-    id: "2", 
-    name: "İsmet Çetin",
-    position: "Proje Yöneticisi",
-    positionEn: "Project Manager",
-    email: "ismet@algotrom.com.tr",
-    image: null
-  },
-  {
-    id: "3",
-    name: "Sedef Nihal",
-    position: "Finans Yöneticisi", 
-    positionEn: "Finance Manager",
-    email: "sedef@algotrom.com.tr",
-    image: null
-  }
-];
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import type { TeamMember } from "@shared/schema";
 
 export default function AdminTeam() {
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [selectedMember, setSelectedMember] = useState<any>(null);
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  const handleEdit = (member: any) => {
-    setSelectedMember(member);
-    setEditModalOpen(true);
-  };
+  // Fetch team members from API
+  const { data: teamMembers = [], isLoading, error } = useQuery<TeamMember[]>({
+    queryKey: ['/api/admin/team'],
+  });
 
-  const handleSave = async (data: any) => {
-    try {
-      console.log('Saving team member data:', data);
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch(`/api/admin/team/${data.id}`, {
+  // Update team member mutation
+  const updateMutation = useMutation({
+    mutationFn: async (data: { id: string; [key: string]: any }) => {
+      return apiRequest(`/api/admin/team/${data.id}`, {
         method: 'PUT',
+        body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
         },
-        body: JSON.stringify(data),
       });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Save result:', result);
-        toast({
-          title: "Başarılı",
-          description: "Takım üyesi bilgileri güncellendi. Statik HTML dosyalarını manuel güncellemeniz gerekiyor.",
-        });
-        // Update local data to reflect changes
-        // In a real app, you would refetch the data or update the cache
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Güncelleme başarısız');
-      }
-    } catch (error) {
-      console.error('Update error:', error);
+    },
+    onSuccess: () => {
+      toast({
+        title: "Başarılı",
+        description: "Takım üyesi bilgileri güncellendi.",
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/team'] });
+      setEditModalOpen(false);
+    },
+    onError: (error) => {
       toast({
         title: "Hata",
         description: error instanceof Error ? error.message : "Güncelleme sırasında bir hata oluştu.",
         variant: "destructive",
       });
     }
+  });
+
+  const handleEdit = (member: TeamMember) => {
+    setSelectedMember(member);
+    setEditModalOpen(true);
+  };
+
+  const handleSave = async (data: any) => {
+    updateMutation.mutate(data);
   };
 
   const editFields = [
@@ -86,7 +64,28 @@ export default function AdminTeam() {
     { key: 'position', label: 'Pozisyon (Türkçe)', type: 'text' as const, required: true },
     { key: 'positionEn', label: 'Pozisyon (İngilizce)', type: 'text' as const },
     { key: 'email', label: 'E-posta', type: 'email' as const },
+    { key: 'department', label: 'Departman', type: 'text' as const },
+    { key: 'displayOrder', label: 'Sıralama', type: 'number' as const },
   ];
+
+  if (isLoading) {
+    return (
+      <div className="p-6 flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin" />
+        <span className="ml-2">Takım üyeleri yükleniyor...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6">
+        <div className="text-center text-red-600">
+          Takım üyeleri yüklenirken hata oluştu. Lütfen tekrar deneyin.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">
@@ -98,7 +97,7 @@ export default function AdminTeam() {
               Geri Dön
             </Link>
           </Button>
-          <h1 className="text-3xl font-bold">Takım Üyeleri</h1>
+          <h1 className="text-3xl font-bold">Takım Üyeleri (Dinamik)</h1>
         </div>
         <div className="flex items-center space-x-2">
           <Badge variant="secondary">
