@@ -27,6 +27,7 @@ import AdminBlog from "@/pages/admin/blog";
 import AdminTeam from "@/pages/admin/team";
 import AdminSolutions from "@/pages/admin/solutions";
 import AdminSectors from "@/pages/admin/sectors";
+import AdminContent from "@/pages/admin/content";
 import AdminLayout from "@/components/AdminLayout";
 
 function Router() {
@@ -73,6 +74,11 @@ function Router() {
         <Route path="/admin/sectors">
           <AdminLayout>
             <AdminSectors />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/content">
+          <AdminLayout>
+            <AdminContent />
           </AdminLayout>
         </Route>
         

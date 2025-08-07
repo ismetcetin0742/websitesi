@@ -4,7 +4,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, FileText, Plus, Edit, Calendar } from "lucide-react";
 import { Link } from "wouter";
-import type { BlogPost } from "@shared/schema";
+
+interface BlogPost {
+  id: string;
+  title: string;
+  content: string | { tr: string; en: string };
+  excerpt?: string;
+  category: string;
+  publishedAt: Date | null;
+}
 
 export default function AdminBlog() {
   const { data: blogPosts, isLoading } = useQuery<BlogPost[]>({
@@ -72,17 +80,17 @@ export default function AdminBlog() {
                     <div className="space-y-1">
                       <CardTitle className="flex items-center space-x-2">
                         <FileText className="h-4 w-4" />
-                        <span>{post.title}</span>
+                        <span>{String(post.title || "Başlık Yok")}</span>
                       </CardTitle>
                       <CardDescription>
-                        {post.excerpt || "Açıklama mevcut değil"}
+                        {String(post.excerpt || "Açıklama mevcut değil")}
                       </CardDescription>
                     </div>
                     <div className="flex items-center space-x-2">
                       <div className="flex items-center space-x-1 text-sm text-gray-500">
                         <Calendar className="h-3 w-3" />
                         <span>
-                          {post.createdAt ? new Date(post.createdAt).toLocaleDateString("tr-TR") : ""}
+                          {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("tr-TR") : "Tarih Yok"}
                         </span>
                       </div>
                       <Button variant="outline" size="sm">
@@ -96,9 +104,15 @@ export default function AdminBlog() {
                   <CardContent>
                     <div className="bg-gray-50 p-4 rounded-lg">
                       <p className="text-sm text-gray-700">
-                        {typeof post.content === 'string' 
-                          ? post.content.substring(0, 150) + (post.content.length > 150 ? '...' : '')
-                          : (post.content as any)?.tr?.substring(0, 150) + ((post.content as any)?.tr?.length > 150 ? '...' : '') || "İçerik mevcut değil"}
+                        {(() => {
+                          if (typeof post.content === 'string') {
+                            return post.content.substring(0, 150) + (post.content.length > 150 ? '...' : '');
+                          } else if (post.content && typeof post.content === 'object' && 'tr' in post.content) {
+                            const trContent = post.content.tr || '';
+                            return trContent.substring(0, 150) + (trContent.length > 150 ? '...' : '');
+                          }
+                          return "İçerik mevcut değil";
+                        })()}
                       </p>
                     </div>
                   </CardContent>
