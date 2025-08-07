@@ -16,6 +16,8 @@
     <div class="container">
         <h1>Admin Test Login</h1>
         <button onclick="testLogin()">Admin Girişi Yap (admin/a123)</button>
+        <br><br>
+        <button onclick="checkAPI()">API Test Et</button>
         <div id="message"></div>
     </div>
 
@@ -57,6 +59,26 @@
             } catch (error) {
                 console.error('Fetch error:', error);
                 document.getElementById('message').innerHTML = 'Bağlantı hatası: ' + error.message;
+            }
+        }
+        
+        async function checkAPI() {
+            console.log('Checking API...');
+            document.getElementById('message').innerHTML = 'API kontrol ediliyor...';
+            
+            try {
+                const response = await fetch('/api/admin/stats', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                
+                console.log('API Response status:', response.status);
+                document.getElementById('message').innerHTML = 'API Durumu: ' + response.status + ' - ' + (response.ok ? 'Çalışıyor' : 'Hata');
+            } catch (error) {
+                console.error('API Error:', error);
+                document.getElementById('message').innerHTML = 'API Hatası: ' + error.message;
             }
         }
     </script>
