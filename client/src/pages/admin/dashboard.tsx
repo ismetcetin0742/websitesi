@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,8 +24,30 @@ interface AdminStats {
 }
 
 export default function AdminDashboard() {
+  // Check for admin token on mount
+  useEffect(() => {
+    const token = localStorage.getItem('adminToken');
+    console.log('Dashboard - checking token:', token ? 'found' : 'not found');
+    if (!token) {
+      console.log('No admin token found, redirecting to login');
+      window.location.href = '/admin/login';
+    }
+  }, []);
+
   const { data: stats, isLoading } = useQuery<AdminStats>({
     queryKey: ["/api/admin/stats"],
+    queryFn: async () => {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch('/api/admin/stats', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Stats fetch failed');
+      }
+      return response.json();
+    }
   });
 
   const adminSections = [

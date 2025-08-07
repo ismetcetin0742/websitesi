@@ -39,7 +39,9 @@ export default function AdminLogin() {
       return response;
     },
     onSuccess: (data) => {
-      localStorage.setItem("admin_token", data.token);
+      console.log('Login successful, setting token:', data.token);
+      localStorage.setItem("adminToken", data.token);
+      localStorage.setItem("adminUser", JSON.stringify(data.user));
       navigate("/admin/dashboard");
     },
     onError: (error: Error) => {
