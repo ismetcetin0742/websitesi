@@ -27,7 +27,7 @@ export default function ReferencesManagement() {
       color: "bg-purple-500"
     },
     {
-      title: "Ana Sayfa İstatistikleri",
+      title: "Sayfa İstatistikleri",
       description: "Ana sayfadaki istatistik bölümünü yönetin (100+ Başarılı Proje, %95 Müşteri Memnuniyeti, vb.)",
       icon: <BarChart3 className="h-8 w-8" />,
       href: "/admin/homepage/statistics",
