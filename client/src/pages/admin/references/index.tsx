@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { FileText, Image, Building, ArrowRight, BarChart3 } from "lucide-react";
+import { FileText, Image, Building, ArrowRight, BarChart3, ArrowLeft } from "lucide-react";
 
 export default function ReferencesManagement() {
   const sections = [
@@ -38,6 +38,14 @@ export default function ReferencesManagement() {
   return (
     <div className="p-6">
       <div className="mb-8">
+        <div className="flex items-center gap-2 mb-4">
+          <Link href="/admin/dashboard">
+            <Button variant="ghost" size="sm">
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              Dashboard'a Dön
+            </Button>
+          </Link>
+        </div>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Referanslar Yönetimi</h1>
         <p className="text-gray-600">
           Referanslar sayfasındaki tüm içerikleri tek merkezden yönetin
