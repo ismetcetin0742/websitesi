@@ -23,6 +23,10 @@ import AdminDashboard from "@/pages/admin/dashboard";
 import AdminContacts from "@/pages/admin/contacts";
 import AdminDemos from "@/pages/admin/demos";
 import AdminApplications from "@/pages/admin/applications";
+import AdminBlog from "@/pages/admin/blog";
+import AdminTeam from "@/pages/admin/team";
+import AdminSolutions from "@/pages/admin/solutions";
+import AdminSectors from "@/pages/admin/sectors";
 import AdminLayout from "@/components/AdminLayout";
 
 function Router() {
@@ -49,6 +53,26 @@ function Router() {
         <Route path="/admin/applications">
           <AdminLayout>
             <AdminApplications />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/blog">
+          <AdminLayout>
+            <AdminBlog />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/team">
+          <AdminLayout>
+            <AdminTeam />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/solutions">
+          <AdminLayout>
+            <AdminSolutions />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/sectors">
+          <AdminLayout>
+            <AdminSectors />
           </AdminLayout>
         </Route>
         
