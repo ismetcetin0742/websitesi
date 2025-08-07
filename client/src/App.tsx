@@ -18,31 +18,61 @@ import Career from "@/pages/career";
 import Contact from "@/pages/contact";
 import DemoRequest from "@/pages/demo-request";
 import NotFound from "@/pages/not-found";
+import AdminLogin from "@/pages/admin/login";
+import AdminDashboard from "@/pages/admin/dashboard";
+import AdminContacts from "@/pages/admin/contacts";
+import AdminDemos from "@/pages/admin/demos";
+import AdminApplications from "@/pages/admin/applications";
+import AdminLayout from "@/components/AdminLayout";
 
 function Router() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/solutions" component={Solutions} />
-      <Route path="/solutions/eflow-bpm" component={lazy(() => import('./pages/solutions/eflow-bpm'))} />
-      <Route path="/solutions/document-management" component={lazy(() => import('./pages/solutions/document-management'))} />
-      <Route path="/solutions/integration" component={lazy(() => import('./pages/solutions/integration'))} />
-      <Route path="/solutions/:slug" component={Solutions} />
-      <Route path="/sectors" component={Sectors} />
-      <Route path="/sectors/manufacturing" component={lazy(() => import('./pages/sectors/manufacturing'))} />
-      <Route path="/sectors/service" component={lazy(() => import('./pages/sectors/service'))} />
-      <Route path="/sectors/energy" component={lazy(() => import('./pages/sectors/energy'))} />
-      <Route path="/sectors/retail" component={lazy(() => import('./pages/sectors/retail'))} />
-      <Route path="/sectors/:slug" component={Sectors} />
-      <Route path="/references" component={References} />
-      <Route path="/blog" component={Blog} />
-      <Route path="/blog/:id" component={Blog} />
-      <Route path="/career" component={Career} />
-      <Route path="/contact" component={Contact} />
-      <Route path="/demo-request" component={DemoRequest} />
-      <Route component={NotFound} />
+        {/* Admin Routes */}
+        <Route path="/admin/login" component={AdminLogin} />
+        <Route path="/admin/dashboard">
+          <AdminLayout>
+            <AdminDashboard />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/contacts">
+          <AdminLayout>
+            <AdminContacts />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/demos">
+          <AdminLayout>
+            <AdminDemos />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/applications">
+          <AdminLayout>
+            <AdminApplications />
+          </AdminLayout>
+        </Route>
+        
+        {/* Public Routes */}
+        <Route path="/" component={Home} />
+        <Route path="/about" component={About} />
+        <Route path="/solutions" component={Solutions} />
+        <Route path="/solutions/eflow-bpm" component={lazy(() => import('./pages/solutions/eflow-bpm'))} />
+        <Route path="/solutions/document-management" component={lazy(() => import('./pages/solutions/document-management'))} />
+        <Route path="/solutions/integration" component={lazy(() => import('./pages/solutions/integration'))} />
+        <Route path="/solutions/:slug" component={Solutions} />
+        <Route path="/sectors" component={Sectors} />
+        <Route path="/sectors/manufacturing" component={lazy(() => import('./pages/sectors/manufacturing'))} />
+        <Route path="/sectors/service" component={lazy(() => import('./pages/sectors/service'))} />
+        <Route path="/sectors/energy" component={lazy(() => import('./pages/sectors/energy'))} />
+        <Route path="/sectors/retail" component={lazy(() => import('./pages/sectors/retail'))} />
+        <Route path="/sectors/:slug" component={Sectors} />
+        <Route path="/references" component={References} />
+        <Route path="/blog" component={Blog} />
+        <Route path="/blog/:id" component={Blog} />
+        <Route path="/career" component={Career} />
+        <Route path="/contact" component={Contact} />
+        <Route path="/demo-request" component={DemoRequest} />
+        <Route component={NotFound} />
       </Switch>
     </Suspense>
   );

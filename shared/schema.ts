@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, jsonb, boolean, integer } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -7,6 +7,63 @@ export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
+  role: text("role").notNull().default("admin"),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Site content management tables
+export const siteContent = pgTable("site_content", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  key: text("key").notNull().unique(), // e.g., 'homepage_hero_title', 'about_company_description'
+  type: text("type").notNull(), // 'text', 'html', 'image', 'json'
+  content: jsonb("content").notNull(), // Multi-language content
+  description: text("description"), // Admin description
+  updatedAt: timestamp("updated_at").defaultNow(),
+  updatedBy: varchar("updated_by").references(() => users.id),
+});
+
+export const teamMembers = pgTable("team_members", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  position: text("position").notNull(),
+  positionEn: text("position_en"),
+  department: text("department").notNull(),
+  email: text("email"),
+  phone: text("phone"),
+  image: text("image"),
+  bio: jsonb("bio"), // Multi-language bio
+  displayOrder: integer("display_order").default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const solutions = pgTable("solutions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: jsonb("name").notNull(), // Multi-language
+  description: jsonb("description").notNull(), // Multi-language
+  category: text("category").notNull(), // 'bpm', 'dms', 'custom'
+  features: jsonb("features").notNull(), // Array of features
+  benefits: jsonb("benefits").notNull(), // Array of benefits
+  image: text("image"),
+  isActive: boolean("is_active").notNull().default(true),
+  displayOrder: integer("display_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const sectors = pgTable("sectors", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: jsonb("name").notNull(), // Multi-language
+  description: jsonb("description").notNull(), // Multi-language
+  slug: text("slug").notNull().unique(), // URL slug
+  icon: text("icon"),
+  image: text("image"),
+  features: jsonb("features").notNull(), // Array of sector-specific features
+  successStories: jsonb("success_stories"), // Array of success stories
+  efficiency: integer("efficiency").default(86), // Efficiency percentage
+  isActive: boolean("is_active").notNull().default(true),
+  displayOrder: integer("display_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const demoRequests = pgTable("demo_requests", {
@@ -48,8 +105,10 @@ export const jobApplications = pgTable("job_applications", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
+  createdAt: true,
 });
 
 export const insertDemoRequestSchema = createInsertSchema(demoRequests).omit({
@@ -72,6 +131,27 @@ export const insertJobApplicationSchema = createInsertSchema(jobApplications).om
   createdAt: true,
 });
 
+export const insertSiteContentSchema = createInsertSchema(siteContent).omit({
+  id: true,
+  updatedAt: true,
+});
+
+export const insertTeamMemberSchema = createInsertSchema(teamMembers).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertSolutionSchema = createInsertSchema(solutions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertSectorSchema = createInsertSchema(sectors).omit({
+  id: true,
+  createdAt: true,
+});
+
+// Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type DemoRequest = typeof demoRequests.$inferSelect;
@@ -82,3 +162,11 @@ export type BlogPost = typeof blogPosts.$inferSelect;
 export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
 export type JobApplication = typeof jobApplications.$inferSelect;
 export type InsertJobApplication = z.infer<typeof insertJobApplicationSchema>;
+export type SiteContent = typeof siteContent.$inferSelect;
+export type InsertSiteContent = z.infer<typeof insertSiteContentSchema>;
+export type TeamMember = typeof teamMembers.$inferSelect;
+export type InsertTeamMember = z.infer<typeof insertTeamMemberSchema>;
+export type Solution = typeof solutions.$inferSelect;
+export type InsertSolution = z.infer<typeof insertSolutionSchema>;
+export type Sector = typeof sectors.$inferSelect;
+export type InsertSector = z.infer<typeof insertSectorSchema>;

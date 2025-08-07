@@ -18,6 +18,9 @@ This is a full-stack corporate website for Algotrom, a Turkish software company 
 - Added English position titles under Turkish titles for management team
 - Removed company timeline/history section from about page
 - Removed blog haberler and güvenilen çözüm ortağınız sections from homepage
+- **NEW**: Added comprehensive admin panel with authentication and content management capabilities
+- **NEW**: Admin panel includes dashboard, contact messages, demo requests, job applications management
+- **NEW**: PostgreSQL database integration with admin authentication using JWT tokens
 
 ## User Preferences
 

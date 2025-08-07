@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertDemoRequestSchema, insertContactMessageSchema, insertJobApplicationSchema } from "@shared/schema";
+import { authenticateAdmin, validateAdmin, generateToken } from "./adminAuth";
 import nodemailer from "nodemailer";
 import { z } from "zod";
 
@@ -143,6 +144,76 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return;
       }
       res.json(blogPost);
+    } catch (error) {
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  // Admin login endpoint
+  app.post("/api/admin/login", async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      
+      if (!username || !password) {
+        return res.status(400).json({ message: "Kullanıcı adı ve şifre gereklidir" });
+      }
+
+      const isValid = await validateAdmin(username, password);
+      if (!isValid) {
+        return res.status(401).json({ message: "Geçersiz kullanıcı adı veya şifre" });
+      }
+
+      const token = generateToken({ id: "admin", username });
+      res.json({ token, user: { id: "admin", username } });
+    } catch (error) {
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  // Admin dashboard stats
+  app.get("/api/admin/stats", authenticateAdmin, async (req, res) => {
+    try {
+      const [contactMessages, demoRequests, blogPosts, jobApplications] = await Promise.all([
+        storage.getContactMessages(),
+        storage.getDemoRequests(),
+        storage.getBlogPosts(),
+        storage.getJobApplications()
+      ]);
+
+      res.json({
+        contactMessages: contactMessages.length,
+        demoRequests: demoRequests.length,
+        blogPosts: blogPosts.length,
+        jobApplications: jobApplications.length
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  // Admin endpoints for managing data
+  app.get("/api/admin/contacts", authenticateAdmin, async (req, res) => {
+    try {
+      const contacts = await storage.getContactMessages();
+      res.json(contacts);
+    } catch (error) {
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  app.get("/api/admin/demos", authenticateAdmin, async (req, res) => {
+    try {
+      const demos = await storage.getDemoRequests();
+      res.json(demos);
+    } catch (error) {
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  app.get("/api/admin/applications", authenticateAdmin, async (req, res) => {
+    try {
+      const applications = await storage.getJobApplications();
+      res.json(applications);
     } catch (error) {
       res.status(500).json({ message: "Sunucu hatası" });
     }
