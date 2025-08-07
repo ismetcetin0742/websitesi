@@ -32,33 +32,27 @@ export default function About() {
     return aboutContent.find(content => content.section === section);
   };
 
-  const values = [
-    {
-      icon: Target,
-      title: 'Müşteri Odaklılık',
-      description: 'Müşterilerimizin başarısını kendi başarımız olarak görür, onların hedeflerine ulaşması için çalışırız.'
-    },
-    {
-      icon: Lightbulb,
-      title: 'İnovasyon',
-      description: 'Sürekli gelişim ve yenilik anlayışıyla teknolojinin son trendlerini takip ederiz.'
-    },
-    {
-      icon: Users,
-      title: 'Takım Çalışması',
-      description: 'Güçlü ekip ruhu ile birlikte çalışarak en iyi sonuçları elde ederiz.'
-    },
-    {
-      icon: Award,
-      title: 'Kalite',
-      description: 'Yüksek kalite standartlarında hizmet sunarak müşteri memnuniyetini önceliklendiririz.'
-    },
-    {
-      icon: Globe,
-      title: 'Sürdürülebilirlik',
-      description: 'Çevreye duyarlı, sürdürülebilir teknoloji çözümleri geliştiririz.'
-    }
+  // Get dynamic values from content or use default structure
+  const valuesContent = getContentBySection('values')?.content || 'Müşteri Odaklılık, İnovasyon, Takım Çalışması, Kalite, Sürdürülebilirlik';
+  
+  // Extract the pure value names from the content (remove any descriptive text)
+  const valuesList = valuesContent.split(/[,،]/g).map(v => v.trim().replace(/temel değerlerimizdir?/gi, '').trim()).filter(v => v.length > 0);
+  
+  const defaultDescriptions = [
+    'Müşterilerimizin başarısını kendi başarımız olarak görür, onların hedeflerine ulaşması için çalışırız.',
+    'Sürekli gelişim ve yenilik anlayışıyla teknolojinin son trendlerini takip ederiz.',
+    'Güçlü ekip ruhu ile birlikte çalışarak en iyi sonuçları elde ederiz.',
+    'Yüksek kalite standartlarında hizmet sunarak müşteri memnuniyetini önceliklendiririz.',
+    'Çevreye duyarlı, sürdürülebilir teknoloji çözümleri geliştiririz.'
   ];
+
+  const icons = [Target, Lightbulb, Users, Award, Globe];
+  
+  const values = valuesList.slice(0, 5).map((title, index) => ({
+    icon: icons[index] || Target,
+    title: title,
+    description: defaultDescriptions[index] || 'Bu değer bizim için önemlidir.'
+  }));
 
   if (contentLoading) {
     return (
