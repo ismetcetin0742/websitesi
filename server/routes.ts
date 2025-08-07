@@ -261,6 +261,149 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // References Content endpoints
+  app.get('/api/references-content', async (req, res) => {
+    try {
+      const content = await storage.getReferencesContent();
+      res.json(content);
+    } catch (error) {
+      console.error('Error fetching references content:', error);
+      res.status(500).json({ message: 'Failed to fetch references content' });
+    }
+  });
+
+  app.get('/api/admin/references-content', authenticateAdmin, async (req, res) => {
+    try {
+      const content = await storage.getReferencesContent();
+      res.json(content);
+    } catch (error) {
+      console.error('Error fetching references content:', error);
+      res.status(500).json({ message: 'Failed to fetch references content' });
+    }
+  });
+
+  app.put('/api/admin/references-content/:section', authenticateAdmin, async (req, res) => {
+    try {
+      const { section } = req.params;
+      const updateData = req.body;
+      const updated = await storage.updateReferencesContent(section, updateData);
+      res.json({ success: true, data: updated });
+    } catch (error) {
+      console.error('Error updating references content:', error);
+      res.status(500).json({ message: 'Failed to update references content' });
+    }
+  });
+
+  // Partner Logos endpoints
+  app.get('/api/partner-logos', async (req, res) => {
+    try {
+      const logos = await storage.getPartnerLogos();
+      res.json(logos);
+    } catch (error) {
+      console.error('Error fetching partner logos:', error);
+      res.status(500).json({ message: 'Failed to fetch partner logos' });
+    }
+  });
+
+  app.get('/api/admin/partner-logos', authenticateAdmin, async (req, res) => {
+    try {
+      const logos = await storage.getPartnerLogos();
+      res.json(logos);
+    } catch (error) {
+      console.error('Error fetching partner logos:', error);
+      res.status(500).json({ message: 'Failed to fetch partner logos' });
+    }
+  });
+
+  app.post('/api/admin/partner-logos', authenticateAdmin, async (req, res) => {
+    try {
+      const logoData = req.body;
+      const newLogo = await storage.createPartnerLogo(logoData);
+      res.json({ success: true, data: newLogo });
+    } catch (error) {
+      console.error('Error creating partner logo:', error);
+      res.status(500).json({ message: 'Failed to create partner logo' });
+    }
+  });
+
+  app.put('/api/admin/partner-logos/:id', authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+      const updated = await storage.updatePartnerLogo(id, updateData);
+      res.json({ success: true, data: updated });
+    } catch (error) {
+      console.error('Error updating partner logo:', error);
+      res.status(500).json({ message: 'Failed to update partner logo' });
+    }
+  });
+
+  app.delete('/api/admin/partner-logos/:id', authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deletePartnerLogo(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error deleting partner logo:', error);
+      res.status(500).json({ message: 'Failed to delete partner logo' });
+    }
+  });
+
+  // Reference Projects endpoints
+  app.get('/api/reference-projects', async (req, res) => {
+    try {
+      const projects = await storage.getReferenceProjects();
+      res.json(projects);
+    } catch (error) {
+      console.error('Error fetching reference projects:', error);
+      res.status(500).json({ message: 'Failed to fetch reference projects' });
+    }
+  });
+
+  app.get('/api/admin/reference-projects', authenticateAdmin, async (req, res) => {
+    try {
+      const projects = await storage.getReferenceProjects();
+      res.json(projects);
+    } catch (error) {
+      console.error('Error fetching reference projects:', error);
+      res.status(500).json({ message: 'Failed to fetch reference projects' });
+    }
+  });
+
+  app.post('/api/admin/reference-projects', authenticateAdmin, async (req, res) => {
+    try {
+      const projectData = req.body;
+      const newProject = await storage.createReferenceProject(projectData);
+      res.json({ success: true, data: newProject });
+    } catch (error) {
+      console.error('Error creating reference project:', error);
+      res.status(500).json({ message: 'Failed to create reference project' });
+    }
+  });
+
+  app.put('/api/admin/reference-projects/:id', authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+      const updated = await storage.updateReferenceProject(id, updateData);
+      res.json({ success: true, data: updated });
+    } catch (error) {
+      console.error('Error updating reference project:', error);
+      res.status(500).json({ message: 'Failed to update reference project' });
+    }
+  });
+
+  app.delete('/api/admin/reference-projects/:id', authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteReferenceProject(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error deleting reference project:', error);
+      res.status(500).json({ message: 'Failed to delete reference project' });
+    }
+  });
+
   // Single blog post endpoint
   app.get("/api/blog/:id", async (req, res) => {
     try {

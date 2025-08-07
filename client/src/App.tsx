@@ -31,6 +31,10 @@ import AdminAboutContent from "@/pages/admin/about/content";
 import AdminCompanyValues from "@/pages/admin/about/values";
 import AdminTeamPage from "@/pages/admin/about/team";
 import AdminAboutStats from "@/pages/admin/about/stats";
+import AdminReferences from "@/pages/admin/references/index";
+import AdminReferencesContent from "@/pages/admin/references/content";
+import AdminReferencesLogos from "@/pages/admin/references/logos";
+import AdminReferencesProjects from "@/pages/admin/references/projects";
 import AdminSolutions from "@/pages/admin/solutions";
 import AdminSectors from "@/pages/admin/sectors";
 import AdminContent from "@/pages/admin/content";
@@ -106,6 +110,26 @@ function Router() {
         <Route path="/admin/content">
           <AdminLayout>
             <AdminContent />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/references">
+          <AdminLayout>
+            <AdminReferences />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/references/content">
+          <AdminLayout>
+            <AdminReferencesContent />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/references/logos">
+          <AdminLayout>
+            <AdminReferencesLogos />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/references/projects">
+          <AdminLayout>
+            <AdminReferencesProjects />
           </AdminLayout>
         </Route>
         

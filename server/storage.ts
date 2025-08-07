@@ -15,7 +15,13 @@ import {
   type CompanyValue,
   type InsertCompanyValue,
   type CompanyStats,
-  type InsertCompanyStats
+  type InsertCompanyStats,
+  type ReferencesContent,
+  type InsertReferencesContent,
+  type PartnerLogo,
+  type InsertPartnerLogo,
+  type ReferenceProject,
+  type InsertReferenceProject
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -54,6 +60,22 @@ export interface IStorage {
   
   getCompanyStats(): Promise<CompanyStats | undefined>;
   updateCompanyStats(data: Partial<CompanyStats>): Promise<CompanyStats>;
+
+  // References Content operations
+  getReferencesContent(): Promise<ReferencesContent[]>;
+  updateReferencesContent(section: string, updates: { title: string; content: string; buttonText?: string }): Promise<ReferencesContent>;
+
+  // Partner Logos operations
+  getPartnerLogos(): Promise<PartnerLogo[]>;
+  createPartnerLogo(data: InsertPartnerLogo): Promise<PartnerLogo>;
+  updatePartnerLogo(id: string, data: Partial<PartnerLogo>): Promise<PartnerLogo>;
+  deletePartnerLogo(id: string): Promise<void>;
+
+  // Reference Projects operations
+  getReferenceProjects(): Promise<ReferenceProject[]>;
+  createReferenceProject(data: InsertReferenceProject): Promise<ReferenceProject>;
+  updateReferenceProject(id: string, data: Partial<ReferenceProject>): Promise<ReferenceProject>;
+  deleteReferenceProject(id: string): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -66,6 +88,9 @@ export class MemStorage implements IStorage {
   private aboutContent: Map<string, AboutContent>;
   private companyValues: Map<string, CompanyValue>;
   private companyStats: CompanyStats | null;
+  private referencesContent: Map<string, ReferencesContent>;
+  private partnerLogos: Map<string, PartnerLogo>;
+  private referenceProjects: Map<string, ReferenceProject>;
 
   constructor() {
     this.users = new Map();
@@ -77,6 +102,9 @@ export class MemStorage implements IStorage {
     this.aboutContent = new Map();
     this.companyValues = new Map();
     this.companyStats = null;
+    this.referencesContent = new Map();
+    this.partnerLogos = new Map();
+    this.referenceProjects = new Map();
     
     // Initialize with sample data
     this.initializeBlogPosts();
@@ -84,6 +112,9 @@ export class MemStorage implements IStorage {
     this.initializeAboutContent();
     this.initializeCompanyValues();
     this.initializeCompanyStats();
+    this.initializeReferencesContent();
+    this.initializePartnerLogos();
+    this.initializeReferenceProjects();
   }
 
   private initializeBlogPosts() {
@@ -578,6 +609,187 @@ export class MemStorage implements IStorage {
       };
     }
     return this.companyStats;
+  }
+
+  // References Content methods
+  private initializeReferencesContent() {
+    const content = [
+      {
+        id: "1",
+        section: "hero",
+        title: "Referanslar",
+        content: "Türkiye'nin önde gelen şirketleriyle gerçekleştirdiğimiz başarılı projeler ve elde edilen sonuçlar.",
+        buttonText: "",
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "2", 
+        section: "trusted_partner",
+        title: "Güvenilen Çözüm Ortağınız",
+        content: "Farklı sektörlerden 100+ şirket Algotrom'u tercih ediyor",
+        buttonText: "",
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "3",
+        section: "cta",
+        title: "Siz de Başarı Hikayemizin Parçası Olun",
+        content: "İşletmenizin dijital dönüşüm yolculuğunda yanınızda olalım. Sizin için de başarılı projeler geliştirelim.",
+        buttonText: "Proje Danışmanlığı Al",
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+    
+    content.forEach(item => this.referencesContent.set(item.id, item));
+  }
+
+  async getReferencesContent(): Promise<ReferencesContent[]> {
+    return Array.from(this.referencesContent.values());
+  }
+
+  async updateReferencesContent(section: string, updates: { title: string; content: string; buttonText?: string }): Promise<ReferencesContent> {
+    const existing = Array.from(this.referencesContent.values()).find(item => item.section === section);
+    if (!existing) {
+      throw new Error(`References content section not found: ${section}`);
+    }
+
+    const updated = {
+      ...existing,
+      ...updates,
+      updatedAt: new Date()
+    };
+
+    this.referencesContent.set(existing.id, updated);
+    return updated;
+  }
+
+  // Partner Logos methods
+  private initializePartnerLogos() {
+    // Initialize with empty array, will be managed via admin
+  }
+
+  async getPartnerLogos(): Promise<PartnerLogo[]> {
+    return Array.from(this.partnerLogos.values()).sort((a, b) => a.displayOrder - b.displayOrder);
+  }
+
+  async createPartnerLogo(data: InsertPartnerLogo): Promise<PartnerLogo> {
+    const newLogo: PartnerLogo = {
+      id: randomUUID(),
+      ...data,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.partnerLogos.set(newLogo.id, newLogo);
+    return newLogo;
+  }
+
+  async updatePartnerLogo(id: string, data: Partial<PartnerLogo>): Promise<PartnerLogo> {
+    const existing = this.partnerLogos.get(id);
+    if (!existing) {
+      throw new Error(`Partner logo not found: ${id}`);
+    }
+
+    const updated = {
+      ...existing,
+      ...data,
+      updatedAt: new Date()
+    };
+
+    this.partnerLogos.set(id, updated);
+    return updated;
+  }
+
+  async deletePartnerLogo(id: string): Promise<void> {
+    this.partnerLogos.delete(id);
+  }
+
+  // Reference Projects methods
+  private initializeReferenceProjects() {
+    const projects = [
+      {
+        id: "1",
+        company: "ABC Otomotiv San. A.Ş.",
+        sector: "manufacturing",
+        logoUrl: "https://via.placeholder.com/120x60/1E40AF/ffffff?text=ABC",
+        project: "Üretim Süreç Yönetimi",
+        description: "E-Flow BPM ile üretim süreçlerinin dijitalleştirilmesi ve kalite kontrol sistemlerinin entegrasyonu.",
+        results: [
+          "%40 üretim verimliliği artışı",
+          "%60 kalite kontrol süresinde azalma", 
+          "%30 operasyonel maliyet tasarrufu"
+        ],
+        duration: "8 ay",
+        year: "2023",
+        testimonial: "Algotrom ile çalışmak üretim süreçlerimizi tamamen dönüştürdü. Artık tüm üretim hattımızı gerçek zamanlı izleyebiliyor ve hızlı aksiyonlar alabiliyor.",
+        displayOrder: 1,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "2",
+        company: "XYZ Enerji A.Ş.",
+        sector: "energy",
+        logoUrl: "https://via.placeholder.com/120x60/1E40AF/ffffff?text=XYZ",
+        project: "Akıllı Şebeke Yönetimi",
+        description: "SCADA entegrasyonu ve enerji dağıtım ağının optimize edilmesi için geliştirilmiş çözüm.",
+        results: [
+          "%25 enerji kaybında azalma",
+          "%50 arıza tespit süresinde iyileşme",
+          "%35 operasyonel verimlilik artışı"
+        ],
+        duration: "12 ay",
+        year: "2023",
+        testimonial: "Enerji dağıtım ağımızın dijitalleşmesi ile hem müşteri memnuniyeti hem de operasyonel verimliliğimiz önemli ölçüde arttı.",
+        displayOrder: 2,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    projects.forEach(project => this.referenceProjects.set(project.id, project));
+  }
+
+  async getReferenceProjects(): Promise<ReferenceProject[]> {
+    return Array.from(this.referenceProjects.values()).sort((a, b) => a.displayOrder - b.displayOrder);
+  }
+
+  async createReferenceProject(data: InsertReferenceProject): Promise<ReferenceProject> {
+    const newProject: ReferenceProject = {
+      id: randomUUID(),
+      ...data,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.referenceProjects.set(newProject.id, newProject);
+    return newProject;
+  }
+
+  async updateReferenceProject(id: string, data: Partial<ReferenceProject>): Promise<ReferenceProject> {
+    const existing = this.referenceProjects.get(id);
+    if (!existing) {
+      throw new Error(`Reference project not found: ${id}`);
+    }
+
+    const updated = {
+      ...existing,
+      ...data,
+      updatedAt: new Date()
+    };
+
+    this.referenceProjects.set(id, updated);
+    return updated;
+  }
+
+  async deleteReferenceProject(id: string): Promise<void> {
+    this.referenceProjects.delete(id);
   }
 }
 

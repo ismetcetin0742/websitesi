@@ -231,3 +231,71 @@ export const insertCompanyStatsSchema = createInsertSchema(companyStats).omit({
 
 export type CompanyStats = typeof companyStats.$inferSelect;
 export type InsertCompanyStats = z.infer<typeof insertCompanyStatsSchema>;
+
+// References Content schema - for hero and CTA sections text
+export const referencesContent = pgTable("references_content", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  section: varchar("section").notNull(), // 'hero', 'cta', 'trusted_partner'
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  buttonText: text("button_text"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertReferencesContentSchema = createInsertSchema(referencesContent).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type ReferencesContent = typeof referencesContent.$inferSelect;
+export type InsertReferencesContent = z.infer<typeof insertReferencesContentSchema>;
+
+// Partner Logos schema - for trusted partner section
+export const partnerLogos = pgTable("partner_logos", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  companyName: varchar("company_name").notNull(),
+  logoUrl: text("logo_url").notNull(),
+  displayOrder: integer("display_order").default(0),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertPartnerLogoSchema = createInsertSchema(partnerLogos).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type PartnerLogo = typeof partnerLogos.$inferSelect;
+export type InsertPartnerLogo = z.infer<typeof insertPartnerLogoSchema>;
+
+// Reference Projects schema - for client projects showcase
+export const referenceProjects = pgTable("reference_projects", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  company: varchar("company").notNull(),
+  sector: varchar("sector").notNull(),
+  logoUrl: text("logo_url"),
+  project: varchar("project").notNull(),
+  description: text("description").notNull(),
+  results: text("results").array(), // Array of result strings
+  duration: varchar("duration").notNull(),
+  year: varchar("year").notNull(),
+  testimonial: text("testimonial"),
+  displayOrder: integer("display_order").default(0),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertReferenceProjectSchema = createInsertSchema(referenceProjects).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type ReferenceProject = typeof referenceProjects.$inferSelect;
+export type InsertReferenceProject = z.infer<typeof insertReferenceProjectSchema>;

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -6,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { DemoModal } from '@/components/demo-modal';
 import { useLanguage } from '@/components/language-provider';
 import { t } from '@/lib/i18n';
+import type { ReferencesContent, PartnerLogo, ReferenceProject } from '@shared/schema';
 import {
   Building2,
   Factory,
@@ -24,104 +26,30 @@ export default function References() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [selectedSector, setSelectedSector] = useState('all');
 
-  const references = [
-    {
-      id: 1,
-      company: 'ABC Otomotiv San. A.Ş.',
-      sector: 'manufacturing',
-      logo: 'https://via.placeholder.com/120x60/1E40AF/ffffff?text=ABC',
-      project: 'Üretim Süreç Yönetimi',
-      description: 'E-Flow BPM ile üretim süreçlerinin dijitalleştirilmesi ve kalite kontrol sistemlerinin entegrasyonu.',
-      results: [
-        '%40 üretim verimliliği artışı',
-        '%60 kalite kontrol süresinde azalma',
-        '%30 operasyonel maliyet tasarrufu'
-      ],
-      duration: '8 ay',
-      year: '2023',
-      testimonial: 'Algotrom ile çalışmak üretim süreçlerimizi tamamen dönüştürdü. Artık tüm üretim hattımızı gerçek zamanlı izleyebiliyor ve hızlı aksiyonlar alabiliyor.'
-    },
-    {
-      id: 2,
-      company: 'XYZ Enerji A.Ş.',
-      sector: 'energy',
-      logo: 'https://via.placeholder.com/120x60/1E40AF/ffffff?text=XYZ',
-      project: 'Akıllı Şebeke Yönetimi',
-      description: 'SCADA entegrasyonu ve enerji dağıtım ağının optimize edilmesi için geliştirilmiş çözüm.',
-      results: [
-        '%25 enerji kaybında azalma',
-        '%50 arıza tespit süresinde iyileşme',
-        '%35 operasyonel verimlilik artışı'
-      ],
-      duration: '12 ay',
-      year: '2023',
-      testimonial: 'Enerji dağıtım ağımızın dijitalleşmesi ile hem müşteri memnuniyeti hem de operasyonel verimliliğimiz önemli ölçüde arttı.'
-    },
-    {
-      id: 3,
-      company: 'DEF Perakende Mağazacılık',
-      sector: 'retail',
-      logo: 'https://via.placeholder.com/120x60/1E40AF/ffffff?text=DEF',
-      project: 'Omnichannel E-ticaret Platformu',
-      description: 'Online ve offline satış kanallarının entegrasyonu ve müşteri deneyimi optimizasyonu.',
-      results: [
-        '%60 online satış artışı',
-        '%45 müşteri memnuniyeti iyileşmesi',
-        '%50 stok devir hızı artışı'
-      ],
-      duration: '6 ay',
-      year: '2022',
-      testimonial: 'Omnichannel platformumuz sayesinde müşterilerimize tutarlı bir deneyim sunabiliyoruz. Satışlarımız da bu dönemde rekor kırdı.'
-    },
-    {
-      id: 4,
-      company: 'GHI Hizmet A.Ş.',
-      sector: 'service',
-      logo: 'https://via.placeholder.com/120x60/1E40AF/ffffff?text=GHI',
-      project: 'Müşteri Hizmetleri Platformu',
-      description: 'CRM entegrasyonu ve müşteri hizmetleri süreçlerinin otomatikleştirilmesi.',
-      results: [
-        '%70 müşteri memnuniyeti artışı',
-        '%50 çözüm süresinde azalma',
-        '%40 operasyonel verimlilik iyileşmesi'
-      ],
-      duration: '4 ay',
-      year: '2022',
-      testimonial: 'Müşteri hizmetleri süreçlerimiz artık çok daha hızlı ve etkili. Müşteri geri bildirimlerinde büyük iyileşme gözlemliyoruz.'
-    },
-    {
-      id: 5,
-      company: 'JKL İnşaat ve Gayrimenkul',
-      sector: 'construction',
-      logo: 'https://via.placeholder.com/120x60/1E40AF/ffffff?text=JKL',
-      project: 'Proje Yönetim Sistemi',
-      description: 'İnşaat projelerinin planlama, takip ve raporlama süreçlerinin dijitalleştirilmesi.',
-      results: [
-        '%30 proje teslim süresinde iyileşme',
-        '%45 kaynak kullanım verimliliği',
-        '%55 dokümantasyon süresinde azalma'
-      ],
-      duration: '10 ay',
-      year: '2023',
-      testimonial: 'Projelerimizi artık çok daha sistematik yönetebiliyoruz. Hem zaman hem de maliyet tasarrufu sağladık.'
-    },
-    {
-      id: 6,
-      company: 'MNO Lojistik A.Ş.',
-      sector: 'logistics',
-      logo: 'https://via.placeholder.com/120x60/1E40AF/ffffff?text=MNO',
-      project: 'Filo Yönetim Sistemi',
-      description: 'Araç takip sistemi ve rota optimizasyonu için geliştirilmiş entegre çözüm.',
-      results: [
-        '%35 yakıt tasarrufu',
-        '%50 teslimat süresinde iyileşme',
-        '%40 müşteri memnuniyeti artışı'
-      ],
-      duration: '5 ay',
-      year: '2022',
-      testimonial: 'Filo yönetimimiz artık çok daha verimli. Rota optimizasyonu sayesinde hem maliyet hem zaman tasarrufu sağlıyoruz.'
-    }
-  ];
+  // Fetch dynamic content
+  const { data: referencesContent = [] } = useQuery<ReferencesContent[]>({
+    queryKey: ["/api/references-content"],
+  });
+
+  const { data: partnerLogos = [] } = useQuery<PartnerLogo[]>({
+    queryKey: ["/api/partner-logos"],
+  });
+
+  const { data: referenceProjects = [] } = useQuery<ReferenceProject[]>({
+    queryKey: ["/api/reference-projects"],
+  });
+
+  // Get content by section
+  const getContentBySection = (section: string) => {
+    return referencesContent.find(content => content.section === section);
+  };
+
+  const heroContent = getContentBySection('hero');
+  const trustedPartnerContent = getContentBySection('trusted_partner');
+  const ctaContent = getContentBySection('cta');
+
+  // Use dynamic projects or fallback to empty array
+  const references = referenceProjects.filter(project => project.isActive);
 
   const sectors = {
     all: { label: 'Tüm Sektörler', icon: Building2 },
@@ -151,10 +79,10 @@ export default function References() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
-              {t('nav.references', language)}
+              {heroContent?.title || t('nav.references', language)}
             </h1>
             <p className="text-xl text-gray-600 mb-8">
-              Türkiye'nin önde gelen şirketleriyle gerçekleştirdiğimiz başarılı projeler ve elde edilen sonuçlar.
+              {heroContent?.content || "Türkiye'nin önde gelen şirketleriyle gerçekleştirdiğimiz başarılı projeler ve elde edilen sonuçlar."}
             </p>
           </div>
         </div>
@@ -188,19 +116,38 @@ export default function References() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Güvenilen Çözüm Ortağınız</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              {trustedPartnerContent?.title || "Güvenilen Çözüm Ortağınız"}
+            </h2>
             <p className="text-lg text-gray-600">
-              Farklı sektörlerden 100+ şirket Algotrom'u tercih ediyor
+              {trustedPartnerContent?.content || "Farklı sektörlerden 100+ şirket Algotrom'u tercih ediyor"}
             </p>
           </div>
 
           <div className="flex justify-center">
-            <div className="flex items-center justify-center h-20 p-4 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-              <div className="text-center text-gray-500">
-                <div className="text-sm font-medium">LOGO ALANI</div>
-                <div className="text-xs">Yakında eklenecek</div>
+            {partnerLogos.length > 0 ? (
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center">
+                {partnerLogos.filter(logo => logo.isActive).map((logo) => (
+                  <div key={logo.id} className="flex items-center justify-center h-20 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <img
+                      src={logo.logoUrl}
+                      alt={logo.companyName}
+                      className="max-w-full max-h-full object-contain"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://via.placeholder.com/120x60/E5E7EB/9CA3AF?text=LOGO';
+                      }}
+                    />
+                  </div>
+                ))}
               </div>
-            </div>
+            ) : (
+              <div className="flex items-center justify-center h-20 p-4 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                <div className="text-center text-gray-500">
+                  <div className="text-sm font-medium">LOGO ALANI</div>
+                  <div className="text-xs">Yakında eklenecek</div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -209,11 +156,10 @@ export default function References() {
       <section className="py-20 bg-primary text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-4">
-            Siz de Başarı Hikayemizin Parçası Olun
+            {ctaContent?.title || "Siz de Başarı Hikayemizin Parçası Olun"}
           </h2>
           <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-            İşletmenizin dijital dönüşüm yolculuğunda yanınızda olalım. 
-            Sizin için de başarılı projeler geliştirelim.
+            {ctaContent?.content || "İşletmenizin dijital dönüşüm yolculuğunda yanınızda olalım. Sizin için de başarılı projeler geliştirelim."}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
@@ -221,7 +167,7 @@ export default function References() {
               variant="secondary"
               onClick={() => setIsDemoModalOpen(true)}
             >
-              Proje Danışmanlığı Al
+              {ctaContent?.buttonText || "Proje Danışmanlığı Al"}
             </Button>
             <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary bg-transparent">
               <a href="/contact" className="text-white hover:text-primary">İletişime Geç</a>
@@ -229,6 +175,106 @@ export default function References() {
           </div>
         </div>
       </section>
+
+      {/* Projects Section - only show if we have projects */}
+      {references.length > 0 && (
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Başarılı Projelerimiz</h2>
+                <p className="text-lg text-gray-600 mb-8">
+                  Çeşitli sektörlerden müşterilerimiz için gerçekleştirdiğimiz başarılı projeleri inceleyin
+                </p>
+                
+                {/* Sector Filter */}
+                <div className="max-w-xs mx-auto">
+                  <Select value={selectedSector} onValueChange={setSelectedSector}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sektör seçin" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(sectors).map(([key, sector]) => (
+                        <SelectItem key={key} value={key}>
+                          {sector.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Projects Grid */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredReferences.map((ref) => (
+                  <Card key={ref.id} className="hover:shadow-lg transition-shadow">
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                            {ref.logoUrl ? (
+                              <img
+                                src={ref.logoUrl}
+                                alt={ref.company}
+                                className="max-w-full max-h-full object-contain"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = 'https://via.placeholder.com/48x48/E5E7EB/9CA3AF?text=LOGO';
+                                }}
+                              />
+                            ) : (
+                              <Building2 className="w-6 h-6 text-gray-400" />
+                            )}
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-gray-900">{ref.company}</h3>
+                            <Badge variant="secondary" className="text-xs">
+                              {sectors[ref.sector as keyof typeof sectors]?.label || ref.sector}
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+
+                      <h4 className="text-lg font-semibold text-primary mb-2">{ref.project}</h4>
+                      <p className="text-sm text-gray-600 mb-4 line-clamp-3">{ref.description}</p>
+
+                      {/* Results */}
+                      <div className="space-y-2 mb-4">
+                        {ref.results?.slice(0, 3).map((result, index) => (
+                          <div key={index} className="flex items-center text-sm text-gray-700">
+                            <Star className="w-4 h-4 text-primary mr-2 flex-shrink-0" />
+                            {result}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Project Info */}
+                      <div className="flex items-center justify-between text-sm text-gray-500 pt-4 border-t">
+                        <div className="flex items-center">
+                          <Calendar className="w-4 h-4 mr-1" />
+                          {ref.year}
+                        </div>
+                        <div className="flex items-center">
+                          <TrendingUp className="w-4 h-4 mr-1" />
+                          {ref.duration}
+                        </div>
+                      </div>
+
+                      {/* Testimonial */}
+                      {ref.testimonial && (
+                        <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                          <p className="text-sm text-gray-700 italic line-clamp-3">
+                            "{ref.testimonial}"
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <DemoModal isOpen={isDemoModalOpen} onClose={() => setIsDemoModalOpen(false)} />
     </div>

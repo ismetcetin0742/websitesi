@@ -73,6 +73,13 @@ export default function AdminDashboard() {
       color: "bg-purple-500",
     },
     {
+      title: "Referanslar Yönetimi",
+      description: "Referanslar, partner logoları ve proje yönetimi",
+      icon: <Building className="h-6 w-6" />,
+      href: "/admin/references",
+      color: "bg-orange-500",
+    },
+    {
       title: "Çözümler",
       description: "E-Flow BPM ve DMS çözümlerini yönetin",
       icon: <Target className="h-6 w-6" />,
