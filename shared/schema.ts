@@ -299,3 +299,25 @@ export const insertReferenceProjectSchema = createInsertSchema(referenceProjects
 
 export type ReferenceProject = typeof referenceProjects.$inferSelect;
 export type InsertReferenceProject = z.infer<typeof insertReferenceProjectSchema>;
+
+// Homepage Statistics schema - for homepage stats section
+export const homepageStatistics = pgTable("homepage_statistics", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  key: varchar("key").notNull().unique(), // 'projects', 'satisfaction', 'experience', 'clients'
+  value: varchar("value").notNull(), // '100+', '%95', '15+', '50+'
+  label: varchar("label").notNull(), // 'Başarılı Proje', 'Müşteri Memnuniyeti', etc.
+  icon: varchar("icon"), // Lucide icon name
+  displayOrder: integer("display_order").default(0),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertHomepageStatisticSchema = createInsertSchema(homepageStatistics).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type HomepageStatistic = typeof homepageStatistics.$inferSelect;
+export type InsertHomepageStatistic = z.infer<typeof insertHomepageStatisticSchema>;

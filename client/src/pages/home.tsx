@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
+import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { DemoModal } from '@/components/demo-modal';
@@ -13,14 +14,35 @@ import {
   Smartphone,
   Shield,
   ArrowRight,
-  Calendar
+  Calendar,
+  Star,
+  Users,
+  Award,
+  Target,
+  Building,
+  Heart
 } from 'lucide-react';
+import type { HomepageStatistic } from '@shared/schema';
+
+// Icon mapping for dynamic statistics
+const iconMap = {
+  TrendingUp,
+  Star,
+  Calendar,
+  Users,
+  Award,
+  Target,
+  Building,
+  Heart
+};
 
 export default function Home() {
   const { language } = useLanguage();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
-
+  const { data: statistics = [], isLoading: isStatsLoading } = useQuery<HomepageStatistic[]>({
+    queryKey: ['/api/homepage-statistics'],
+  });
 
   const solutions = [
     {
@@ -61,12 +83,15 @@ export default function Home() {
     }
   ];
 
-  const stats = [
-    { number: '15+', label: 'Yıl Deneyim' },
-    { number: '500+', label: 'Başarılı Proje' },
-    { number: '100+', label: 'Mutlu Müşteri' },
-    { number: '50+', label: 'Uzman Takım' }
-  ];
+  // Using dynamic statistics from database
+  const stats = statistics.map(stat => {
+    const IconComponent = iconMap[stat.icon as keyof typeof iconMap] || TrendingUp;
+    return {
+      number: stat.value,
+      label: stat.label,
+      icon: IconComponent
+    };
+  });
 
   return (
     <div>
@@ -166,12 +191,18 @@ export default function Home() {
               </p>
               
               <div className="grid grid-cols-2 gap-6 mb-8">
-                {stats.map((stat, index) => (
-                  <div key={index} className="text-center">
-                    <div className="text-3xl font-bold text-primary mb-2">{stat.number}</div>
-                    <div className="text-gray-600">{stat.label}</div>
-                  </div>
-                ))}
+                {!isStatsLoading && stats.map((stat, index) => {
+                  const IconComponent = stat.icon;
+                  return (
+                    <div key={index} className="text-center">
+                      <div className="flex items-center justify-center mb-2">
+                        <IconComponent className="w-6 h-6 text-primary mr-2" />
+                        <div className="text-3xl font-bold text-primary">{stat.number}</div>
+                      </div>
+                      <div className="text-gray-600">{stat.label}</div>
+                    </div>
+                  );
+                })}
               </div>
 
               <Button asChild variant="outline">

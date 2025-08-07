@@ -21,7 +21,9 @@ import {
   type PartnerLogo,
   type InsertPartnerLogo,
   type ReferenceProject,
-  type InsertReferenceProject
+  type InsertReferenceProject,
+  type HomepageStatistic,
+  type InsertHomepageStatistic
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -76,6 +78,12 @@ export interface IStorage {
   createReferenceProject(data: InsertReferenceProject): Promise<ReferenceProject>;
   updateReferenceProject(id: string, data: Partial<ReferenceProject>): Promise<ReferenceProject>;
   deleteReferenceProject(id: string): Promise<void>;
+
+  // Homepage Statistics operations
+  getHomepageStatistics(): Promise<HomepageStatistic[]>;
+  createHomepageStatistic(data: InsertHomepageStatistic): Promise<HomepageStatistic>;
+  updateHomepageStatistic(id: string, data: Partial<HomepageStatistic>): Promise<HomepageStatistic>;
+  deleteHomepageStatistic(id: string): Promise<void>;
 }
 
 export class MemStorage implements IStorage {

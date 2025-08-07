@@ -12,7 +12,8 @@ import {
   Settings,
   Globe,
   Target,
-  Building
+  Building,
+  Home
 } from "lucide-react";
 import { Link } from "wouter";
 
@@ -78,6 +79,13 @@ export default function AdminDashboard() {
       icon: <Building className="h-6 w-6" />,
       href: "/admin/references",
       color: "bg-orange-500",
+    },
+    {
+      title: "Ana Sayfa Yönetimi",
+      description: "Ana sayfa bileşenleri ve istatistikler",
+      icon: <Home className="h-6 w-6" />,
+      href: "/admin/homepage",
+      color: "bg-blue-500",
     },
     {
       title: "Çözümler",

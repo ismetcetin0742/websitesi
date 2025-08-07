@@ -5,6 +5,9 @@ import { insertDemoRequestSchema, insertContactMessageSchema, insertJobApplicati
 import { authenticateAdmin, validateAdmin, generateToken } from "./adminAuth";
 import nodemailer from "nodemailer";
 import { z } from "zod";
+import { db } from "./db";
+import { homepageStatistics } from "@shared/schema";
+import { eq } from "drizzle-orm";
 
 // Email configuration
 const transporter = nodemailer.createTransport({
@@ -608,6 +611,76 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error updating content:", error);
       res.status(500).json({ error: "Güncelleme başarısız" });
+    }
+  });
+
+  // Homepage Statistics endpoints
+  app.get("/api/homepage-statistics", async (req, res) => {
+    try {
+      const statistics = await db.select().from(homepageStatistics).where(eq(homepageStatistics.isActive, true)).orderBy(homepageStatistics.displayOrder);
+      res.json(statistics);
+    } catch (error) {
+      console.error("Error fetching homepage statistics:", error);
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  app.get("/api/admin/homepage-statistics", authenticateAdmin, async (req, res) => {
+    try {
+      const statistics = await db.select().from(homepageStatistics).orderBy(homepageStatistics.displayOrder);
+      res.json(statistics);
+    } catch (error) {
+      console.error("Error fetching homepage statistics:", error);
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  app.post("/api/admin/homepage-statistics", authenticateAdmin, async (req, res) => {
+    try {
+      const [newStatistic] = await db.insert(homepageStatistics).values(req.body).returning();
+      res.status(201).json({
+        success: true,
+        message: "İstatistik eklendi",
+        data: newStatistic
+      });
+    } catch (error) {
+      console.error("Error creating homepage statistic:", error);
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  app.put("/api/admin/homepage-statistics/:id", authenticateAdmin, async (req, res) => {
+    try {
+      const [updatedStatistic] = await db.update(homepageStatistics)
+        .set({ ...req.body, updatedAt: new Date() })
+        .where(eq(homepageStatistics.id, req.params.id))
+        .returning();
+      
+      if (!updatedStatistic) {
+        return res.status(404).json({ message: "İstatistik bulunamadı" });
+      }
+      
+      res.json({
+        success: true,
+        message: "İstatistik güncellendi",
+        data: updatedStatistic
+      });
+    } catch (error) {
+      console.error("Error updating homepage statistic:", error);
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  app.delete("/api/admin/homepage-statistics/:id", authenticateAdmin, async (req, res) => {
+    try {
+      await db.delete(homepageStatistics).where(eq(homepageStatistics.id, req.params.id));
+      res.json({
+        success: true,
+        message: "İstatistik silindi"
+      });
+    } catch (error) {
+      console.error("Error deleting homepage statistic:", error);
+      res.status(500).json({ message: "Sunucu hatası" });
     }
   });
 

@@ -35,6 +35,8 @@ import AdminReferences from "@/pages/admin/references/index";
 import AdminReferencesContent from "@/pages/admin/references/content";
 import AdminReferencesLogos from "@/pages/admin/references/logos";
 import AdminReferencesProjects from "@/pages/admin/references/projects";
+import AdminHomepage from "@/pages/admin/homepage/index";
+import AdminHomepageStatistics from "@/pages/admin/homepage/statistics";
 import AdminSolutions from "@/pages/admin/solutions";
 import AdminSectors from "@/pages/admin/sectors";
 import AdminContent from "@/pages/admin/content";
@@ -130,6 +132,16 @@ function Router() {
         <Route path="/admin/references/projects">
           <AdminLayout>
             <AdminReferencesProjects />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/homepage">
+          <AdminLayout>
+            <AdminHomepage />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/homepage/statistics">
+          <AdminLayout>
+            <AdminHomepageStatistics />
           </AdminLayout>
         </Route>
         
