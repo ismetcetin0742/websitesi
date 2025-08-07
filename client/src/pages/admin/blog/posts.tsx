@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { ArrowLeft, FileText, Plus, Edit, Calendar } from "lucide-react";
 import { Link } from "wouter";
 import { EditModal } from "@/components/EditModal";
 import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 
 interface BlogPost {
   id: string;
@@ -21,6 +22,7 @@ export default function AdminBlogPosts() {
   const { data: blogPosts, isLoading } = useQuery<BlogPost[]>({
     queryKey: ["/api/blog"],
   });
+  const queryClient = useQueryClient();
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const { toast } = useToast();
@@ -32,25 +34,18 @@ export default function AdminBlogPosts() {
 
   const handleSave = async (data: any) => {
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch(`/api/admin/blog/${data.id}`, {
+      await apiRequest(`/api/admin/blog/${data.id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
+        body: data,
       });
 
-      if (response.ok) {
-        toast({
-          title: "Başarılı",
-          description: "Blog yazısı güncellendi.",
-        });
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Güncelleme başarısız');
-      }
+      queryClient.invalidateQueries({ queryKey: ["/api/blog"] });
+      setEditModalOpen(false);
+      
+      toast({
+        title: "Başarılı",
+        description: "Blog yazısı güncellendi.",
+      });
     } catch (error) {
       console.error('Update error:', error);
       toast({

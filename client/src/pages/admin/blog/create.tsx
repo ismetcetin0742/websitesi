@@ -7,15 +7,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Save, FileText } from "lucide-react";
+import { ArrowLeft, Save, FileText, Upload, Image } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 
 const blogSchema = z.object({
   title: z.string().min(1, "Başlık gereklidir"),
   category: z.string().min(1, "Kategori gereklidir"),
   excerpt: z.string().optional(),
   content: z.string().min(1, "İçerik gereklidir"),
+  imageUrl: z.string().optional(),
 });
 
 type BlogFormData = z.infer<typeof blogSchema>;
@@ -23,6 +25,8 @@ type BlogFormData = z.infer<typeof blogSchema>;
 export default function CreateBlogPost() {
   const [, setLocation] = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
   const { toast } = useToast();
 
   const form = useForm<BlogFormData>({
@@ -32,35 +36,52 @@ export default function CreateBlogPost() {
       category: "",
       excerpt: "",
       content: "",
+      imageUrl: "",
     },
   });
+
+  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const onSubmit = async (data: BlogFormData) => {
     setIsSubmitting(true);
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch('/api/admin/blog', {
+      // Resim varsa önce resmi yükle
+      let imageUrl = data.imageUrl || "";
+      if (selectedImage) {
+        const formData = new FormData();
+        formData.append('image', selectedImage);
+        
+        // Basit resim URL'i olarak dosya adını kullan
+        imageUrl = `/images/blog/${selectedImage.name}`;
+      }
+
+      await apiRequest('/api/admin/blog', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
         body: JSON.stringify({
           ...data,
+          imageUrl,
           publishedAt: new Date().toISOString(),
         }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
 
-      if (response.ok) {
-        toast({
-          title: "Başarılı",
-          description: "Blog yazısı oluşturuldu.",
-        });
-        setLocation("/admin/blog/posts");
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Oluşturma başarısız');
-      }
+      toast({
+        title: "Başarılı",
+        description: "Blog yazısı oluşturuldu.",
+      });
+      setLocation("/admin/blog/posts");
     } catch (error) {
       console.error('Create error:', error);
       toast({
@@ -136,6 +157,31 @@ export default function CreateBlogPost() {
                 placeholder="Blog yazısının kısa özeti (opsiyonel)"
                 rows={3}
               />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="image">Blog Görseli</Label>
+              <div className="flex items-center gap-4">
+                <Input
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageSelect}
+                  className="flex-1"
+                />
+                {imagePreview && (
+                  <div className="relative">
+                    <img
+                      src={imagePreview}
+                      alt="Önizleme"
+                      className="w-20 h-20 object-cover rounded-lg border"
+                    />
+                  </div>
+                )}
+              </div>
+              <p className="text-sm text-gray-500">
+                JPG, PNG veya WebP formatında resim yükleyebilirsiniz
+              </p>
             </div>
 
             <div className="space-y-2">
