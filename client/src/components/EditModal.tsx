@@ -40,6 +40,18 @@ export function EditModal({ isOpen, onClose, title, data, onSave, fields }: Edit
     }));
   };
 
+  // Helper function to extract string value from potentially multilingual content
+  const getFieldValue = (key: string) => {
+    const value = formData[key];
+    if (typeof value === 'string') {
+      return value;
+    }
+    if (typeof value === 'object' && value !== null) {
+      return value.tr || value.en || Object.values(value)[0] || '';
+    }
+    return '';
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
@@ -65,7 +77,7 @@ export function EditModal({ isOpen, onClose, title, data, onSave, fields }: Edit
               {field.type === 'textarea' ? (
                 <Textarea
                   id={field.key}
-                  value={formData[field.key] || ''}
+                  value={getFieldValue(field.key)}
                   onChange={(e) => handleChange(field.key, e.target.value)}
                   rows={4}
                   className="resize-none"
@@ -74,7 +86,7 @@ export function EditModal({ isOpen, onClose, title, data, onSave, fields }: Edit
                 <Input
                   id={field.key}
                   type={field.type}
-                  value={formData[field.key] || ''}
+                  value={getFieldValue(field.key)}
                   onChange={(e) => handleChange(field.key, e.target.value)}
                 />
               )}

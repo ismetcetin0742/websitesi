@@ -28,6 +28,16 @@ export default function Blog() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
+  // Helper function to get text from multilingual content
+  const getMultilingualText = (content: any) => {
+    if (!content) return '';
+    if (typeof content === 'string') return content;
+    if (typeof content === 'object') {
+      return content[language] || content.tr || Object.values(content)[0] || '';
+    }
+    return '';
+  };
+
   const { data: blogPosts, isLoading } = useQuery<BlogPost[]>({
     queryKey: ['/api/blog'],
   });
@@ -71,8 +81,8 @@ export default function Blog() {
       );
     }
 
-    const postTitle = typeof singlePost.title === 'object' ? singlePost.title[language] || singlePost.title.tr : singlePost.title;
-    const postContent = typeof singlePost.content === 'object' ? singlePost.content[language] || singlePost.content.tr : singlePost.content;
+    const postTitle = getMultilingualText(singlePost.title as any);
+    const postContent = getMultilingualText(singlePost.content as any);
 
     return (
       <div className="py-12">
@@ -156,7 +166,7 @@ export default function Blog() {
                             href={`/blog/${post.id}`}
                             className="text-gray-900 hover:text-primary transition-colors font-medium line-clamp-2"
                           >
-                            {typeof post.title === 'object' ? post.title[language] || post.title.tr : post.title}
+                            {getMultilingualText(post.title as any)}
                           </Link>
                           <p className="text-sm text-gray-600 mt-1">
                             {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('tr-TR') : ''}
@@ -176,9 +186,9 @@ export default function Blog() {
 
   // Filter blog posts
   const filteredPosts = blogPosts?.filter(post => {
+    const postTitle = getMultilingualText(post.title as any);
     const matchesSearch = searchTerm === '' || 
-      (typeof post.title === 'object' ? post.title[language] || post.title.tr : post.title)
-        .toLowerCase().includes(searchTerm.toLowerCase());
+      postTitle.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory;
     return matchesSearch && matchesCategory;
   }) || [];
@@ -262,11 +272,11 @@ export default function Blog() {
                     </div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-3 hover:text-primary transition-colors cursor-pointer">
                       <Link href={`/blog/${post.id}`}>
-                        {typeof post.title === 'object' ? post.title[language] || post.title.tr : post.title}
+                        {getMultilingualText(post.title as any)}
                       </Link>
                     </h3>
                     <p className="text-gray-600 mb-4 line-clamp-3">
-                      {typeof post.excerpt === 'object' ? post.excerpt[language] || post.excerpt.tr : post.excerpt}
+                      {getMultilingualText(post.excerpt as any)}
                     </p>
                     <Link 
                       href={`/blog/${post.id}`}

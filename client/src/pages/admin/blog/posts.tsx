@@ -11,8 +11,8 @@ import { apiRequest } from "@/lib/queryClient";
 
 interface BlogPost {
   id: string;
-  title: string;
-  content: string | { tr: string; en: string };
+  title: string | { tr: string; en: string; fr: string; ar: string; ru: string; de: string };
+  content: string | { tr: string; en: string; fr: string; ar: string; ru: string; de: string };
   excerpt?: string;
   category: string;
   publishedAt: Date | null;
@@ -54,6 +54,14 @@ export default function AdminBlogPosts() {
         variant: "destructive",
       });
     }
+  };
+
+  // Helper fonksiyon - çok dilli içeriği göster
+  const getDisplayText = (content: string | { tr: string; en: string; fr: string; ar: string; ru: string; de: string }) => {
+    if (typeof content === 'string') {
+      return content;
+    }
+    return content.tr || content.en || Object.values(content)[0] || '';
   };
 
   const editFields = [
@@ -112,7 +120,7 @@ export default function AdminBlogPosts() {
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div className="flex-1">
-                  <CardTitle className="text-xl mb-2">{post.title}</CardTitle>
+                  <CardTitle className="text-xl mb-2">{getDisplayText(post.title)}</CardTitle>
                   <div className="flex items-center gap-2 mb-2">
                     <Badge variant="secondary">{post.category}</Badge>
                     {post.publishedAt && (
