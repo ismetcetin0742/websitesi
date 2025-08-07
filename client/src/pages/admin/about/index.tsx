@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { FileText, Target, Users, Building, Award } from "lucide-react";
+import { FileText, Target, Users, Building, Award, ArrowLeft } from "lucide-react";
 
 export default function AboutManagementPage() {
   const aboutSections = [
@@ -38,6 +38,14 @@ export default function AboutManagementPage() {
   return (
     <div className="p-6">
       <div className="mb-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Link href="/admin/dashboard">
+            <Button variant="ghost" size="sm">
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              Dashboard'a Dön
+            </Button>
+          </Link>
+        </div>
         <h1 className="text-3xl font-bold text-gray-900">Hakkımızda Yönetimi</h1>
         <p className="text-gray-600">Hakkımızda sayfasındaki tüm içerikleri buradan yönetebilirsiniz</p>
       </div>
