@@ -7,6 +7,8 @@ import {
   type InsertContactMessage,
   type BlogPost,
   type InsertBlogPost,
+  type JobPosition,
+  type InsertJobPosition,
   type JobApplication,
   type InsertJobApplication,
   type TeamMember,
@@ -41,6 +43,14 @@ export interface IStorage {
   getBlogPosts(): Promise<BlogPost[]>;
   getBlogPost(id: string): Promise<BlogPost | undefined>;
   createBlogPost(post: InsertBlogPost): Promise<BlogPost>;
+  updateBlogPost(id: string, data: Partial<BlogPost>): Promise<BlogPost>;
+  deleteBlogPost(id: string): Promise<void>;
+  
+  getJobPositions(): Promise<JobPosition[]>;
+  getJobPosition(id: string): Promise<JobPosition | undefined>;
+  createJobPosition(position: InsertJobPosition): Promise<JobPosition>;
+  updateJobPosition(id: string, data: Partial<JobPosition>): Promise<JobPosition>;
+  deleteJobPosition(id: string): Promise<void>;
   
   createJobApplication(application: InsertJobApplication): Promise<JobApplication>;
   getJobApplications(): Promise<JobApplication[]>;
@@ -91,6 +101,7 @@ export class MemStorage implements IStorage {
   private demoRequests: Map<string, DemoRequest>;
   private contactMessages: Map<string, ContactMessage>;
   private blogPosts: Map<string, BlogPost>;
+  private jobPositions: Map<string, JobPosition>;
   private jobApplications: Map<string, JobApplication>;
   private teamMembers: Map<string, TeamMember>;
   private aboutContent: Map<string, AboutContent>;
@@ -105,6 +116,7 @@ export class MemStorage implements IStorage {
     this.demoRequests = new Map();
     this.contactMessages = new Map();
     this.blogPosts = new Map();
+    this.jobPositions = new Map();
     this.jobApplications = new Map();
     this.teamMembers = new Map();
     this.aboutContent = new Map();
@@ -123,6 +135,7 @@ export class MemStorage implements IStorage {
     this.initializeReferencesContent();
     this.initializePartnerLogos();
     this.initializeReferenceProjects();
+    this.initializeJobPositions();
   }
 
   private initializeBlogPosts() {
@@ -416,6 +429,53 @@ export class MemStorage implements IStorage {
     }
     
     this.blogPosts.delete(id);
+  }
+
+  async getJobPositions(): Promise<JobPosition[]> {
+    return Array.from(this.jobPositions.values()).sort(
+      (a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)
+    );
+  }
+
+  async getJobPosition(id: string): Promise<JobPosition | undefined> {
+    return this.jobPositions.get(id);
+  }
+
+  async createJobPosition(position: InsertJobPosition): Promise<JobPosition> {
+    const id = randomUUID();
+    const jobPosition: JobPosition = { 
+      ...position, 
+      id, 
+      createdAt: new Date() 
+    };
+    this.jobPositions.set(id, jobPosition);
+    return jobPosition;
+  }
+
+  async updateJobPosition(id: string, data: Partial<JobPosition>): Promise<JobPosition> {
+    const existingPosition = this.jobPositions.get(id);
+    if (!existingPosition) {
+      throw new Error('Job position not found');
+    }
+    
+    const updatedPosition: JobPosition = {
+      ...existingPosition,
+      ...data,
+      id: existingPosition.id,
+      createdAt: existingPosition.createdAt
+    };
+    
+    this.jobPositions.set(id, updatedPosition);
+    return updatedPosition;
+  }
+
+  async deleteJobPosition(id: string): Promise<void> {
+    const existingPosition = this.jobPositions.get(id);
+    if (!existingPosition) {
+      throw new Error('Job position not found');
+    }
+    
+    this.jobPositions.delete(id);
   }
 
   async createJobApplication(application: InsertJobApplication): Promise<JobApplication> {
@@ -824,6 +884,136 @@ export class MemStorage implements IStorage {
 
   async deleteReferenceProject(id: string): Promise<void> {
     this.referenceProjects.delete(id);
+  }
+
+  private initializeJobPositions() {
+    const samplePositions: JobPosition[] = [
+      {
+        id: randomUUID(),
+        title: {
+          tr: "Senior Frontend Developer",
+          en: "Senior Frontend Developer",
+          fr: "Développeur Frontend Senior",
+          ar: "مطور واجهة أمامية أول",
+          ru: "Старший Frontend-разработчик",
+          de: "Senior Frontend-Entwickler"
+        },
+        description: {
+          tr: "React.js ve TypeScript ile modern web uygulamaları geliştirmek üzere takımımıza katılacak Senior Frontend Developer arıyoruz. E-Flow BPM ve DMS projelerinde yer alacaksınız.",
+          en: "We are looking for a Senior Frontend Developer to join our team to develop modern web applications with React.js and TypeScript. You will be involved in E-Flow BPM and DMS projects.",
+          fr: "Nous recherchons un développeur Frontend Senior pour rejoindre notre équipe afin de développer des applications web modernes avec React.js et TypeScript.",
+          ar: "نبحث عن مطور واجهة أمامية أول للانضمام إلى فريقنا لتطوير تطبيقات ويب حديثة باستخدام React.js و TypeScript.",
+          ru: "Мы ищем старшего Frontend-разработчика для присоединения к нашей команде для разработки современных веб-приложений с React.js и TypeScript.",
+          de: "Wir suchen einen Senior Frontend-Entwickler für unser Team zur Entwicklung moderner Webanwendungen mit React.js und TypeScript."
+        },
+        requirements: [
+          "5+ yıl frontend geliştirme deneyimi",
+          "React.js ve TypeScript konusunda uzman seviye bilgi",
+          "HTML5, CSS3, SASS/SCSS konularında deneyim",
+          "RESTful API entegrasyonu deneyimi",
+          "Git kullanımında yetkinlik",
+          "Agile/Scrum metodolojilerine aşinalık"
+        ],
+        benefits: [
+          "Rekabetçi maaş",
+          "Esnek çalışma saatleri",
+          "Uzaktan çalışma imkanı",
+          "Sağlık sigortası",
+          "Eğitim ve gelişim fırsatları",
+          "Modern teknoloji stack"
+        ],
+        department: "Yazılım Geliştirme",
+        location: "İstanbul, Türkiye",
+        type: "full-time",
+        isActive: true,
+        displayOrder: 1,
+        createdAt: new Date()
+      },
+      {
+        id: randomUUID(),
+        title: {
+          tr: "BPM Business Analyst",
+          en: "BPM Business Analyst",
+          fr: "Analyste métier BPM",
+          ar: "محلل أعمال BPM",
+          ru: "Бизнес-аналитик BPM",
+          de: "BPM Business Analyst"
+        },
+        description: {
+          tr: "İş süreçlerini analiz ederek optimizasyon önerileri geliştiren ve E-Flow BPM implementasyonlarında yer alacak Business Analyst pozisyonu.",
+          en: "Business Analyst position to analyze business processes, develop optimization recommendations and participate in E-Flow BPM implementations.",
+          fr: "Poste d'analyste métier pour analyser les processus métier, développer des recommandations d'optimisation et participer aux implémentations E-Flow BPM.",
+          ar: "منصب محلل أعمال لتحليل العمليات التجارية وتطوير توصيات التحسين والمشاركة في تطبيقات E-Flow BPM.",
+          ru: "Позиция бизнес-аналитика для анализа бизнес-процессов, разработки рекомендаций по оптимизации и участия в внедрениях E-Flow BPM.",
+          de: "Business Analyst Position zur Analyse von Geschäftsprozessen, Entwicklung von Optimierungsempfehlungen und Teilnahme an E-Flow BPM Implementierungen."
+        },
+        requirements: [
+          "İş analizi alanında 3+ yıl deneyim",
+          "BPM metodolojilerine hakim olmak",
+          "Süreç modelleme araçları bilgisi",
+          "SQL ve veri analizi deneyimi",
+          "İyi iletişim ve sunum becerileri",
+          "Müşteri odaklı çözüm yaklaşımı"
+        ],
+        benefits: [
+          "Çeşitli sektörlerle çalışma imkanı",
+          "Süreç optimizasyonu projelerinde yer alma",
+          "Profesyonel gelişim desteği",
+          "Performans bonusu",
+          "Teamwork ortamı",
+          "İnovatif projeler"
+        ],
+        department: "İş Analizi",
+        location: "İstanbul, Türkiye",
+        type: "full-time",
+        isActive: true,
+        displayOrder: 2,
+        createdAt: new Date()
+      },
+      {
+        id: randomUUID(),
+        title: {
+          tr: "DevOps Engineer",
+          en: "DevOps Engineer",
+          fr: "Ingénieur DevOps",
+          ar: "مهندس DevOps",
+          ru: "DevOps-инженер",
+          de: "DevOps-Ingenieur"
+        },
+        description: {
+          tr: "Cloud altyapısını yönetecek, CI/CD pipeline'ları oluşturacak ve sistem güvenilirliğini sağlayacak DevOps Engineer arıyoruz.",
+          en: "We are looking for a DevOps Engineer to manage cloud infrastructure, create CI/CD pipelines and ensure system reliability.",
+          fr: "Nous recherchons un ingénieur DevOps pour gérer l'infrastructure cloud, créer des pipelines CI/CD et assurer la fiabilité du système.",
+          ar: "نبحث عن مهندس DevOps لإدارة البنية التحتية السحابية وإنشاء خطوط أنابيب CI/CD وضمان موثوقية النظام.",
+          ru: "Мы ищем DevOps-инженера для управления облачной инфраструктурой, создания CI/CD-конвейеров и обеспечения надежности системы.",
+          de: "Wir suchen einen DevOps-Ingenieur zur Verwaltung der Cloud-Infrastruktur, Erstellung von CI/CD-Pipelines und Gewährleistung der Systemzuverlässigkeit."
+        },
+        requirements: [
+          "Docker ve Kubernetes deneyimi",
+          "AWS/Azure cloud platformları bilgisi",
+          "CI/CD araçları (Jenkins, GitLab CI) deneyimi",
+          "Infrastructure as Code (Terraform) bilgisi",
+          "Linux sistem yönetimi",
+          "Monitoring ve logging araçları deneyimi"
+        ],
+        benefits: [
+          "Cloud teknolojileri ile çalışma",
+          "Modern DevOps araçları",
+          "Teknik eğitim ve sertifikasyon desteği",
+          "Hybrid çalışma modeli",
+          "İnovatif teknoloji stack",
+          "Kariyer gelişim programı"
+        ],
+        department: "DevOps",
+        location: "İstanbul, Türkiye",
+        type: "full-time",
+        isActive: true,
+        displayOrder: 3,
+        createdAt: new Date()
+      }
+    ];
+
+    samplePositions.forEach(position => this.jobPositions.set(position.id, position));
   }
 }
 

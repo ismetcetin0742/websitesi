@@ -597,6 +597,95 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Job Positions endpoints
+  app.get("/api/job-positions", async (req, res) => {
+    try {
+      const positions = await storage.getJobPositions();
+      res.json(positions);
+    } catch (error) {
+      console.error("Error fetching job positions:", error);
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  app.get("/api/admin/job-positions", authenticateAdmin, async (req, res) => {
+    try {
+      const positions = await storage.getJobPositions();
+      res.json(positions);
+    } catch (error) {
+      console.error("Error fetching job positions:", error);
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  app.get("/api/admin/job-positions/:id", authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const position = await storage.getJobPosition(id);
+      if (!position) {
+        return res.status(404).json({ message: "İş pozisyonu bulunamadı" });
+      }
+      res.json(position);
+    } catch (error) {
+      console.error("Error fetching job position:", error);
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  app.post("/api/admin/job-positions", authenticateAdmin, async (req, res) => {
+    try {
+      const newPosition = await storage.createJobPosition(req.body);
+      res.status(201).json({
+        success: true,
+        message: "İş pozisyonu eklendi",
+        data: newPosition
+      });
+    } catch (error) {
+      console.error("Error creating job position:", error);
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  app.put("/api/admin/job-positions/:id", authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      let updateData = req.body;
+      
+      console.log("Job position update request - ID:", id);
+      console.log("Job position update request - Data:", updateData);
+      
+      // Convert multilingual fields if they're strings to objects
+      if (typeof updateData.title === 'string') {
+        updateData.title = { tr: updateData.title };
+      }
+      if (typeof updateData.description === 'string') {
+        updateData.description = { tr: updateData.description };
+      }
+      
+      const updatedPosition = await storage.updateJobPosition(id, updateData);
+      
+      res.json({ success: true, message: "İş pozisyonu güncellendi", data: updatedPosition });
+    } catch (error) {
+      console.error("Error updating job position:", error);
+      res.status(500).json({ error: "Güncelleme başarısız: " + (error instanceof Error ? error.message : "Bilinmeyen hata") });
+    }
+  });
+
+  app.delete("/api/admin/job-positions/:id", authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      console.log("Job position delete request - ID:", id);
+      
+      await storage.deleteJobPosition(id);
+      
+      res.json({ success: true, message: "İş pozisyonu silindi" });
+    } catch (error) {
+      console.error("Error deleting job position:", error);
+      res.status(500).json({ error: "Silme başarısız: " + (error instanceof Error ? error.message : "Bilinmeyen hata") });
+    }
+  });
+
   app.put("/api/admin/solutions/:id", authenticateAdmin, async (req, res) => {
     try {
       const { id } = req.params;

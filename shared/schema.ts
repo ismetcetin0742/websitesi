@@ -94,6 +94,20 @@ export const blogPosts = pgTable("blog_posts", {
   publishedAt: timestamp("published_at").defaultNow(),
 });
 
+export const jobPositions = pgTable("job_positions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: jsonb("title").notNull(), // Multi-language
+  description: jsonb("description").notNull(), // Multi-language
+  requirements: jsonb("requirements").notNull(), // Array of requirements
+  benefits: jsonb("benefits").notNull(), // Array of benefits
+  department: text("department").notNull(),
+  location: text("location").notNull(),
+  type: text("type").notNull(), // 'full-time', 'part-time', 'contract', 'intern'
+  isActive: boolean("is_active").notNull().default(true),
+  displayOrder: integer("display_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const jobApplications = pgTable("job_applications", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   position: text("position").notNull(),
@@ -124,6 +138,11 @@ export const insertContactMessageSchema = createInsertSchema(contactMessages).om
 export const insertBlogPostSchema = createInsertSchema(blogPosts).omit({
   id: true,
   publishedAt: true,
+});
+
+export const insertJobPositionSchema = createInsertSchema(jobPositions).omit({
+  id: true,
+  createdAt: true,
 });
 
 export const insertJobApplicationSchema = createInsertSchema(jobApplications).omit({
@@ -178,6 +197,8 @@ export type ContactMessage = typeof contactMessages.$inferSelect;
 export type InsertContactMessage = z.infer<typeof insertContactMessageSchema>;
 export type BlogPost = typeof blogPosts.$inferSelect;
 export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
+export type JobPosition = typeof jobPositions.$inferSelect;
+export type InsertJobPosition = z.infer<typeof insertJobPositionSchema>;
 export type JobApplication = typeof jobApplications.$inferSelect;
 export type InsertJobApplication = z.infer<typeof insertJobApplicationSchema>;
 export type SiteContent = typeof siteContent.$inferSelect;

@@ -116,11 +116,18 @@ export default function AdminDashboard() {
       color: "bg-indigo-500",
     },
     {
+      title: "Kariyer Yönetimi",
+      description: "İş pozisyonları ve başvuruları yönetin",
+      icon: <Briefcase className="h-6 w-6" />,
+      href: "/admin/careers",
+      color: "bg-pink-500",
+    },
+    {
       title: "İş Başvuruları",
       description: "Kariyer başvurularını görüntüleyin",
-      icon: <Briefcase className="h-6 w-6" />,
+      icon: <Users className="h-6 w-6" />,
       href: "/admin/applications",
-      color: "bg-pink-500",
+      color: "bg-teal-500",
     },
   ];
 

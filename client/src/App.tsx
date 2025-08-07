@@ -43,6 +43,9 @@ import AdminHomepageStatistics from "@/pages/admin/homepage/statistics";
 import AdminSolutions from "@/pages/admin/solutions";
 import AdminSectors from "@/pages/admin/sectors";
 import AdminContent from "@/pages/admin/content";
+import AdminCareers from "@/pages/admin/careers/index";
+import AdminJobPositions from "@/pages/admin/careers/positions";
+import CreateJobPosition from "@/pages/admin/careers/create";
 import AdminLayout from "@/components/AdminLayout";
 
 function Router() {
@@ -125,6 +128,21 @@ function Router() {
         <Route path="/admin/sectors">
           <AdminLayout>
             <AdminSectors />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/careers">
+          <AdminLayout>
+            <AdminCareers />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/careers/positions">
+          <AdminLayout>
+            <AdminJobPositions />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/careers/positions/create">
+          <AdminLayout>
+            <CreateJobPosition />
           </AdminLayout>
         </Route>
         <Route path="/admin/content">
