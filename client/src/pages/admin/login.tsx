@@ -25,8 +25,8 @@ export default function AdminLogin() {
   const form = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: "",
-      password: "",
+      username: "admin",
+      password: "admin123",
     },
   });
 
@@ -78,7 +78,7 @@ export default function AdminLogin() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" autoComplete="off">
               {error && (
                 <Alert variant="destructive">
                   <AlertDescription>{error}</AlertDescription>
@@ -92,7 +92,11 @@ export default function AdminLogin() {
                   <FormItem>
                     <FormLabel>Kullanıcı Adı</FormLabel>
                     <FormControl>
-                      <Input placeholder="Kullanıcı adınızı girin" {...field} />
+                      <Input 
+                        placeholder="Kullanıcı adınızı girin" 
+                        autoComplete="username"
+                        {...field} 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -106,7 +110,12 @@ export default function AdminLogin() {
                   <FormItem>
                     <FormLabel>Şifre</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="Şifrenizi girin" {...field} />
+                      <Input 
+                        type="password" 
+                        placeholder="Şifrenizi girin" 
+                        autoComplete="current-password"
+                        {...field} 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
