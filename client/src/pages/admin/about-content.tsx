@@ -7,67 +7,64 @@ import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import type { AboutContent } from "@shared/schema";
 
 export default function AdminAboutContent() {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [editMode, setEditMode] = useState<string | null>(null);
-  const [saving, setSaving] = useState(false);
-
-  // Static content that can be edited
-  const [content, setContent] = useState({
-    about: {
-      title: "Hakkımızda",
-      description: "15 yılı aşkın deneyimimizle, işletmelerin dijital dönüşüm yolculuğunda güvenilir teknoloji partneri olarak yer alıyoruz."
-    },
-    mission: {
-      title: "Misyonumuz",
-      description: "İşletmelerin dijital dönüşüm süreçlerinde güvenilir teknoloji partneri olarak, iş süreçlerini optimize eden, verimliliği artıran ve rekabet avantajı sağlayan yenilikçi çözümler sunmaktır. Müşterilerimizin başarısına odaklanarak, kaliteli yazılım çözümleri ve sürekli destek hizmeti sağlarız."
-    },
-    vision: {
-      title: "Vizyonumuz", 
-      description: "Türkiye'nin önde gelen dijital dönüşüm çözümleri sağlayıcısı olarak, işletmelerin küresel rekabette öne çıkmasını sağlamak. Teknolojinin gücünü kullanarak sürdürülebilir büyüme ve yenilikçi iş modelleri yaratmak, dijital çağda liderlik eden kuruluşlar yetiştirmektir."
-    },
-    values: {
-      title: "Değerlerimiz",
-      description: "Çalışma prensiplerimizi şekillendiren temel değerler"
-    }
-  });
-
   const [editingContent, setEditingContent] = useState("");
 
-  const handleEdit = (section: string) => {
-    setEditMode(section);
-    setEditingContent(content[section as keyof typeof content].description);
-  };
+  // Fetch about content from API
+  const { data: content = [], isLoading } = useQuery<AboutContent[]>({
+    queryKey: ['/api/about-content'],
+  });
 
-  const handleSave = async (section: string) => {
-    setSaving(true);
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setContent(prev => ({
-        ...prev,
-        [section]: {
-          ...prev[section as keyof typeof prev],
-          description: editingContent
-        }
-      }));
-
+  // Update mutation
+  const updateMutation = useMutation({
+    mutationFn: async ({ section, title, content }: { section: string; title: string; content: string }) => {
+      return apiRequest(`/api/admin/about-content/${section}`, {
+        method: 'PUT',
+        body: JSON.stringify({ title, content }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
+        },
+      });
+    },
+    onSuccess: () => {
       toast({
         title: "Başarılı",
         description: "İçerik güncellendi.",
       });
+      queryClient.invalidateQueries({ queryKey: ['/api/about-content'] });
       setEditMode(null);
-    } catch (error) {
+    },
+    onError: (error) => {
       toast({
         title: "Hata",
-        description: "Güncelleme sırasında bir hata oluştu.",
+        description: error instanceof Error ? error.message : "Güncelleme sırasında bir hata oluştu.",
         variant: "destructive",
       });
-    } finally {
-      setSaving(false);
     }
+  });
+
+  const handleEdit = (item: AboutContent) => {
+    setEditMode(item.section);
+    setEditingContent(item.content);
+  };
+
+  const handleSave = async (section: string) => {
+    const item = content.find(c => c.section === section);
+    if (!item) return;
+
+    updateMutation.mutate({ 
+      section, 
+      title: item.title, 
+      content: editingContent 
+    });
   };
 
   const handleCancel = () => {
@@ -99,71 +96,84 @@ export default function AdminAboutContent() {
         </Badge>
       </div>
 
-      <div className="grid gap-6">
-        {sections.map((section) => {
-          const sectionData = content[section.key as keyof typeof content];
-          const Icon = section.icon;
-          const isEditing = editMode === section.key;
+      {isLoading ? (
+        <div className="text-center py-8">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p>İçerik yükleniyor...</p>
+        </div>
+      ) : (
+        <div className="grid gap-6">
+          {content.map((item) => {
+            const Icon = FileText;
+            const isEditing = editMode === item.section;
+            const colorMap = {
+              about: 'blue',
+              mission: 'green', 
+              vision: 'purple',
+              values: 'orange'
+            };
+            const color = colorMap[item.section as keyof typeof colorMap] || 'gray';
 
-          return (
-            <Card key={section.key} className="border-l-4" style={{ borderLeftColor: `var(--${section.color}-500)` }}>
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="space-y-1">
-                    <CardTitle className="flex items-center space-x-2">
-                      <Icon className="h-5 w-5" style={{ color: `var(--${section.color}-500)` }} />
-                      <span>{sectionData.title}</span>
-                    </CardTitle>
+            return (
+              <Card key={item.section} className="border-l-4" style={{ borderLeftColor: `hsl(var(--${color}-500))` }}>
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-1">
+                      <CardTitle className="flex items-center space-x-2">
+                        <Icon className="h-5 w-5" />
+                        <span>{item.title}</span>
+                      </CardTitle>
+                    </div>
+                    {!isEditing && (
+                      <Button variant="outline" size="sm" onClick={() => handleEdit(item)}>
+                        <Edit className="h-4 w-4 mr-2" />
+                        Düzenle
+                      </Button>
+                    )}
                   </div>
-                  {!isEditing && (
-                    <Button variant="outline" size="sm" onClick={() => handleEdit(section.key)}>
-                      <Edit className="h-4 w-4 mr-2" />
-                      Düzenle
-                    </Button>
+                </CardHeader>
+                <CardContent>
+                  {isEditing ? (
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor={`${item.section}-content`}>İçerik</Label>
+                        <Textarea
+                          id={`${item.section}-content`}
+                          value={editingContent}
+                          onChange={(e) => setEditingContent(e.target.value)}
+                          rows={6}
+                          className="mt-2"
+                          placeholder="İçeriği buraya yazın..."
+                        />
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button 
+                          onClick={() => handleSave(item.section)}
+                          disabled={updateMutation.isPending}
+                        >
+                          {updateMutation.isPending ? (
+                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          ) : (
+                            <Save className="h-4 w-4 mr-2" />
+                          )}
+                          Kaydet
+                        </Button>
+                        <Button variant="outline" onClick={handleCancel}>
+                          İptal
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-gray-700 leading-relaxed">{item.content}</p>
+                    </div>
                   )}
-                </div>
-              </CardHeader>
-              <CardContent>
-                {isEditing ? (
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor={`${section.key}-content`}>İçerik</Label>
-                      <Textarea
-                        id={`${section.key}-content`}
-                        value={editingContent}
-                        onChange={(e) => setEditingContent(e.target.value)}
-                        rows={6}
-                        className="mt-2"
-                        placeholder="İçeriği buraya yazın..."
-                      />
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button 
-                        onClick={() => handleSave(section.key)}
-                        disabled={saving}
-                      >
-                        {saving ? (
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        ) : (
-                          <Save className="h-4 w-4 mr-2" />
-                        )}
-                        Kaydet
-                      </Button>
-                      <Button variant="outline" onClick={handleCancel}>
-                        İptal
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <p className="text-gray-700 leading-relaxed">{sectionData.description}</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

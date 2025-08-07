@@ -145,6 +145,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get about content
+  app.get('/api/about-content', async (req, res) => {
+    try {
+      const aboutContent = await storage.getAboutContent();
+      res.json(aboutContent);
+    } catch (error) {
+      console.error("Error fetching about content:", error);
+      res.status(500).json({ message: "Failed to fetch about content" });
+    }
+  });
+
+  // Update about content (admin only)
+  app.put('/api/admin/about-content/:section', authenticateAdmin, async (req, res) => {
+    try {
+      const { section } = req.params;
+      const { title, content } = req.body;
+      
+      if (!title || !content) {
+        return res.status(400).json({ error: "Title and content are required" });
+      }
+
+      const updatedContent = await storage.updateAboutContent(section, { title, content });
+      res.json({ success: true, data: updatedContent });
+    } catch (error) {
+      console.error("Error updating about content:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
   // Single blog post endpoint
   app.get("/api/blog/:id", async (req, res) => {
     try {

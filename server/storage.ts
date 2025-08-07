@@ -37,6 +37,9 @@ export interface IStorage {
   updateTeamMember(id: string, data: Partial<TeamMember>): Promise<TeamMember>;
   createTeamMember(data: InsertTeamMember): Promise<TeamMember>;
   deleteTeamMember(id: string): Promise<void>;
+  
+  getAboutContent(): Promise<AboutContent[]>;
+  updateAboutContent(section: string, updates: { title: string; content: string }): Promise<AboutContent>;
 }
 
 export class MemStorage implements IStorage {
@@ -46,6 +49,7 @@ export class MemStorage implements IStorage {
   private blogPosts: Map<string, BlogPost>;
   private jobApplications: Map<string, JobApplication>;
   private teamMembers: Map<string, TeamMember>;
+  private aboutContent: Map<string, AboutContent>;
 
   constructor() {
     this.users = new Map();
@@ -54,10 +58,12 @@ export class MemStorage implements IStorage {
     this.blogPosts = new Map();
     this.jobApplications = new Map();
     this.teamMembers = new Map();
+    this.aboutContent = new Map();
     
     // Initialize with sample data
     this.initializeBlogPosts();
     this.initializeTeamMembers();
+    this.initializeAboutContent();
   }
 
   private initializeBlogPosts() {
@@ -210,6 +216,55 @@ export class MemStorage implements IStorage {
     });
   }
 
+  private initializeAboutContent() {
+    const aboutData: AboutContent[] = [
+      {
+        id: "1",
+        section: "about",
+        title: "Hakkımızda",
+        content: "15 yılı aşkın deneyimimizle, işletmelerin dijital dönüşüm yolculuğunda güvenilir teknoloji partneri olarak yer alıyoruz.",
+        displayOrder: 1,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "2",
+        section: "mission",
+        title: "Misyonumuz",
+        content: "İşletmelerin dijital dönüşüm süreçlerinde güvenilir teknoloji partneri olarak, iş süreçlerini optimize eden, verimliliği artıran ve rekabet avantajı sağlayan yenilikçi çözümler sunmaktır. Müşterilerimizin başarısına odaklanarak, kaliteli yazılım çözümleri ve sürekli destek hizmeti sağlarız.",
+        displayOrder: 2,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "3",
+        section: "vision",
+        title: "Vizyonumuz",
+        content: "Türkiye'nin önde gelen dijital dönüşüm çözümleri sağlayıcısı olarak, işletmelerin küresel rekabette öne çıkmasını sağlamak. Teknolojinin gücünü kullanarak sürdürülebilir büyüme ve yenilikçi iş modelleri yaratmak, dijital çağda liderlik eden kuruluşlar yetiştirmektir.",
+        displayOrder: 3,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "4",
+        section: "values",
+        title: "Değerlerimiz",
+        content: "Çalışma prensiplerimizi şekillendiren temel değerler",
+        displayOrder: 4,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    aboutData.forEach(content => {
+      this.aboutContent.set(content.section, content);
+    });
+  }
+
   async getUser(id: string): Promise<User | undefined> {
     return this.users.get(id);
   }
@@ -333,6 +388,38 @@ export class MemStorage implements IStorage {
 
   async deleteTeamMember(id: string): Promise<void> {
     this.teamMembers.delete(id);
+  }
+
+  async getAboutContent(): Promise<AboutContent[]> {
+    return Array.from(this.aboutContent.values()).sort(
+      (a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)
+    );
+  }
+
+  async updateAboutContent(section: string, updates: { title: string; content: string }): Promise<AboutContent> {
+    const existing = this.aboutContent.get(section);
+    if (existing) {
+      const updated = {
+        ...existing,
+        ...updates,
+        updatedAt: new Date()
+      };
+      this.aboutContent.set(section, updated);
+      return updated;
+    } else {
+      const newContent: AboutContent = {
+        id: randomUUID(),
+        section,
+        title: updates.title,
+        content: updates.content,
+        displayOrder: Array.from(this.aboutContent.values()).length + 1,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      this.aboutContent.set(section, newContent);
+      return newContent;
+    }
   }
 }
 
