@@ -288,6 +288,46 @@ export type InsertCareerContent = z.infer<typeof insertCareerContentSchema>;
 export type CareerBenefit = typeof careerBenefits.$inferSelect;
 export type InsertCareerBenefit = z.infer<typeof insertCareerBenefitSchema>;
 
+// Contact Content schema - for managing contact page sections and info
+export const contactContent = pgTable("contact_content", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  section: varchar("section").notNull(), // 'hero', 'form-title', 'company-info'
+  title: text("title").notNull(),
+  description: text("description"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Contact Info schema - for managing contact details (address, phone, email, hours)
+export const contactInfo = pgTable("contact_info", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  type: varchar("type").notNull(), // 'address', 'phone', 'email', 'hours'
+  title: text("title").notNull(),
+  content: text("content").array().notNull(), // Array of content lines
+  iconName: text("icon_name").notNull(), // Lucide icon name
+  displayOrder: integer("display_order").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertContactContentSchema = createInsertSchema(contactContent).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertContactInfoSchema = createInsertSchema(contactInfo).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type ContactContent = typeof contactContent.$inferSelect;
+export type InsertContactContent = z.infer<typeof insertContactContentSchema>;
+export type ContactInfo = typeof contactInfo.$inferSelect;
+export type InsertContactInfo = z.infer<typeof insertContactInfoSchema>;
+
 export const insertCompanyStatsSchema = createInsertSchema(companyStats).omit({
   id: true,
   createdAt: true,

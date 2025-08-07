@@ -47,6 +47,9 @@ import AdminCareers from "@/pages/admin/careers/index";
 import AdminJobPositions from "@/pages/admin/careers/positions";
 import CreateJobPosition from "@/pages/admin/careers/create";
 import CareerContentManagement from "@/pages/admin/careers/content";
+import AdminContact from "@/pages/admin/contact/index";
+import AdminContactContent from "@/pages/admin/contact/content";
+import AdminContactInfo from "@/pages/admin/contact/info";
 import AdminLayout from "@/components/AdminLayout";
 
 function Router() {
@@ -149,6 +152,21 @@ function Router() {
         <Route path="/admin/careers/content">
           <AdminLayout>
             <CareerContentManagement />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/contact">
+          <AdminLayout>
+            <AdminContact />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/contact/content">
+          <AdminLayout>
+            <AdminContactContent />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/contact/info">
+          <AdminLayout>
+            <AdminContactInfo />
           </AdminLayout>
         </Route>
         <Route path="/admin/content">

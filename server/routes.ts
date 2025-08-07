@@ -762,6 +762,90 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Contact Content endpoints
+  app.get('/api/contact-content', async (req, res) => {
+    try {
+      const content = await storage.getContactContent();
+      res.json(content);
+    } catch (error) {
+      console.error('Error fetching contact content:', error);
+      res.status(500).json({ error: 'Failed to fetch contact content' });
+    }
+  });
+
+  app.put('/api/admin/contact-content/:section', authenticateAdmin, async (req, res) => {
+    try {
+      const { section } = req.params;
+      const { title, description } = req.body;
+      
+      if (!title) {
+        return res.status(400).json({ error: 'Title is required' });
+      }
+      
+      const updated = await storage.updateContactContent(section, { title, description });
+      res.json(updated);
+    } catch (error) {
+      console.error('Error updating contact content:', error);
+      res.status(500).json({ error: 'Failed to update contact content' });
+    }
+  });
+
+  // Contact Info endpoints
+  app.get('/api/contact-info', async (req, res) => {
+    try {
+      const info = await storage.getContactInfo();
+      res.json(info);
+    } catch (error) {
+      console.error('Error fetching contact info:', error);
+      res.status(500).json({ error: 'Failed to fetch contact info' });
+    }
+  });
+
+  app.get('/api/admin/contact-info/:id', authenticateAdmin, async (req, res) => {
+    try {
+      const info = await storage.getContactInfoItem(req.params.id);
+      if (!info) {
+        return res.status(404).json({ error: 'Contact info not found' });
+      }
+      res.json(info);
+    } catch (error) {
+      console.error('Error fetching contact info:', error);
+      res.status(500).json({ error: 'Failed to fetch contact info' });
+    }
+  });
+
+  app.post('/api/admin/contact-info', authenticateAdmin, async (req, res) => {
+    try {
+      const newInfo = await storage.createContactInfo(req.body);
+      res.status(201).json(newInfo);
+    } catch (error) {
+      console.error('Error creating contact info:', error);
+      res.status(500).json({ error: 'Failed to create contact info' });
+    }
+  });
+
+  app.put('/api/admin/contact-info/:id', authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updated = await storage.updateContactInfo(id, req.body);
+      res.json(updated);
+    } catch (error) {
+      console.error('Error updating contact info:', error);
+      res.status(500).json({ error: 'Failed to update contact info' });
+    }
+  });
+
+  app.delete('/api/admin/contact-info/:id', authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteContactInfo(id);
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.error('Error deleting contact info:', error);
+      res.status(500).json({ error: 'Failed to delete contact info' });
+    }
+  });
+
   app.put("/api/admin/solutions/:id", authenticateAdmin, async (req, res) => {
     try {
       const { id } = req.params;

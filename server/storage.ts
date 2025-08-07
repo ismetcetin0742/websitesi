@@ -29,7 +29,11 @@ import {
   type CareerContent,
   type InsertCareerContent,
   type CareerBenefit,
-  type InsertCareerBenefit
+  type InsertCareerBenefit,
+  type ContactContent,
+  type InsertContactContent,
+  type ContactInfo,
+  type InsertContactInfo
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -109,6 +113,17 @@ export interface IStorage {
   createCareerBenefit(data: InsertCareerBenefit): Promise<CareerBenefit>;
   updateCareerBenefit(id: string, data: Partial<CareerBenefit>): Promise<CareerBenefit>;
   deleteCareerBenefit(id: string): Promise<void>;
+
+  // Contact Content operations
+  getContactContent(): Promise<ContactContent[]>;
+  updateContactContent(section: string, updates: { title: string; description?: string }): Promise<ContactContent>;
+
+  // Contact Info operations
+  getContactInfo(): Promise<ContactInfo[]>;
+  getContactInfoItem(id: string): Promise<ContactInfo | null>;
+  createContactInfo(data: InsertContactInfo): Promise<ContactInfo>;
+  updateContactInfo(id: string, data: Partial<ContactInfo>): Promise<ContactInfo>;
+  deleteContactInfo(id: string): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -127,6 +142,8 @@ export class MemStorage implements IStorage {
   private referenceProjects: Map<string, ReferenceProject>;
   private careerContent: Map<string, CareerContent>;
   private careerBenefits: Map<string, CareerBenefit>;
+  private contactContent: Map<string, ContactContent>;
+  private contactInfo: Map<string, ContactInfo>;
 
   constructor() {
     this.users = new Map();
@@ -144,6 +161,8 @@ export class MemStorage implements IStorage {
     this.referenceProjects = new Map();
     this.careerContent = new Map();
     this.careerBenefits = new Map();
+    this.contactContent = new Map();
+    this.contactInfo = new Map();
     
     // Initialize with sample data
     this.initializeBlogPosts();
@@ -157,6 +176,8 @@ export class MemStorage implements IStorage {
     this.initializeJobPositions();
     this.initializeCareerContent();
     this.initializeCareerBenefits();
+    this.initializeContactContent();
+    this.initializeContactInfo();
   }
 
   private initializeCareerContent() {
@@ -1493,6 +1514,172 @@ export class MemStorage implements IStorage {
 
   async deleteCareerBenefit(id: string): Promise<void> {
     this.careerBenefits.delete(id);
+  }
+
+  // Contact Content operations
+  async getContactContent(): Promise<ContactContent[]> {
+    return Array.from(this.contactContent.values());
+  }
+
+  async updateContactContent(section: string, updates: { title: string; description?: string }): Promise<ContactContent> {
+    const existing = this.contactContent.get(section);
+    if (existing) {
+      const updated = {
+        ...existing,
+        ...updates,
+        updatedAt: new Date()
+      };
+      this.contactContent.set(section, updated);
+      return updated;
+    } else {
+      const newContent: ContactContent = {
+        id: randomUUID(),
+        section,
+        title: updates.title,
+        description: updates.description || '',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      this.contactContent.set(section, newContent);
+      return newContent;
+    }
+  }
+
+  // Contact Info operations
+  async getContactInfo(): Promise<ContactInfo[]> {
+    return Array.from(this.contactInfo.values()).sort((a, b) => a.displayOrder - b.displayOrder);
+  }
+
+  async getContactInfoItem(id: string): Promise<ContactInfo | null> {
+    return this.contactInfo.get(id) || null;
+  }
+
+  async createContactInfo(infoData: InsertContactInfo): Promise<ContactInfo> {
+    const id = randomUUID();
+    const info: ContactInfo = {
+      ...infoData,
+      id,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.contactInfo.set(id, info);
+    return info;
+  }
+
+  async updateContactInfo(id: string, updates: Partial<ContactInfo>): Promise<ContactInfo> {
+    const existing = this.contactInfo.get(id);
+    if (!existing) {
+      throw new Error('Contact info not found');
+    }
+    
+    const updated = { 
+      ...existing, 
+      ...updates, 
+      id: existing.id,
+      createdAt: existing.createdAt,
+      updatedAt: new Date() 
+    };
+    this.contactInfo.set(id, updated);
+    return updated;
+  }
+
+  async deleteContactInfo(id: string): Promise<void> {
+    if (!this.contactInfo.has(id)) {
+      throw new Error('Contact info not found');
+    }
+    this.contactInfo.delete(id);
+  }
+
+  private initializeContactContent() {
+    const contactData: ContactContent[] = [
+      {
+        id: "1",
+        section: "hero",
+        title: "İletişim",
+        description: "Sorularınız, projeleriniz veya iş birliği teklifleriniz için bizimle iletişime geçin. Uzman ekibimiz size yardımcı olmaktan mutluluk duyar.",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "2",
+        section: "form-title",
+        title: "Bize Mesaj Gönderin",
+        description: "Aşağıdaki formu doldurarak bize ulaşabilirsiniz. 24 saat içinde size dönüş yapacağız.",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    contactData.forEach(content => {
+      this.contactContent.set(content.section, content);
+    });
+  }
+
+  private initializeContactInfo() {
+    const contactInfoData: ContactInfo[] = [
+      {
+        id: "1",
+        type: "address",
+        title: "Adres",
+        content: [
+          "Barbaros Mah. Begonya Sok.",
+          "Nidakule Ataşehir Batı No: 1 İç Kapı No: 2",
+          "ATAŞEHİR / İSTANBUL"
+        ],
+        iconName: "MapPin",
+        displayOrder: 1,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "2",
+        type: "phone",
+        title: "Telefon",
+        content: [
+          "+90 545 514 74 02"
+        ],
+        iconName: "Phone",
+        displayOrder: 2,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "3",
+        type: "email",
+        title: "E-posta",
+        content: [
+          "info@algotrom.com.tr",
+          "destek@algotrom.com.tr"
+        ],
+        iconName: "Mail",
+        displayOrder: 3,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "4",
+        type: "hours",
+        title: "Çalışma Saatleri",
+        content: [
+          "Hafta İçi",
+          "09:00 - 17:00",
+          "Hafta Sonu",
+          "Kapalı"
+        ],
+        iconName: "Clock",
+        displayOrder: 4,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    contactInfoData.forEach(info => {
+      this.contactInfo.set(info.id, info);
+    });
   }
 }
 

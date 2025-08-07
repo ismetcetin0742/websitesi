@@ -13,7 +13,8 @@ import {
   Globe,
   Target,
   Building,
-  Home
+  Home,
+  Phone
 } from "lucide-react";
 import { Link } from "wouter";
 
@@ -107,6 +108,13 @@ export default function AdminDashboard() {
       icon: <MessageSquare className="h-6 w-6" />,
       href: "/admin/contacts",
       color: "bg-red-500",
+    },
+    {
+      title: "İletişim Sayfası Yönetimi",
+      description: "İletişim sayfası içerikleri ve bilgilerini yönetin",
+      icon: <Phone className="h-6 w-6" />,
+      href: "/admin/contact",
+      color: "bg-emerald-500",
     },
     {
       title: "Demo Talepleri",
