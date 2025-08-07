@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { FileText, Image, Building, ArrowRight } from "lucide-react";
+import { FileText, Image, Building, ArrowRight, BarChart3 } from "lucide-react";
 
 export default function ReferencesManagement() {
   const sections = [
@@ -25,6 +25,13 @@ export default function ReferencesManagement() {
       icon: <Building className="h-8 w-8" />,
       href: "/admin/references/projects",
       color: "bg-purple-500"
+    },
+    {
+      title: "Ana Sayfa İstatistikleri",
+      description: "Ana sayfadaki istatistik bölümünü yönetin (100+ Başarılı Proje, %95 Müşteri Memnuniyeti, vb.)",
+      icon: <BarChart3 className="h-8 w-8" />,
+      href: "/admin/homepage/statistics",
+      color: "bg-indigo-500"
     }
   ];
 
@@ -37,7 +44,7 @@ export default function ReferencesManagement() {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {sections.map((section) => (
           <Card key={section.title} className="hover:shadow-lg transition-shadow">
             <CardHeader>

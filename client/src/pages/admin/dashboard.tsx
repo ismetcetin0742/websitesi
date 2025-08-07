@@ -53,13 +53,6 @@ export default function AdminDashboard() {
 
   const adminSections = [
     {
-      title: "Ana Sayfa Yönetimi",
-      description: "Ana sayfa bileşenleri ve istatistikler",
-      icon: <Home className="h-6 w-6" />,
-      href: "/admin/homepage",
-      color: "bg-indigo-500",
-    },
-    {
       title: "Hakkımızda Yönetimi",
       description: "Tüm hakkımızda bölümlerini tek yerden yönetin",
       icon: <Users className="h-6 w-6" />,
@@ -68,7 +61,7 @@ export default function AdminDashboard() {
     },
     {
       title: "Referanslar Yönetimi",
-      description: "Referanslar, partner logoları ve proje yönetimi",
+      description: "Referanslar, partner logoları, projeler ve ana sayfa istatistikleri",
       icon: <Building className="h-6 w-6" />,
       href: "/admin/references",
       color: "bg-orange-500",
