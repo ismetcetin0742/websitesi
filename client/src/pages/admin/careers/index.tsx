@@ -45,6 +45,33 @@ export default function AdminCareers() {
           </CardContent>
         </Card>
 
+        {/* Career Content Management */}
+        <Card className="hover:shadow-md transition-shadow">
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Users className="h-6 w-6 text-blue-600" />
+              </div>
+              <div>
+                <CardTitle>Kariyer İçerikleri</CardTitle>
+                <CardDescription>
+                  Değerler ve faydaları yönetin
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <Link href="/admin/careers/content">
+                <Button className="w-full justify-start" variant="outline">
+                  <FileText className="h-4 w-4 mr-2" />
+                  İçerikleri Yönet
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Job Applications Management */}
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader>

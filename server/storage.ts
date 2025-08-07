@@ -25,7 +25,11 @@ import {
   type ReferenceProject,
   type InsertReferenceProject,
   type HomepageStatistic,
-  type InsertHomepageStatistic
+  type InsertHomepageStatistic,
+  type CareerContent,
+  type InsertCareerContent,
+  type CareerBenefit,
+  type InsertCareerBenefit
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -94,6 +98,17 @@ export interface IStorage {
   createHomepageStatistic(data: InsertHomepageStatistic): Promise<HomepageStatistic>;
   updateHomepageStatistic(id: string, data: Partial<HomepageStatistic>): Promise<HomepageStatistic>;
   deleteHomepageStatistic(id: string): Promise<void>;
+
+  // Career Content operations
+  getCareerContent(): Promise<CareerContent[]>;
+  updateCareerContent(section: string, updates: { title: string; description?: string }): Promise<CareerContent>;
+
+  // Career Benefits operations
+  getCareerBenefits(): Promise<CareerBenefit[]>;
+  getCareerBenefit(id: string): Promise<CareerBenefit | null>;
+  createCareerBenefit(data: InsertCareerBenefit): Promise<CareerBenefit>;
+  updateCareerBenefit(id: string, data: Partial<CareerBenefit>): Promise<CareerBenefit>;
+  deleteCareerBenefit(id: string): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -110,6 +125,8 @@ export class MemStorage implements IStorage {
   private referencesContent: Map<string, ReferencesContent>;
   private partnerLogos: Map<string, PartnerLogo>;
   private referenceProjects: Map<string, ReferenceProject>;
+  private careerContent: Map<string, CareerContent>;
+  private careerBenefits: Map<string, CareerBenefit>;
 
   constructor() {
     this.users = new Map();
@@ -125,6 +142,8 @@ export class MemStorage implements IStorage {
     this.referencesContent = new Map();
     this.partnerLogos = new Map();
     this.referenceProjects = new Map();
+    this.careerContent = new Map();
+    this.careerBenefits = new Map();
     
     // Initialize with sample data
     this.initializeBlogPosts();
@@ -136,6 +155,162 @@ export class MemStorage implements IStorage {
     this.initializePartnerLogos();
     this.initializeReferenceProjects();
     this.initializeJobPositions();
+    this.initializeCareerContent();
+    this.initializeCareerBenefits();
+  }
+
+  private initializeCareerContent() {
+    const careerData: CareerContent[] = [
+      {
+        id: "1",
+        section: "hero",
+        title: "Kariyer Fırsatları",
+        description: "Teknoloji tutkunu, yenilikçi ve gelişime açık ekip arkadaşları arıyoruz. Birlikte geleceğin teknolojilerini şekillendirelim.",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "2",
+        section: "values-title",
+        title: "Değerlerimiz",
+        description: "Algotrom'da çalışmanın anlamı",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "3",
+        section: "cta",
+        title: "Bizimle Çalışmak İster misiniz?",
+        description: "CV'nizi bize gönderin, uygun pozisyon açıldığında size haber verelim. Her zaman yetenekli kişilerle tanışmaktan mutluluk duyarız.",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    careerData.forEach(content => {
+      this.careerContent.set(content.section, content);
+    });
+  }
+
+  private initializeCareerBenefits() {
+    const benefitsData: CareerBenefit[] = [
+      // Company Values
+      {
+        id: "1",
+        type: "value",
+        title: "Takım Ruhu",
+        description: "Birlikte çalışmayı seven, bilgiyi paylaşan ve ortak hedeflere odaklanan bir ekip.",
+        iconName: "Users",
+        displayOrder: 1,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "2",
+        type: "value",
+        title: "İnovasyon",
+        description: "Sürekli öğrenme, gelişim ve yenilikçi çözümler üretme kültürü.",
+        iconName: "Lightbulb",
+        displayOrder: 2,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "3",
+        type: "value",
+        title: "Müşteri Odaklılık",
+        description: "Müşteri memnuniyetini ön planda tutan, kaliteli çözümler üreten anlayış.",
+        iconName: "Target",
+        displayOrder: 3,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "4",
+        type: "value",
+        title: "İş-Yaşam Dengesi",
+        description: "Çalışanların kişisel gelişimine önem veren, esnek çalışma imkanları.",
+        iconName: "Heart",
+        displayOrder: 4,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      // Employee Benefits
+      {
+        id: "5",
+        type: "benefit",
+        title: "Esnek Çalışma",
+        description: "Hybrid ve remote çalışma imkanları",
+        iconName: "Coffee",
+        displayOrder: 1,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "6",
+        type: "benefit",
+        title: "Eğitim Desteği",
+        description: "Kurs, sertifikasyon ve konferans destekleri",
+        iconName: "BookOpen",
+        displayOrder: 2,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "7",
+        type: "benefit",
+        title: "Performans Primi",
+        description: "Başarı odaklı ek ödeme sistemi",
+        iconName: "Award",
+        displayOrder: 3,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "8",
+        type: "benefit",
+        title: "Kariyer Gelişimi",
+        description: "Mentörlük ve kariyer planlama programları",
+        iconName: "TrendingUp",
+        displayOrder: 4,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "9",
+        type: "benefit",
+        title: "Teknoloji Odaklı",
+        description: "En güncel teknolojilerle çalışma fırsatı",
+        iconName: "Globe",
+        displayOrder: 5,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "10",
+        type: "benefit",
+        title: "Takım Etkinlikleri",
+        description: "Düzenli takım building ve sosyal aktiviteler",
+        iconName: "Users",
+        displayOrder: 6,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    benefitsData.forEach(benefit => {
+      this.careerBenefits.set(benefit.id, benefit);
+    });
   }
 
   private initializeBlogPosts() {
@@ -491,6 +666,80 @@ export class MemStorage implements IStorage {
 
   async getJobApplications(): Promise<JobApplication[]> {
     return Array.from(this.jobApplications.values());
+  }
+
+  // Career Content operations
+  async getCareerContent(): Promise<CareerContent[]> {
+    return Array.from(this.careerContent.values());
+  }
+
+  async updateCareerContent(section: string, updates: { title: string; description?: string }): Promise<CareerContent> {
+    const existing = this.careerContent.get(section);
+    if (existing) {
+      const updated = {
+        ...existing,
+        ...updates,
+        updatedAt: new Date()
+      };
+      this.careerContent.set(section, updated);
+      return updated;
+    } else {
+      const newContent: CareerContent = {
+        id: randomUUID(),
+        section,
+        title: updates.title,
+        description: updates.description || '',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      this.careerContent.set(section, newContent);
+      return newContent;
+    }
+  }
+
+  // Career Benefits operations
+  async getCareerBenefits(): Promise<CareerBenefit[]> {
+    return Array.from(this.careerBenefits.values()).sort((a, b) => a.displayOrder - b.displayOrder);
+  }
+
+  async getCareerBenefit(id: string): Promise<CareerBenefit | null> {
+    return this.careerBenefits.get(id) || null;
+  }
+
+  async createCareerBenefit(benefitData: InsertCareerBenefit): Promise<CareerBenefit> {
+    const id = randomUUID();
+    const benefit: CareerBenefit = {
+      ...benefitData,
+      id,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.careerBenefits.set(id, benefit);
+    return benefit;
+  }
+
+  async updateCareerBenefit(id: string, updates: Partial<CareerBenefit>): Promise<CareerBenefit> {
+    const existing = this.careerBenefits.get(id);
+    if (!existing) {
+      throw new Error('Career benefit not found');
+    }
+    
+    const updated = { 
+      ...existing, 
+      ...updates, 
+      id: existing.id,
+      createdAt: existing.createdAt,
+      updatedAt: new Date() 
+    };
+    this.careerBenefits.set(id, updated);
+    return updated;
+  }
+
+  async deleteCareerBenefit(id: string): Promise<void> {
+    if (!this.careerBenefits.has(id)) {
+      throw new Error('Career benefit not found');
+    }
+    this.careerBenefits.delete(id);
   }
 
   async getTeamMembers(): Promise<TeamMember[]> {
@@ -1014,6 +1263,236 @@ export class MemStorage implements IStorage {
     ];
 
     samplePositions.forEach(position => this.jobPositions.set(position.id, position));
+  }
+
+  private initializeCareerContent() {
+    const careerContents: CareerContent[] = [
+      {
+        id: "hero",
+        section: "hero",
+        title: "Kariyer Fırsatları",
+        description: "Teknoloji tutkunu, yenilikçi ve gelişime açık ekip arkadaşları arıyoruz. Birlikte geleceğin teknolojilerini şekillendirelim.",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "values-title",
+        section: "values-title",
+        title: "Değerlerimiz",
+        description: "Algotrom'da çalışmanın anlamı",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "cta",
+        section: "cta",
+        title: "Bizimle Çalışmak İster misiniz?",
+        description: "CV'nizi bize gönderin, uygun pozisyon açıldığında size haber verelim. Her zaman yetenekli kişilerle tanışmaktan mutluluk duyarız.",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    careerContents.forEach(content => this.careerContent.set(content.section, content));
+  }
+
+  private initializeCareerBenefits() {
+    const benefits: CareerBenefit[] = [
+      // Company Values
+      {
+        id: randomUUID(),
+        type: "value",
+        title: "Takım Ruhu",
+        description: "Birlikte çalışmayı seven, bilgiyi paylaşan ve ortak hedeflere odaklanan bir ekip.",
+        iconName: "Users",
+        displayOrder: 1,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: randomUUID(),
+        type: "value",
+        title: "İnovasyon",
+        description: "Sürekli öğrenme, gelişim ve yenilikçi çözümler üretme kültürü.",
+        iconName: "Lightbulb",
+        displayOrder: 2,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: randomUUID(),
+        type: "value",
+        title: "Müşteri Odaklılık",
+        description: "Müşteri memnuniyetini ön planda tutan, kaliteli çözümler üreten anlayış.",
+        iconName: "Target",
+        displayOrder: 3,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: randomUUID(),
+        type: "value",
+        title: "İş-Yaşam Dengesi",
+        description: "Çalışanların kişisel gelişimine önem veren, esnek çalışma imkanları.",
+        iconName: "Heart",
+        displayOrder: 4,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      // Benefits
+      {
+        id: randomUUID(),
+        type: "benefit",
+        title: "Esnek Çalışma",
+        description: "Hybrid ve remote çalışma imkanları",
+        iconName: "Coffee",
+        displayOrder: 1,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: randomUUID(),
+        type: "benefit",
+        title: "Eğitim Desteği",
+        description: "Kurs, sertifikasyon ve konferans destekleri",
+        iconName: "BookOpen",
+        displayOrder: 2,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: randomUUID(),
+        type: "benefit",
+        title: "Performans Primi",
+        description: "Başarı odaklı ek ödeme sistemi",
+        iconName: "Award",
+        displayOrder: 3,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: randomUUID(),
+        type: "benefit",
+        title: "Kariyer Gelişimi",
+        description: "Mentörlük ve kariyer planlama programları",
+        iconName: "TrendingUp",
+        displayOrder: 4,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: randomUUID(),
+        type: "benefit",
+        title: "Teknoloji Odaklı",
+        description: "En güncel teknolojilerle çalışma fırsatı",
+        iconName: "Globe",
+        displayOrder: 5,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: randomUUID(),
+        type: "benefit",
+        title: "Takım Etkinlikleri",
+        description: "Düzenli takım building ve sosyal aktiviteler",
+        iconName: "Users",
+        displayOrder: 6,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    benefits.forEach(benefit => this.careerBenefits.set(benefit.id, benefit));
+  }
+
+  // Career Content methods
+  async getCareerContent(): Promise<CareerContent[]> {
+    return Array.from(this.careerContent.values());
+  }
+
+  async updateCareerContent(section: string, updates: { title: string; description?: string }): Promise<CareerContent> {
+    const existing = this.careerContent.get(section);
+    if (!existing) {
+      // Create new if doesn't exist
+      const newContent: CareerContent = {
+        id: section,
+        section,
+        title: updates.title,
+        description: updates.description || null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      this.careerContent.set(section, newContent);
+      return newContent;
+    }
+
+    const updated: CareerContent = {
+      ...existing,
+      title: updates.title,
+      description: updates.description !== undefined ? updates.description : existing.description,
+      updatedAt: new Date()
+    };
+
+    this.careerContent.set(section, updated);
+    return updated;
+  }
+
+  // Career Benefits methods
+  async getCareerBenefits(): Promise<CareerBenefit[]> {
+    return Array.from(this.careerBenefits.values()).sort((a, b) => {
+      // First sort by type (values first, then benefits)
+      if (a.type !== b.type) {
+        return a.type === 'value' ? -1 : 1;
+      }
+      // Then sort by display order
+      return a.displayOrder - b.displayOrder;
+    });
+  }
+
+  async getCareerBenefit(id: string): Promise<CareerBenefit | undefined> {
+    return this.careerBenefits.get(id);
+  }
+
+  async createCareerBenefit(data: InsertCareerBenefit): Promise<CareerBenefit> {
+    const id = randomUUID();
+    const benefit: CareerBenefit = {
+      ...data,
+      id,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.careerBenefits.set(id, benefit);
+    return benefit;
+  }
+
+  async updateCareerBenefit(id: string, data: Partial<CareerBenefit>): Promise<CareerBenefit> {
+    const existing = this.careerBenefits.get(id);
+    if (!existing) {
+      throw new Error(`Career benefit not found: ${id}`);
+    }
+
+    const updated: CareerBenefit = {
+      ...existing,
+      ...data,
+      updatedAt: new Date()
+    };
+
+    this.careerBenefits.set(id, updated);
+    return updated;
+  }
+
+  async deleteCareerBenefit(id: string): Promise<void> {
+    this.careerBenefits.delete(id);
   }
 }
 

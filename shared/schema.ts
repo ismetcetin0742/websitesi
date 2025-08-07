@@ -232,6 +232,10 @@ export type AboutContent = typeof aboutContent.$inferSelect;
 export type InsertAboutContent = z.infer<typeof insertAboutContentSchema>;
 export type CompanyValue = typeof companyValues.$inferSelect;
 export type InsertCompanyValue = z.infer<typeof insertCompanyValueSchema>;
+export type CareerContent = typeof careerContent.$inferSelect;
+export type InsertCareerContent = z.infer<typeof insertCareerContentSchema>;
+export type CareerBenefit = typeof careerBenefits.$inferSelect;
+export type InsertCareerBenefit = z.infer<typeof insertCareerBenefitSchema>;
 
 // Company Stats schema
 export const companyStats = pgTable("company_stats", {
@@ -243,6 +247,46 @@ export const companyStats = pgTable("company_stats", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+// Career Content schema
+export const careerContent = pgTable("career_content", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  section: varchar("section").notNull(), // 'hero', 'values-title', 'cta'
+  title: text("title").notNull(),
+  description: text("description"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Career Benefits schema (Company Values + Benefits)
+export const careerBenefits = pgTable("career_benefits", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  type: varchar("type").notNull(), // 'value' or 'benefit'
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  iconName: text("icon_name").notNull(),
+  displayOrder: integer("display_order").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertCareerContentSchema = createInsertSchema(careerContent).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertCareerBenefitSchema = createInsertSchema(careerBenefits).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type CareerContent = typeof careerContent.$inferSelect;
+export type InsertCareerContent = z.infer<typeof insertCareerContentSchema>;
+export type CareerBenefit = typeof careerBenefits.$inferSelect;
+export type InsertCareerBenefit = z.infer<typeof insertCareerBenefitSchema>;
 
 export const insertCompanyStatsSchema = createInsertSchema(companyStats).omit({
   id: true,

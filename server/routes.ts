@@ -686,6 +686,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Career Content endpoints
+  app.get('/api/career-content', async (req, res) => {
+    try {
+      const content = await storage.getCareerContent();
+      res.json(content);
+    } catch (error) {
+      console.error('Error fetching career content:', error);
+      res.status(500).json({ error: 'Failed to fetch career content' });
+    }
+  });
+
+  app.put('/api/admin/career-content/:section', authenticateAdmin, async (req, res) => {
+    try {
+      const { title, description } = req.body;
+      const content = await storage.updateCareerContent(req.params.section, { title, description });
+      res.json(content);
+    } catch (error) {
+      console.error('Error updating career content:', error);
+      res.status(500).json({ error: 'Failed to update career content' });
+    }
+  });
+
+  // Career Benefits endpoints
+  app.get('/api/career-benefits', async (req, res) => {
+    try {
+      const benefits = await storage.getCareerBenefits();
+      res.json(benefits);
+    } catch (error) {
+      console.error('Error fetching career benefits:', error);
+      res.status(500).json({ error: 'Failed to fetch career benefits' });
+    }
+  });
+
+  app.get('/api/admin/career-benefits/:id', authenticateAdmin, async (req, res) => {
+    try {
+      const benefit = await storage.getCareerBenefit(req.params.id);
+      if (!benefit) {
+        return res.status(404).json({ error: 'Career benefit not found' });
+      }
+      res.json(benefit);
+    } catch (error) {
+      console.error('Error fetching career benefit:', error);
+      res.status(500).json({ error: 'Failed to fetch career benefit' });
+    }
+  });
+
+  app.post('/api/admin/career-benefits', authenticateAdmin, async (req, res) => {
+    try {
+      const benefit = await storage.createCareerBenefit(req.body);
+      res.status(201).json(benefit);
+    } catch (error) {
+      console.error('Error creating career benefit:', error);
+      res.status(500).json({ error: 'Failed to create career benefit' });
+    }
+  });
+
+  app.put('/api/admin/career-benefits/:id', authenticateAdmin, async (req, res) => {
+    try {
+      const benefit = await storage.updateCareerBenefit(req.params.id, req.body);
+      res.json(benefit);
+    } catch (error) {
+      console.error('Error updating career benefit:', error);
+      res.status(500).json({ error: 'Failed to update career benefit' });
+    }
+  });
+
+  app.delete('/api/admin/career-benefits/:id', authenticateAdmin, async (req, res) => {
+    try {
+      await storage.deleteCareerBenefit(req.params.id);
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.error('Error deleting career benefit:', error);
+      res.status(500).json({ error: 'Failed to delete career benefit' });
+    }
+  });
+
   app.put("/api/admin/solutions/:id", authenticateAdmin, async (req, res) => {
     try {
       const { id } = req.params;
