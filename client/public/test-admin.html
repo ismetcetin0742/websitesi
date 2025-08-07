@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 400px; margin: 0 auto; }
+        button { width: 100%; padding: 12px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #2563eb; }
+        .message { margin-top: 10px; padding: 10px; background: #f3f4f6; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Test Login</h1>
+        <button onclick="testLogin()">Admin Girişi Yap (admin/a123)</button>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        async function testLogin() {
+            console.log('Test login started');
+            document.getElementById('message').innerHTML = 'Giriş deneniyor...';
+            
+            try {
+                console.log('Making API request...');
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: 'admin',
+                        password: 'a123'
+                    }),
+                });
+
+                console.log('Response status:', response.status);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Login successful:', data);
+                    localStorage.setItem('adminToken', data.token);
+                    document.getElementById('message').innerHTML = 'Giriş başarılı! Dashboard\'a yönlendiriliyorsunuz...';
+                    
+                    setTimeout(() => {
+                        console.log('Redirecting...');
+                        window.location.href = '/admin/dashboard';
+                    }, 1000);
+                } else {
+                    const errorData = await response.json();
+                    console.log('Error:', errorData);
+                    document.getElementById('message').innerHTML = 'Hata: ' + errorData.message;
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                document.getElementById('message').innerHTML = 'Bağlantı hatası: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

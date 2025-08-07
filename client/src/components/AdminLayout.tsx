@@ -10,7 +10,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("admin_token");
+    const token = localStorage.getItem("adminToken");
     if (!token) {
       setIsAuthenticated(false);
       navigate("/admin/login");
@@ -28,13 +28,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           setIsAuthenticated(true);
         } else {
           setIsAuthenticated(false);
-          localStorage.removeItem("admin_token");
+          localStorage.removeItem("adminToken");
           navigate("/admin/login");
         }
       })
       .catch(() => {
         setIsAuthenticated(false);
-        localStorage.removeItem("admin_token");
+        localStorage.removeItem("adminToken");
         navigate("/admin/login");
       });
   }, [navigate]);
@@ -62,7 +62,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <h1 className="text-xl font-semibold text-gray-900">Algotrom Admin</h1>
             <button
               onClick={() => {
-                localStorage.removeItem("admin_token");
+                localStorage.removeItem("adminToken");
                 navigate("/admin/login");
               }}
               className="text-sm text-gray-600 hover:text-gray-900"
