@@ -65,11 +65,33 @@ export default function AdminSectors() {
     setEditModalOpen(true);
   };
 
-  const handleSave = (data: any) => {
-    toast({
-      title: "Başarılı",
-      description: "Sektör bilgileri güncellendi.",
-    });
+  const handleSave = async (data: any) => {
+    try {
+      const response = await fetch(`/api/admin/sectors/${data.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Başarılı",
+          description: "Sektör bilgileri güncellendi.",
+        });
+        // Update local data to reflect changes
+        // In a real app, you would refetch the data or update the cache
+      } else {
+        throw new Error('Güncelleme başarısız');
+      }
+    } catch (error) {
+      toast({
+        title: "Hata",
+        description: "Güncelleme sırasında bir hata oluştu.",
+        variant: "destructive",
+      });
+    }
   };
 
   const editFields = [

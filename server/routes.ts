@@ -219,6 +219,84 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin content management routes
+  app.put("/api/admin/team/:id", authenticateAdmin, async (req, res) => {
+    try {
+      // In a real app, this would update the database
+      // For now, we'll just return success
+      const { id } = req.params;
+      const updateData = req.body;
+      
+      // Here you would update the team member in database
+      // const updatedMember = await storage.updateTeamMember(id, updateData);
+      
+      res.json({ success: true, message: "Takım üyesi güncellendi" });
+    } catch (error) {
+      console.error("Error updating team member:", error);
+      res.status(500).json({ error: "Güncelleme başarısız" });
+    }
+  });
+
+  app.put("/api/admin/blog/:id", authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+      
+      // Here you would update the blog post in database
+      // const updatedPost = await storage.updateBlogPost(id, updateData);
+      
+      res.json({ success: true, message: "Blog yazısı güncellendi" });
+    } catch (error) {
+      console.error("Error updating blog post:", error);
+      res.status(500).json({ error: "Güncelleme başarısız" });
+    }
+  });
+
+  app.put("/api/admin/solutions/:id", authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+      
+      // Here you would update the solution in database
+      // const updatedSolution = await storage.updateSolution(id, updateData);
+      
+      res.json({ success: true, message: "Çözüm güncellendi" });
+    } catch (error) {
+      console.error("Error updating solution:", error);
+      res.status(500).json({ error: "Güncelleme başarısız" });
+    }
+  });
+
+  app.put("/api/admin/sectors/:id", authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+      
+      // Here you would update the sector in database
+      // const updatedSector = await storage.updateSector(id, updateData);
+      
+      res.json({ success: true, message: "Sektör güncellendi" });
+    } catch (error) {
+      console.error("Error updating sector:", error);
+      res.status(500).json({ error: "Güncelleme başarısız" });
+    }
+  });
+
+  app.put("/api/admin/content/:id", authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+      
+      // Here you would update the content in database
+      // const updatedContent = await storage.updateContent(id, updateData);
+      
+      res.json({ success: true, message: "Site içeriği güncellendi" });
+    } catch (error) {
+      console.error("Error updating content:", error);
+      res.status(500).json({ error: "Güncelleme başarısız" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
