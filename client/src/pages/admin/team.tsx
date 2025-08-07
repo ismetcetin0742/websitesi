@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Users, Plus, Edit, User } from "lucide-react";
 import { Link } from "wouter";
+import { EditModal } from "@/components/EditModal";
+import { useToast } from "@/hooks/use-toast";
 
 // Static team data - in a real app this would come from the database
 const teamMembers = [
@@ -33,6 +36,30 @@ const teamMembers = [
 ];
 
 export default function AdminTeam() {
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedMember, setSelectedMember] = useState<any>(null);
+  const { toast } = useToast();
+
+  const handleEdit = (member: any) => {
+    setSelectedMember(member);
+    setEditModalOpen(true);
+  };
+
+  const handleSave = (data: any) => {
+    // Here you would normally save to database
+    toast({
+      title: "Başarılı",
+      description: "Takım üyesi bilgileri güncellendi.",
+    });
+  };
+
+  const editFields = [
+    { key: 'name', label: 'Ad Soyad', type: 'text' as const, required: true },
+    { key: 'position', label: 'Pozisyon (Türkçe)', type: 'text' as const, required: true },
+    { key: 'positionEn', label: 'Pozisyon (İngilizce)', type: 'text' as const },
+    { key: 'email', label: 'E-posta', type: 'email' as const },
+  ];
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
@@ -86,7 +113,7 @@ export default function AdminTeam() {
                         </div>
                       </CardDescription>
                     </div>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => handleEdit(member)}>
                       <Edit className="h-3 w-3 mr-1" />
                       Düzenle
                     </Button>
@@ -110,6 +137,17 @@ export default function AdminTeam() {
           </div>
         )}
       </div>
+
+      {selectedMember && (
+        <EditModal
+          isOpen={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          title={`${selectedMember.name} - Düzenle`}
+          data={selectedMember}
+          onSave={handleSave}
+          fields={editFields}
+        />
+      )}
     </div>
   );
 }

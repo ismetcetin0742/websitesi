@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Settings, Plus, Edit, Workflow } from "lucide-react";
 import { Link } from "wouter";
+import { EditModal } from "@/components/EditModal";
+import { useToast } from "@/hooks/use-toast";
 
 // Static solutions data - in a real app this would come from the database
 const solutions = [
@@ -39,6 +42,31 @@ const solutions = [
 ];
 
 export default function AdminSolutions() {
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedSolution, setSelectedSolution] = useState<any>(null);
+  const { toast } = useToast();
+
+  const handleEdit = (solution: any) => {
+    setSelectedSolution(solution);
+    setEditModalOpen(true);
+  };
+
+  const handleSave = (data: any) => {
+    toast({
+      title: "Başarılı",
+      description: "Çözüm bilgileri güncellendi.",
+    });
+  };
+
+  const editFields = [
+    { key: 'name', label: 'Çözüm Adı', type: 'text' as const, required: true },
+    { key: 'nameEn', label: 'Çözüm Adı (İngilizce)', type: 'text' as const },
+    { key: 'description', label: 'Açıklama', type: 'textarea' as const, required: true },
+    { key: 'descriptionEn', label: 'Açıklama (İngilizce)', type: 'textarea' as const },
+    { key: 'category', label: 'Kategori', type: 'text' as const, required: true },
+    { key: 'efficiency', label: 'Verimlilik (%)', type: 'text' as const },
+  ];
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
@@ -85,7 +113,7 @@ export default function AdminSolutions() {
                     <Workflow className="h-3 w-3 mr-1" />
                     {solution.efficiency} Verimlilik
                   </Badge>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={() => handleEdit(solution)}>
                     <Edit className="h-3 w-3 mr-1" />
                     Düzenle
                   </Button>
@@ -109,6 +137,17 @@ export default function AdminSolutions() {
           </Card>
         ))}
       </div>
+
+      {selectedSolution && (
+        <EditModal
+          isOpen={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          title={`${selectedSolution.name} - Düzenle`}
+          data={selectedSolution}
+          onSave={handleSave}
+          fields={editFields}
+        />
+      )}
     </div>
   );
 }

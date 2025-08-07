@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Globe, Edit, Home, Info, Phone, Users, Building, Target } from "lucide-react";
 import { Link } from "wouter";
+import { EditModal } from "@/components/EditModal";
+import { useToast } from "@/hooks/use-toast";
 
 // Static content data - in a real app this would come from the database
 const siteContent = [
@@ -81,6 +84,30 @@ const getTypeColor = (type: string) => {
 };
 
 export default function AdminContent() {
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedContent, setSelectedContent] = useState<any>(null);
+  const { toast } = useToast();
+
+  const handleEdit = (content: any) => {
+    setSelectedContent(content);
+    setEditModalOpen(true);
+  };
+
+  const handleSave = (data: any) => {
+    toast({
+      title: "Başarılı",
+      description: "Site içeriği güncellendi.",
+    });
+  };
+
+  const editFields = [
+    { key: 'title', label: 'Başlık', type: 'text' as const, required: true },
+    { key: 'titleEn', label: 'Başlık (İngilizce)', type: 'text' as const },
+    { key: 'description', label: 'Açıklama', type: 'textarea' as const, required: true },
+    { key: 'type', label: 'Tip', type: 'text' as const },
+    { key: 'status', label: 'Durum', type: 'text' as const },
+  ];
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
@@ -124,7 +151,7 @@ export default function AdminContent() {
                   <Badge variant="secondary" className="text-xs">
                     {new Date(content.lastUpdated).toLocaleDateString("tr-TR")}
                   </Badge>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={() => handleEdit(content)}>
                     <Edit className="h-3 w-3 mr-1" />
                     Düzenle
                   </Button>
@@ -156,6 +183,17 @@ export default function AdminContent() {
           </Card>
         ))}
       </div>
+
+      {selectedContent && (
+        <EditModal
+          isOpen={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          title={`${selectedContent.title} - Düzenle`}
+          data={selectedContent}
+          onSave={handleSave}
+          fields={editFields}
+        />
+      )}
     </div>
   );
 }

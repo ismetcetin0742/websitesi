@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, FileText, Plus, Edit, Calendar } from "lucide-react";
 import { Link } from "wouter";
+import { EditModal } from "@/components/EditModal";
+import { useToast } from "@/hooks/use-toast";
 
 interface BlogPost {
   id: string;
@@ -18,6 +21,29 @@ export default function AdminBlog() {
   const { data: blogPosts, isLoading } = useQuery<BlogPost[]>({
     queryKey: ["/api/blog"],
   });
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+  const { toast } = useToast();
+
+  const handleEdit = (post: BlogPost) => {
+    setSelectedPost(post);
+    setEditModalOpen(true);
+  };
+
+  const handleSave = (data: any) => {
+    // Here you would normally save to database
+    toast({
+      title: "Başarılı",
+      description: "Blog yazısı güncellendi.",
+    });
+  };
+
+  const editFields = [
+    { key: 'title', label: 'Başlık', type: 'text' as const, required: true },
+    { key: 'category', label: 'Kategori', type: 'text' as const, required: true },
+    { key: 'excerpt', label: 'Özet', type: 'textarea' as const },
+    { key: 'content', label: 'İçerik', type: 'textarea' as const, required: true },
+  ];
 
   if (isLoading) {
     return (
@@ -93,7 +119,7 @@ export default function AdminBlog() {
                           {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("tr-TR") : "Tarih Yok"}
                         </span>
                       </div>
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" onClick={() => handleEdit(post)}>
                         <Edit className="h-3 w-3 mr-1" />
                         Düzenle
                       </Button>
@@ -122,6 +148,17 @@ export default function AdminBlog() {
           </div>
         )}
       </div>
+
+      {selectedPost && (
+        <EditModal
+          isOpen={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          title={`Blog Yazısı Düzenle`}
+          data={selectedPost}
+          onSave={handleSave}
+          fields={editFields}
+        />
+      )}
     </div>
   );
 }

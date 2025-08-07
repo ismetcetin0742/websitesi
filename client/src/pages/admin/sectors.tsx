@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Building2, Plus, Edit, TrendingUp } from "lucide-react";
 import { Link } from "wouter";
+import { EditModal } from "@/components/EditModal";
+import { useToast } from "@/hooks/use-toast";
 
 // Static sectors data - in a real app this would come from the database
 const sectors = [
@@ -53,6 +56,31 @@ const sectors = [
 ];
 
 export default function AdminSectors() {
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedSector, setSelectedSector] = useState<any>(null);
+  const { toast } = useToast();
+
+  const handleEdit = (sector: any) => {
+    setSelectedSector(sector);
+    setEditModalOpen(true);
+  };
+
+  const handleSave = (data: any) => {
+    toast({
+      title: "Başarılı",
+      description: "Sektör bilgileri güncellendi.",
+    });
+  };
+
+  const editFields = [
+    { key: 'name', label: 'Sektör Adı', type: 'text' as const, required: true },
+    { key: 'nameEn', label: 'Sektör Adı (İngilizce)', type: 'text' as const },
+    { key: 'description', label: 'Açıklama', type: 'textarea' as const, required: true },
+    { key: 'descriptionEn', label: 'Açıklama (İngilizce)', type: 'textarea' as const },
+    { key: 'efficiency', label: 'Verimlilik (%)', type: 'text' as const },
+    { key: 'clients', label: 'Müşteri Sayısı', type: 'number' as const },
+  ];
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
@@ -93,7 +121,7 @@ export default function AdminSectors() {
                     </div>
                   </CardDescription>
                 </div>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={() => handleEdit(sector)}>
                   <Edit className="h-3 w-3 mr-1" />
                   Düzenle
                 </Button>
@@ -132,6 +160,17 @@ export default function AdminSectors() {
           </Card>
         ))}
       </div>
+
+      {selectedSector && (
+        <EditModal
+          isOpen={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          title={`${selectedSector.name} - Düzenle`}
+          data={selectedSector}
+          onSave={handleSave}
+          fields={editFields}
+        />
+      )}
     </div>
   );
 }
