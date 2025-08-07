@@ -11,7 +11,7 @@ export async function apiRequest(
   url: string,
   options?: RequestInit
 ): Promise<any> {
-  const token = localStorage.getItem("admin_token");
+  const token = localStorage.getItem("adminToken");
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...(options?.headers as Record<string, string> || {}),
@@ -37,7 +37,7 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const token = localStorage.getItem("admin_token");
+    const token = localStorage.getItem("adminToken");
     const headers: Record<string, string> = {};
     
     if (token) {
