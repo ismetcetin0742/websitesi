@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +22,11 @@ interface EditModalProps {
 
 export function EditModal({ isOpen, onClose, title, data, onSave, fields }: EditModalProps) {
   const [formData, setFormData] = useState(data);
+
+  // Update form data when data prop changes
+  useEffect(() => {
+    setFormData(data);
+  }, [data]);
 
   const handleSave = () => {
     onSave(formData);
