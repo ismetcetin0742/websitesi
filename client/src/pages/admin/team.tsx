@@ -47,6 +47,7 @@ export default function AdminTeam() {
 
   const handleSave = async (data: any) => {
     try {
+      console.log('Saving team member data:', data);
       const token = localStorage.getItem('adminToken');
       const response = await fetch(`/api/admin/team/${data.id}`, {
         method: 'PUT',
@@ -58,9 +59,11 @@ export default function AdminTeam() {
       });
 
       if (response.ok) {
+        const result = await response.json();
+        console.log('Save result:', result);
         toast({
           title: "Başarılı",
-          description: "Takım üyesi bilgileri güncellendi.",
+          description: "Takım üyesi bilgileri güncellendi. Statik HTML dosyalarını manuel güncellemeniz gerekiyor.",
         });
         // Update local data to reflect changes
         // In a real app, you would refetch the data or update the cache
