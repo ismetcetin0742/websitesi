@@ -13,7 +13,7 @@ interface BlogPost {
   id: string;
   title: string | { tr: string; en: string; fr: string; ar: string; ru: string; de: string };
   content: string | { tr: string; en: string; fr: string; ar: string; ru: string; de: string };
-  excerpt?: string;
+  excerpt?: string | { tr: string; en: string; fr: string; ar: string; ru: string; de: string };
   category: string;
   publishedAt: Date | null;
 }
@@ -132,7 +132,7 @@ export default function AdminBlogPosts() {
                   </div>
                   {post.excerpt && (
                     <CardDescription className="line-clamp-2">
-                      {post.excerpt}
+                      {getDisplayText(post.excerpt as any)}
                     </CardDescription>
                   )}
                 </div>
