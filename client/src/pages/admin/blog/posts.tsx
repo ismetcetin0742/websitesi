@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, FileText, Plus, Edit, Calendar } from "lucide-react";
+import { ArrowLeft, FileText, Plus, Edit, Calendar, Trash2 } from "lucide-react";
 import { Link } from "wouter";
 import { EditModal } from "@/components/EditModal";
 import { useToast } from "@/hooks/use-toast";
@@ -76,6 +76,39 @@ export default function AdminBlogPosts() {
       toast({
         title: "Hata",
         description: error instanceof Error ? error.message : "Güncelleme sırasında bir hata oluştu.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDelete = async (postId: string) => {
+    if (!confirm("Bu blog yazısını silmek istediğinizden emin misiniz?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/admin/blog/${postId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Blog yazısı silinemedi');
+      }
+
+      queryClient.invalidateQueries({ queryKey: ["/api/blog"] });
+      
+      toast({
+        title: "Başarılı",
+        description: "Blog yazısı silindi.",
+      });
+    } catch (error) {
+      console.error('Delete error:', error);
+      toast({
+        title: "Hata",
+        description: "Blog yazısı silinirken bir hata oluştu.",
         variant: "destructive",
       });
     }
@@ -170,6 +203,15 @@ export default function AdminBlogPosts() {
                   >
                     <Edit className="h-4 w-4 mr-1" />
                     Düzenle
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleDelete(post.id)}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                  >
+                    <Trash2 className="h-4 w-4 mr-1" />
+                    Sil
                   </Button>
                 </div>
               </div>

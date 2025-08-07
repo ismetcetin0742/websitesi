@@ -582,6 +582,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.delete("/api/admin/blog/:id", authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      console.log("Blog delete request - ID:", id);
+      
+      await storage.deleteBlogPost(id);
+      
+      res.json({ success: true, message: "Blog yazısı silindi" });
+    } catch (error) {
+      console.error("Error deleting blog post:", error);
+      res.status(500).json({ error: "Silme başarısız: " + (error instanceof Error ? error.message : "Bilinmeyen hata") });
+    }
+  });
+
   app.put("/api/admin/solutions/:id", authenticateAdmin, async (req, res) => {
     try {
       const { id } = req.params;

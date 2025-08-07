@@ -409,6 +409,15 @@ export class MemStorage implements IStorage {
     return updatedPost;
   }
 
+  async deleteBlogPost(id: string): Promise<void> {
+    const existingPost = this.blogPosts.get(id);
+    if (!existingPost) {
+      throw new Error('Blog post not found');
+    }
+    
+    this.blogPosts.delete(id);
+  }
+
   async createJobApplication(application: InsertJobApplication): Promise<JobApplication> {
     const id = randomUUID();
     const jobApplication: JobApplication = { 

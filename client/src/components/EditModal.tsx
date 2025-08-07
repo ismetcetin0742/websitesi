@@ -28,6 +28,7 @@ export function EditModal({ isOpen, onClose, title, data, onSave, fields }: Edit
   // Update form data when data prop changes
   useEffect(() => {
     setFormData(data);
+    setImagePreview(null); // Reset image preview when modal data changes
   }, [data]);
 
   const handleSave = () => {
