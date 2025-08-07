@@ -297,6 +297,81 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+      {/* Map Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Ofis Konumumuz
+              </h2>
+              <p className="text-lg text-gray-600">
+                Barbaros Mahallesi'ndeki ofisimizi ziyaret edebilirsiniz
+              </p>
+            </div>
+            
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div className="h-96 w-full">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.5659436842447!2d29.124249776137195!3d41.01912061928851!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac84c8e1a4b35%3A0x2d2b14c8e1a4b35!2sNidakule%20Ata%C5%9Fehir%20Bat%C4%B1%2C%20Barbaros%20Mh.%2C%20Begonya%20Sok.%20No%3A1%2C%2034746%20Ata%C5%9Fehir%2F%C4%B0stanbul!5e0!3m2!1str!2str!4v1708012345678!5m2!1str!2str"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Algotrom Ofis Konumu"
+                ></iframe>
+              </div>
+              
+              {/* Map Info */}
+              <div className="p-6 bg-white border-t">
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-blue-100 rounded-lg">
+                      <MapPin className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Adres</h4>
+                      <p className="text-sm text-gray-600">
+                        Barbaros Mah. Begonya Sok.<br />
+                        Nidakule Ataşehir Batı No: 1<br />
+                        ATAŞEHİR / İSTANBUL
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-green-100 rounded-lg">
+                      <Phone className="h-5 w-5 text-green-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Telefon</h4>
+                      <p className="text-sm text-gray-600">
+                        +90 545 514 74 02
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-purple-100 rounded-lg">
+                      <Clock className="h-5 w-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Çalışma Saatleri</h4>
+                      <p className="text-sm text-gray-600">
+                        Hafta İçi: 09:00 - 17:00<br />
+                        Hafta Sonu: Kapalı
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
