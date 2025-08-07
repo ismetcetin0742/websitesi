@@ -130,6 +130,13 @@ export default function AdminLogin() {
                 type="submit" 
                 className="w-full"
                 disabled={loginMutation.isPending}
+                onClick={(e) => {
+                  console.log('Button clicked');
+                  e.preventDefault();
+                  const formData = form.getValues();
+                  console.log('Form data:', formData);
+                  onSubmit(formData);
+                }}
               >
                 {loginMutation.isPending ? "Giriş yapılıyor..." : "Giriş Yap"}
               </Button>

@@ -4,7 +4,10 @@ export default function TestLogin() {
   const [message, setMessage] = useState("");
 
   const testLogin = async () => {
+    console.log('Test login button clicked');
+    setMessage("Giriş deneniyor...");
     try {
+      console.log('Making API request...');
       const response = await fetch("/api/admin/login", {
         method: "POST",
         headers: {
@@ -16,15 +19,20 @@ export default function TestLogin() {
         }),
       });
 
+      console.log('Response status:', response.status);
       if (response.ok) {
         const data = await response.json();
+        console.log('Login data received:', data);
         localStorage.setItem("adminToken", data.token);
         setMessage("Giriş başarılı! Token kaydedildi. Dashboard'a yönlendiriliyorsunuz...");
         setTimeout(() => {
+          console.log('Redirecting to dashboard...');
           window.location.href = "/admin/dashboard";
         }, 1000);
       } else {
-        setMessage("Giriş başarısız!");
+        const errorData = await response.json();
+        console.log('Error data:', errorData);
+        setMessage("Giriş başarısız: " + errorData.message);
       }
     } catch (error) {
       setMessage("Hata: " + error);
