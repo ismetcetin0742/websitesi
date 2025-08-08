@@ -295,8 +295,8 @@ export default function Contact() {
               </div>
 
               {/* Map Section */}
-              <div className="bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden">
-                <div className="h-96 w-full">
+              <div className="bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden relative">
+                <div className="h-96 w-full relative">
                   <iframe
                     src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=tr&amp;q=Algotrom%20Yaz%C4%B1l%C4%B1m%20Ve%20Teknoloji%20Ata%C5%9Fehir+(Algotrom%20Yaz%C4%B1l%C4%B1m%20Ve%20Teknoloji)&amp;t=&amp;z=16&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
                     width="100%"
@@ -307,16 +307,16 @@ export default function Contact() {
                     referrerPolicy="no-referrer-when-downgrade"
                     title="Algotrom Yazılım Ve Teknoloji - Ataşehir"
                   ></iframe>
-                </div>
-                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2">
-                  <Button 
-                    onClick={() => window.open('https://maps.app.goo.gl/EfvnBZwZQxaHfUSm9', '_blank')}
-                    size="sm"
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 text-xs rounded-md transition-colors shadow-lg"
-                  >
-                    <MapPin className="h-3 w-3 mr-1" />
-                    Harita'da Aç
-                  </Button>
+                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                    <Button 
+                      onClick={() => window.open('https://maps.app.goo.gl/EfvnBZwZQxaHfUSm9', '_blank')}
+                      size="sm"
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm rounded-md transition-colors shadow-lg"
+                    >
+                      <MapPin className="h-4 w-4 mr-2" />
+                      Harita'da Aç
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
