@@ -14,6 +14,7 @@ import {
   type TeamMember,
   type InsertTeamMember,
   type AboutContent,
+  type InsertAboutContent,
   type CompanyValue,
   type InsertCompanyValue,
   type CompanyStats,
@@ -72,7 +73,10 @@ export interface IStorage {
   deleteTeamMember(id: string): Promise<void>;
   
   getAboutContent(): Promise<AboutContent[]>;
-  updateAboutContent(section: string, updates: { title: string; content: string }): Promise<AboutContent>;
+  getAboutContentBySection(section: string): Promise<AboutContent | undefined>;
+  createAboutContent(data: InsertAboutContent): Promise<AboutContent>;
+  updateAboutContent(id: string, data: Partial<AboutContent>): Promise<AboutContent>;
+  deleteAboutContent(id: string): Promise<void>;
   
   getCompanyValues(): Promise<CompanyValue[]>;
   getCompanyValue(id: string): Promise<CompanyValue | undefined>;
@@ -822,30 +826,44 @@ export class MemStorage implements IStorage {
     );
   }
 
-  async updateAboutContent(section: string, updates: { title: string; content: string }): Promise<AboutContent> {
-    const existing = this.aboutContent.get(section);
-    if (existing) {
-      const updated = {
-        ...existing,
-        ...updates,
-        updatedAt: new Date()
-      };
-      this.aboutContent.set(section, updated);
-      return updated;
-    } else {
-      const newContent: AboutContent = {
-        id: randomUUID(),
-        section,
-        title: updates.title,
-        content: updates.content,
-        displayOrder: Array.from(this.aboutContent.values()).length + 1,
-        isActive: true,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      };
-      this.aboutContent.set(section, newContent);
-      return newContent;
+  async getAboutContentBySection(section: string): Promise<AboutContent | undefined> {
+    return this.aboutContent.get(section);
+  }
+
+  async createAboutContent(data: InsertAboutContent): Promise<AboutContent> {
+    const id = randomUUID();
+    const aboutContent: AboutContent = {
+      ...data,
+      id,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.aboutContent.set(id, aboutContent);
+    return aboutContent;
+  }
+
+  async updateAboutContent(id: string, data: Partial<AboutContent>): Promise<AboutContent> {
+    const existing = this.aboutContent.get(id);
+    if (!existing) {
+      throw new Error('About content not found');
     }
+    
+    const updated = {
+      ...existing,
+      ...data,
+      id: existing.id,
+      createdAt: existing.createdAt,
+      updatedAt: new Date()
+    };
+    this.aboutContent.set(id, updated);
+    return updated;
+  }
+
+  async deleteAboutContent(id: string): Promise<void> {
+    if (!this.aboutContent.has(id)) {
+      throw new Error('About content not found');
+    }
+    this.aboutContent.delete(id);
   }
 
   private initializeCompanyValues() {

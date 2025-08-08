@@ -207,6 +207,24 @@ export const insertHomepageSolutionSchema = createInsertSchema(homepageSolutions
   updatedAt: true,
 });
 
+// About Content Table
+export const aboutContent = pgTable("about_content", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  section: text("section").notNull(), // 'hero_text', 'mission', 'vision', etc.
+  title: jsonb("title"), // Multi-language object (optional)
+  content: jsonb("content").notNull(), // Multi-language object
+  displayOrder: integer("display_order").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertAboutContentSchema = createInsertSchema(aboutContent).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -228,24 +246,6 @@ export type Solution = typeof solutions.$inferSelect;
 export type InsertSolution = z.infer<typeof insertSolutionSchema>;
 export type Sector = typeof sectors.$inferSelect;
 export type InsertSector = z.infer<typeof insertSectorSchema>;
-
-// About page content schema
-export const aboutContent = pgTable("about_content", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  section: varchar("section").notNull(), // 'about', 'mission', 'vision', 'values'
-  title: text("title").notNull(),
-  content: text("content").notNull(),
-  displayOrder: integer("display_order").default(0),
-  isActive: boolean("is_active").default(true),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow()
-});
-
-export const insertAboutContentSchema = createInsertSchema(aboutContent).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
 
 export type AboutContent = typeof aboutContent.$inferSelect;
 export type InsertAboutContent = z.infer<typeof insertAboutContentSchema>;

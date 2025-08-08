@@ -762,6 +762,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // About Content endpoints
+  app.get('/api/about-content', async (req, res) => {
+    try {
+      const content = await storage.getAboutContent();
+      res.json(content);
+    } catch (error) {
+      console.error('Error fetching about content:', error);
+      res.status(500).json({ error: 'Failed to fetch about content' });
+    }
+  });
+
+  app.get('/api/admin/about-content', authenticateAdmin, async (req, res) => {
+    try {
+      const content = await storage.getAboutContent();
+      res.json(content);
+    } catch (error) {
+      console.error('Error fetching about content:', error);
+      res.status(500).json({ error: 'Failed to fetch about content' });
+    }
+  });
+
+  app.post('/api/admin/about-content', authenticateAdmin, async (req, res) => {
+    try {
+      const content = await storage.createAboutContent(req.body);
+      res.status(201).json(content);
+    } catch (error) {
+      console.error('Error creating about content:', error);
+      res.status(500).json({ error: 'Failed to create about content' });
+    }
+  });
+
+  app.put('/api/admin/about-content/:id', authenticateAdmin, async (req, res) => {
+    try {
+      const content = await storage.updateAboutContent(req.params.id, req.body);
+      res.json(content);
+    } catch (error) {
+      console.error('Error updating about content:', error);
+      res.status(500).json({ error: 'Failed to update about content' });
+    }
+  });
+
+  app.delete('/api/admin/about-content/:id', authenticateAdmin, async (req, res) => {
+    try {
+      await storage.deleteAboutContent(req.params.id);
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.error('Error deleting about content:', error);
+      res.status(500).json({ error: 'Failed to delete about content' });
+    }
+  });
+
   // Contact Content endpoints
   app.get('/api/contact-content', async (req, res) => {
     try {
