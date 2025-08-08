@@ -44,6 +44,7 @@ import AdminHomepageSolutions from "@/pages/admin/homepage/solutions";
 import AdminHomepageAboutContent from "@/pages/admin/homepage/about-content";
 import AdminHeroContent from "@/pages/admin/homepage/hero-content";
 import AdminHomepageSolutionsOrder from "@/pages/admin/homepage/solutions-order";
+import ProductsSolutionsManagement from "@/pages/admin/products-solutions/index";
 import AdminSolutions from "@/pages/admin/solutions";
 import AdminSectors from "@/pages/admin/sectors";
 import AdminContent from "@/pages/admin/content";
@@ -231,6 +232,11 @@ function Router() {
         <Route path="/admin/homepage/solutions-order">
           <AdminLayout>
             <AdminHomepageSolutionsOrder />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/products-solutions">
+          <AdminLayout>
+            <ProductsSolutionsManagement />
           </AdminLayout>
         </Route>
         

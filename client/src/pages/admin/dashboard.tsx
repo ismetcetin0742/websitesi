@@ -14,7 +14,8 @@ import {
   Target,
   Building,
   Home,
-  Phone
+  Phone,
+  Package
 } from "lucide-react";
 import { Link } from "wouter";
 
@@ -101,6 +102,13 @@ export default function AdminDashboard() {
       icon: <Briefcase className="h-6 w-6" />,
       href: "/admin/careers",
       color: "bg-pink-500",
+    },
+    {
+      title: "Ürünler & Çözümler",
+      description: "E-Flow BPM, E-Flow DMS ve tüm çözümlerin içeriklerini yönetin",
+      icon: <Package className="h-6 w-6" />,
+      href: "/admin/products-solutions",
+      color: "bg-cyan-500",
     },
   ];
 
