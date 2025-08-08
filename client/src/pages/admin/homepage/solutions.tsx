@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Link } from "wouter";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Pencil, Save, X, Plus } from "lucide-react";
+import { Pencil, Save, X, Plus, ArrowLeft } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 
 interface HomepageSolution {
@@ -209,8 +210,14 @@ export default function HomepageSolutions() {
 
   return (
     <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
+      <div className="flex items-center gap-4 mb-6">
+        <Link href="/admin/homepage">
+          <Button variant="outline" size="sm">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Geri
+          </Button>
+        </Link>
+        <div className="flex-1">
           <h1 className="text-2xl font-bold text-gray-900">Ana Sayfa Çözümlerimiz</h1>
           <p className="text-gray-600 mt-1">Ana sayfada görünen çözümler bölümünü yönetin</p>
         </div>

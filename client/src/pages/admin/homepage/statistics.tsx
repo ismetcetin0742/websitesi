@@ -159,9 +159,9 @@ export default function AdminHomepageStatistics() {
               </Button>
             </Link>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">İstatistikler Yönetimi</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Hakkımızda Bölümü</h1>
           <p className="text-gray-600">
-            Ana sayfadaki istatistik bölümünü yönetin
+            Ana sayfadaki hakkımızda bölümündeki istatistikleri yönetin
           </p>
         </div>
         <Button onClick={() => setIsCreating(true)} disabled={isCreating || editingId !== null}>

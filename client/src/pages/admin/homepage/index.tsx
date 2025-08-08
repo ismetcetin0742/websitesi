@@ -16,12 +16,12 @@ export default function AdminHomepage() {
         <Card className="hover:shadow-lg transition-shadow cursor-pointer">
           <Link href="/admin/homepage/statistics">
             <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-              <CardTitle className="text-lg font-medium">İstatistikler Yönetimi</CardTitle>
+              <CardTitle className="text-lg font-medium">Hakkımızda Bölümü</CardTitle>
               <BarChart3 className="h-6 w-6 ml-auto text-primary" />
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-600">
-                Ana sayfadaki istatistik bölümünü yönetin (100+ Başarılı Proje, %95 Müşteri Memnuniyeti, vb.)
+                Ana sayfadaki hakkımızda bölümündeki istatistikleri yönetin (100+ Başarılı Proje, %95 Müşteri Memnuniyeti, vb.)
               </p>
             </CardContent>
           </Link>
