@@ -53,15 +53,17 @@ interface ContactInfo {
 }
 
 export default function Contact() {
-  const { language } = useLanguage();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { language } = useLanguage();
 
-  // Dynamic content queries
+  // Fetch dynamic contact content
   const { data: contactContent } = useQuery<ContactContent[]>({
     queryKey: ['/api/contact-content'],
   });
 
+  // Fetch dynamic contact info
   const { data: contactInfo } = useQuery<ContactInfo[]>({
     queryKey: ['/api/contact-info'],
   });
@@ -77,31 +79,33 @@ export default function Contact() {
   });
 
   const contactMutation = useMutation({
-    mutationFn: async (data: ContactForm) => {
-      return apiRequest('POST', '/api/contact', data);
-    },
+    mutationFn: (data: ContactForm) => apiRequest('/api/contacts', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }),
     onSuccess: () => {
       toast({
-        title: 'Mesajınız Gönderildi!',
-        description: 'En kısa zamanda size dönüş yapacağız.',
+        title: 'Mesajınız gönderildi!',
+        description: 'En kısa sürede size dönüş yapacağız.',
       });
       form.reset();
-      queryClient.invalidateQueries({ queryKey: ['/api/contact'] });
     },
-    onError: (error: any) => {
+    onError: () => {
       toast({
-        title: 'Hata',
-        description: error.message || 'Bir hata oluştu. Lütfen tekrar deneyiniz.',
+        title: 'Hata!',
+        description: 'Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin.',
         variant: 'destructive',
       });
     },
   });
 
-  const onSubmit = (data: ContactForm) => {
+  const onSubmit = async (data: ContactForm) => {
     contactMutation.mutate(data);
   };
 
-  // Helper functions
   const getContentBySection = (section: string) => {
     return contactContent?.find(c => c.section === section);
   };
@@ -142,40 +146,36 @@ export default function Contact() {
       {/* Contact Content */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Contact Information */}
-            <div className="space-y-8">
-              <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-6">
+          <div className="max-w-6xl mx-auto">
+            {/* Contact Information Cards */}
+            <div className="mb-12">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">
                   İletişim Bilgilerimiz
                 </h2>
-                <p className="text-lg text-gray-600 mb-8">
+                <p className="text-lg text-gray-600">
                   Bize aşağıdaki iletişim kanallarından ulaşabilirsiniz.
                 </p>
               </div>
-
-              <div className="space-y-6">
+              
+              <div className="grid md:grid-cols-3 gap-6">
                 {activeContactInfo.map((info) => {
                   const IconComponent = getIcon(info.iconName);
                   return (
-                    <Card key={info.id} className="border border-gray-200 hover:shadow-lg transition-shadow duration-300">
-                      <CardContent className="p-6">
-                        <div className="flex items-start space-x-4">
-                          <div className="p-3 bg-blue-100 rounded-lg flex-shrink-0">
-                            <IconComponent className="h-6 w-6 text-blue-600" />
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900 text-lg mb-2">
-                              {info.title}
-                            </h3>
-                            <div className="space-y-1">
-                              {info.content.map((line, index) => (
-                                <p key={index} className="text-gray-600">
-                                  {line}
-                                </p>
-                              ))}
-                            </div>
-                          </div>
+                    <Card key={info.id} className="border border-gray-200 hover:shadow-lg transition-shadow">
+                      <CardContent className="p-6 text-center">
+                        <div className="w-16 h-16 mx-auto mb-4 bg-blue-50 rounded-full flex items-center justify-center">
+                          <IconComponent className="h-8 w-8 text-blue-600" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                          {info.title}
+                        </h3>
+                        <div className="space-y-1">
+                          {info.content.map((line, index) => (
+                            <p key={index} className="text-gray-600">
+                              {line}
+                            </p>
+                          ))}
                         </div>
                       </CardContent>
                     </Card>
@@ -184,20 +184,21 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Contact Form */}
-            <div className="bg-white rounded-lg border border-gray-200 p-8 shadow-lg">
-              <div className="mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                  {formTitleContent?.title || 'Bize Mesaj Gönderin'}
-                </h2>
-                <p className="text-gray-600">
-                  {formTitleContent?.description || 'Aşağıdaki formu doldurarak bize ulaşabilirsiniz. 24 saat içinde size dönüş yapacağız.'}
-                </p>
-              </div>
+            {/* Contact Form and Map Section */}
+            <div className="grid lg:grid-cols-2 gap-8">
+              {/* Contact Form */}
+              <div className="bg-white rounded-lg border border-gray-200 p-8 shadow-lg">
+                <div className="mb-8">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                    {formTitleContent?.title || 'Bize Mesaj Gönderin'}
+                  </h2>
+                  <p className="text-gray-600">
+                    {formTitleContent?.description || 'Aşağıdaki formu doldurarak bize ulaşabilirsiniz. 24 saat içinde size dönüş yapacağız.'}
+                  </p>
+                </div>
 
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-4">
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     <FormField
                       control={form.control}
                       name="name"
@@ -233,66 +234,90 @@ export default function Contact() {
                         </FormItem>
                       )}
                     />
-                  </div>
 
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>E-posta *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="email" 
-                            placeholder="E-posta adresiniz" 
-                            {...field} 
-                            className="border-gray-300 focus:border-blue-500"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>E-posta *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="email" 
+                              placeholder="E-posta adresiniz" 
+                              {...field} 
+                              className="border-gray-300 focus:border-blue-500"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  <FormField
-                    control={form.control}
-                    name="message"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Mesajınız *</FormLabel>
-                        <FormControl>
-                          <Textarea 
-                            placeholder="Mesajınızı buraya yazınız..." 
-                            rows={6}
-                            {...field} 
-                            className="border-gray-300 focus:border-blue-500"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    <FormField
+                      control={form.control}
+                      name="message"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Mesajınız *</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              placeholder="Mesajınızı buraya yazınız..." 
+                              rows={6}
+                              {...field} 
+                              className="border-gray-300 focus:border-blue-500"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  <Button 
-                    type="submit" 
-                    size="lg" 
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                    disabled={contactMutation.isPending}
-                  >
-                    {contactMutation.isPending ? (
-                      <div className="flex items-center space-x-2">
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        <span>Gönderiliyor...</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center space-x-2">
-                        <Send className="h-5 w-5" />
-                        <span>Mesajı Gönder</span>
-                      </div>
-                    )}
-                  </Button>
-                </form>
-              </Form>
+                    <Button 
+                      type="submit" 
+                      disabled={contactMutation.isPending}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg transition-colors"
+                    >
+                      {contactMutation.isPending ? (
+                        <div className="flex items-center gap-2">
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                          Gönderiliyor...
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <Send className="h-4 w-4" />
+                          Mesaj Gönder
+                        </div>
+                      )}
+                    </Button>
+                  </form>
+                </Form>
+              </div>
+
+              {/* Map Section */}
+              <div className="bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden">
+                <div className="p-6 border-b border-gray-200">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    Ofis Konumumuz
+                  </h3>
+                  <p className="text-gray-600">
+                    Barbaros Mahallesi'ndeki ofisimizi ziyaret edebilirsiniz
+                  </p>
+                </div>
+                
+                <div className="h-96 w-full">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.5659436842447!2d29.124249776137195!3d41.01912061928851!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac84c8e1a4b35%3A0x2d2b14c8e1a4b35!2sNidakule%20Ata%C5%9Fehir%20Bat%C4%B1%2C%20Barbaros%20Mh.%2C%20Begonya%20Sok.%20No%3A1%2C%2034746%20Ata%C5%9Fehir%2F%C4%B0stanbul!5e0!3m2!1str!2str!4v1708012345678!5m2!1str!2str"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Algotrom Ofis Konumu"
+                  ></iframe>
+                </div>
+              </div>
             </div>
           </div>
         </div>
