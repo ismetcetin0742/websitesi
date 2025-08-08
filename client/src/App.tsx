@@ -40,6 +40,7 @@ import AdminReferencesLogos from "@/pages/admin/references/logos";
 import AdminReferencesProjects from "@/pages/admin/references/projects";
 import AdminHomepage from "@/pages/admin/homepage/index";
 import AdminHomepageStatistics from "@/pages/admin/homepage/statistics";
+import AdminHomepageSolutions from "@/pages/admin/homepage/solutions";
 import AdminSolutions from "@/pages/admin/solutions";
 import AdminSectors from "@/pages/admin/sectors";
 import AdminContent from "@/pages/admin/content";
@@ -207,6 +208,11 @@ function Router() {
         <Route path="/admin/homepage/statistics">
           <AdminLayout>
             <AdminHomepageStatistics />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/homepage/solutions">
+          <AdminLayout>
+            <AdminHomepageSolutions />
           </AdminLayout>
         </Route>
         

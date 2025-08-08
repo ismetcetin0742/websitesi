@@ -1,6 +1,6 @@
 import { Link } from 'wouter';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart3, TrendingUp } from 'lucide-react';
+import { BarChart3, TrendingUp, Settings } from 'lucide-react';
 
 export default function AdminHomepage() {
   return (
@@ -22,6 +22,20 @@ export default function AdminHomepage() {
             <CardContent>
               <p className="text-sm text-gray-600">
                 Ana sayfadaki istatistik bölümünü yönetin (100+ Başarılı Proje, %95 Müşteri Memnuniyeti, vb.)
+              </p>
+            </CardContent>
+          </Link>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <Link href="/admin/homepage/solutions">
+            <CardHeader className="flex flex-row items-center space-y-0 pb-2">
+              <CardTitle className="text-lg font-medium">Çözümlerimiz Yönetimi</CardTitle>
+              <Settings className="h-6 w-6 ml-auto text-primary" />
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600">
+                Ana sayfadaki "Çözümlerimiz" bölümünü yönetin (E-Flow BPM, E-Flow DMS, vb.)
               </p>
             </CardContent>
           </Link>

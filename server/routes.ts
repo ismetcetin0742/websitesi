@@ -961,6 +961,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Homepage Solutions API endpoints
+  app.get("/api/homepage-solutions", async (req, res) => {
+    try {
+      const solutions = await storage.getHomepageSolutions();
+      res.json(solutions);
+    } catch (error) {
+      res.status(500).json({ message: "Sunucu hatası" });
+    }
+  });
+
+  app.post("/api/admin/homepage-solutions", authenticateAdmin, async (req, res) => {
+    try {
+      const solution = await storage.createHomepageSolution(req.body);
+      res.json(solution);
+    } catch (error) {
+      console.error('Error creating homepage solution:', error);
+      res.status(500).json({ message: "Çözüm oluşturulamadı" });
+    }
+  });
+
+  app.put("/api/admin/homepage-solutions/:id", authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updates = req.body;
+      const solution = await storage.updateHomepageSolution(id, updates);
+      res.json(solution);
+    } catch (error) {
+      console.error('Error updating homepage solution:', error);
+      res.status(500).json({ message: "Çözüm güncellenemedi" });
+    }
+  });
+
+  app.delete("/api/admin/homepage-solutions/:id", authenticateAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteHomepageSolution(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error deleting homepage solution:', error);
+      res.status(500).json({ message: "Çözüm silinemedi" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

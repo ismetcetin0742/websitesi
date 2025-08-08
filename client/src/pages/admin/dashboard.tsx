@@ -54,6 +54,13 @@ export default function AdminDashboard() {
 
   const adminSections = [
     {
+      title: "Ana Sayfa Yönetimi",
+      description: "Ana sayfa çözümlerimiz bölümünü ve içeriklerini yönetin",
+      icon: <Home className="h-6 w-6" />,
+      href: "/admin/homepage",
+      color: "bg-blue-600",
+    },
+    {
       title: "Hakkımızda Yönetimi",
       description: "Tüm hakkımızda bölümlerini tek yerden yönetin",
       icon: <Users className="h-6 w-6" />,
@@ -74,7 +81,6 @@ export default function AdminDashboard() {
       href: "/admin/references",
       color: "bg-orange-500",
     },
-
     {
       title: "İletişim Sayfası Yönetimi",
       description: "İletişim sayfası içerikleri ve bilgilerini yönetin",
@@ -96,7 +102,6 @@ export default function AdminDashboard() {
       href: "/admin/careers",
       color: "bg-pink-500",
     },
-
   ];
 
   return (

@@ -188,6 +188,25 @@ export const insertCompanyValueSchema = createInsertSchema(companyValues).omit({
   updatedAt: true,
 });
 
+// Homepage Solutions Table
+export const homepageSolutions = pgTable("homepage_solutions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: jsonb("title").notNull(), // Multi-language title
+  description: jsonb("description").notNull(), // Multi-language description
+  icon: text("icon").notNull(), // Icon name (lucide-react)
+  link: text("link").notNull(), // URL link
+  displayOrder: integer("display_order").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertHomepageSolutionSchema = createInsertSchema(homepageSolutions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -232,6 +251,8 @@ export type AboutContent = typeof aboutContent.$inferSelect;
 export type InsertAboutContent = z.infer<typeof insertAboutContentSchema>;
 export type CompanyValue = typeof companyValues.$inferSelect;
 export type InsertCompanyValue = z.infer<typeof insertCompanyValueSchema>;
+export type HomepageSolution = typeof homepageSolutions.$inferSelect;
+export type InsertHomepageSolution = z.infer<typeof insertHomepageSolutionSchema>;
 export type CareerContent = typeof careerContent.$inferSelect;
 export type InsertCareerContent = z.infer<typeof insertCareerContentSchema>;
 export type CareerBenefit = typeof careerBenefits.$inferSelect;

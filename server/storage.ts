@@ -33,7 +33,9 @@ import {
   type ContactContent,
   type InsertContactContent,
   type ContactInfo,
-  type InsertContactInfo
+  type InsertContactInfo,
+  type HomepageSolution,
+  type InsertHomepageSolution
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -124,6 +126,12 @@ export interface IStorage {
   createContactInfo(data: InsertContactInfo): Promise<ContactInfo>;
   updateContactInfo(id: string, data: Partial<ContactInfo>): Promise<ContactInfo>;
   deleteContactInfo(id: string): Promise<void>;
+
+  // Homepage Solutions operations
+  getHomepageSolutions(): Promise<HomepageSolution[]>;
+  createHomepageSolution(data: InsertHomepageSolution): Promise<HomepageSolution>;
+  updateHomepageSolution(id: string, data: Partial<HomepageSolution>): Promise<HomepageSolution>;
+  deleteHomepageSolution(id: string): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -144,6 +152,7 @@ export class MemStorage implements IStorage {
   private careerBenefits: Map<string, CareerBenefit>;
   private contactContent: Map<string, ContactContent>;
   private contactInfo: Map<string, ContactInfo>;
+  private homepageSolutions: Map<string, HomepageSolution>;
 
   constructor() {
     this.users = new Map();
@@ -163,6 +172,7 @@ export class MemStorage implements IStorage {
     this.careerBenefits = new Map();
     this.contactContent = new Map();
     this.contactInfo = new Map();
+    this.homepageSolutions = new Map();
     
     // Initialize with sample data
     this.initializeBlogPosts();
@@ -178,6 +188,7 @@ export class MemStorage implements IStorage {
     this.initializeCareerBenefits();
     this.initializeContactContent();
     this.initializeContactInfo();
+    this.initializeHomepageSolutions();
   }
 
   private initializeCareerContent() {
@@ -1680,6 +1691,129 @@ export class MemStorage implements IStorage {
     contactInfoData.forEach(info => {
       this.contactInfo.set(info.id, info);
     });
+  }
+
+  private initializeHomepageSolutions() {
+    const solutionsData: HomepageSolution[] = [
+      {
+        id: "1",
+        title: {
+          tr: "E-Flow BPM",
+          en: "E-Flow BPM",
+          fr: "E-Flow BPM",
+          ar: "إي فلو بي بي إم",
+          ru: "E-Flow BPM",
+          de: "E-Flow BPM"
+        },
+        description: {
+          tr: "İş süreçlerinizi dijitalleştirerek verimliliği artırın",
+          en: "Increase efficiency by digitalizing your business processes",
+          fr: "Augmentez l'efficacité en digitalisant vos processus métier",
+          ar: "زيادة الكفاءة من خلال رقمنة العمليات التجارية",
+          ru: "Повысьте эффективность, оцифровав свои бизнес-процессы",
+          de: "Steigern Sie die Effizienz durch Digitalisierung Ihrer Geschäftsprozesse"
+        },
+        icon: "Workflow",
+        link: "/cozumler#bpm",
+        displayOrder: 1,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "2",
+        title: {
+          tr: "E-Flow DMS",
+          en: "E-Flow DMS",
+          fr: "E-Flow DMS",
+          ar: "إي فلو دي إم إس",
+          ru: "E-Flow DMS",
+          de: "E-Flow DMS"
+        },
+        description: {
+          tr: "Belgelerinizi güvenli ve organize şekilde yönetin",
+          en: "Manage your documents securely and organized",
+          fr: "Gérez vos documents de manière sécurisée et organisée",
+          ar: "إدارة وثائقكم بأمان وبشكل منظم",
+          ru: "Управляйте своими документами безопасно и организованно",
+          de: "Verwalten Sie Ihre Dokumente sicher und organisiert"
+        },
+        icon: "FileText",
+        link: "/cozumler#dms",
+        displayOrder: 2,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "3",
+        title: {
+          tr: "Özel Yazılım Geliştirme",
+          en: "Custom Software Development",
+          fr: "Développement de logiciels personnalisés",
+          ar: "تطوير البرمجيات المخصصة",
+          ru: "Разработка специального программного обеспечения",
+          de: "Individuelle Softwareentwicklung"
+        },
+        description: {
+          tr: "İhtiyaçlarınıza özel yazılım çözümleri geliştiriyoruz",
+          en: "We develop custom software solutions for your needs",
+          fr: "Nous développons des solutions logicielles personnalisées pour vos besoins",
+          ar: "نقوم بتطوير حلول برمجية مخصصة لاحتياجاتكم",
+          ru: "Мы разрабатываем индивидуальные программные решения для ваших потребностей",
+          de: "Wir entwickeln maßgeschneiderte Softwarelösungen für Ihre Bedürfnisse"
+        },
+        icon: "Code",
+        link: "/cozumler#custom",
+        displayOrder: 3,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    solutionsData.forEach(solution => {
+      this.homepageSolutions.set(solution.id, solution);
+    });
+  }
+
+  // Homepage Solutions operations
+  async getHomepageSolutions(): Promise<HomepageSolution[]> {
+    return Array.from(this.homepageSolutions.values())
+      .filter(solution => solution.isActive)
+      .sort((a, b) => a.displayOrder - b.displayOrder);
+  }
+
+  async createHomepageSolution(data: InsertHomepageSolution): Promise<HomepageSolution> {
+    const id = randomUUID();
+    const solution: HomepageSolution = {
+      ...data,
+      id,
+      displayOrder: data.displayOrder ?? 0,
+      isActive: data.isActive ?? true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.homepageSolutions.set(id, solution);
+    return solution;
+  }
+
+  async updateHomepageSolution(id: string, data: Partial<HomepageSolution>): Promise<HomepageSolution> {
+    const existing = this.homepageSolutions.get(id);
+    if (!existing) {
+      throw new Error('Homepage solution not found');
+    }
+    const updated = {
+      ...existing,
+      ...data,
+      updatedAt: new Date()
+    };
+    this.homepageSolutions.set(id, updated);
+    return updated;
+  }
+
+  async deleteHomepageSolution(id: string): Promise<void> {
+    this.homepageSolutions.delete(id);
   }
 }
 
