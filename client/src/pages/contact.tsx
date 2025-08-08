@@ -158,8 +158,8 @@ export default function Contact() {
                 </p>
               </div>
               
-              <div className="grid md:grid-cols-2 gap-6">
-                {activeContactInfo.filter(info => info.type !== 'hours').map((info) => {
+              <div className="grid md:grid-cols-4 gap-6">
+                {activeContactInfo.map((info) => {
                   const IconComponent = getIcon(info.iconName);
                   return (
                     <Card key={info.id} className="border border-gray-200 hover:shadow-lg transition-shadow">
@@ -177,28 +177,6 @@ export default function Contact() {
                             </p>
                           ))}
                         </div>
-                        {info.type === 'email' && (
-                          <div className="mt-4 pt-4 border-t border-gray-200">
-                            {activeContactInfo.filter(item => item.type === 'hours').map((hoursInfo) => {
-                              const HoursIcon = getIcon(hoursInfo.iconName);
-                              return (
-                                <div key={hoursInfo.id}>
-                                  <div className="flex items-center justify-center mb-2">
-                                    <HoursIcon className="h-5 w-5 text-blue-600 mr-2" />
-                                    <span className="font-semibold text-gray-900">{hoursInfo.title}</span>
-                                  </div>
-                                  <div className="space-y-1">
-                                    {hoursInfo.content.map((line, index) => (
-                                      <p key={index} className="text-sm text-gray-600">
-                                        {line}
-                                      </p>
-                                    ))}
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        )}
                       </CardContent>
                     </Card>
                   );
