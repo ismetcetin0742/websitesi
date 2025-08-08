@@ -225,6 +225,29 @@ export const insertAboutContentSchema = createInsertSchema(aboutContent).omit({
   updatedAt: true,
 });
 
+// Sector Content Table - for detailed sector management
+export const sectorContent = pgTable("sector_content", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  sectorKey: text("sector_key").notNull().unique(), // 'banking', 'manufacturing', etc.
+  title: jsonb("title").notNull(), // Multi-language title
+  description: jsonb("description").notNull(), // Multi-language description
+  solutions: jsonb("solutions").notNull(), // Multi-language solutions
+  benefits: jsonb("benefits").notNull(), // Multi-language benefits
+  efficiencyRate: integer("efficiency_rate").notNull().default(86),
+  features: jsonb("features").notNull().default('[]'), // Array of features
+  successStories: jsonb("success_stories").notNull(), // Multi-language success stories
+  integrations: jsonb("integrations").notNull().default('[]'), // Array of integrations
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertSectorContentSchema = createInsertSchema(sectorContent).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -249,6 +272,8 @@ export type InsertSector = z.infer<typeof insertSectorSchema>;
 
 export type AboutContent = typeof aboutContent.$inferSelect;
 export type InsertAboutContent = z.infer<typeof insertAboutContentSchema>;
+export type SectorContent = typeof sectorContent.$inferSelect;
+export type InsertSectorContent = z.infer<typeof insertSectorContentSchema>;
 export type CompanyValue = typeof companyValues.$inferSelect;
 export type InsertCompanyValue = z.infer<typeof insertCompanyValueSchema>;
 export type HomepageSolution = typeof homepageSolutions.$inferSelect;
@@ -303,11 +328,6 @@ export const insertCareerBenefitSchema = createInsertSchema(careerBenefits).omit
   createdAt: true,
   updatedAt: true,
 });
-
-export type CareerContent = typeof careerContent.$inferSelect;
-export type InsertCareerContent = z.infer<typeof insertCareerContentSchema>;
-export type CareerBenefit = typeof careerBenefits.$inferSelect;
-export type InsertCareerBenefit = z.infer<typeof insertCareerBenefitSchema>;
 
 // Contact Content schema - for managing contact page sections and info
 export const contactContent = pgTable("contact_content", {

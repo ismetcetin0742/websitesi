@@ -110,6 +110,13 @@ export default function AdminDashboard() {
       href: "/admin/products-solutions",
       color: "bg-cyan-500",
     },
+    {
+      title: "Sektörler Yönetimi",
+      description: "Bankacılık, üretim, sağlık gibi sektörel çözümleri yönetin",
+      icon: <Building className="h-6 w-6" />,
+      href: "/admin/sectors",
+      color: "bg-teal-500",
+    },
   ];
 
   return (

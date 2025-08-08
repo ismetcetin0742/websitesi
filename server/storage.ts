@@ -38,7 +38,9 @@ import {
   type HomepageSolution,
   type InsertHomepageSolution,
   type HeroContent,
-  type InsertHeroContent
+  type InsertHeroContent,
+  type SectorContent,
+  type InsertSectorContent
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -144,6 +146,12 @@ export interface IStorage {
   createHeroContent(data: InsertHeroContent): Promise<HeroContent>;
   updateHeroContent(id: string, data: Partial<HeroContent>): Promise<HeroContent>;
   deleteHeroContent(id: string): Promise<void>;
+
+  // Sector Content operations
+  getSectorContent(sectorKey: string): Promise<SectorContent | undefined>;
+  createSectorContent(content: InsertSectorContent): Promise<SectorContent>;
+  updateSectorContent(sectorKey: string, content: Partial<SectorContent>): Promise<SectorContent>;
+  getAllSectorContent(): Promise<SectorContent[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -166,6 +174,7 @@ export class MemStorage implements IStorage {
   private contactInfo: Map<string, ContactInfo>;
   private homepageSolutions: Map<string, HomepageSolution>;
   private heroContent: Map<string, HeroContent>;
+  private sectorContent: Map<string, SectorContent>;
 
   constructor() {
     this.users = new Map();
@@ -187,6 +196,7 @@ export class MemStorage implements IStorage {
     this.contactInfo = new Map();
     this.homepageSolutions = new Map();
     this.heroContent = new Map();
+    this.sectorContent = new Map();
     
     // Initialize with sample data
     this.initializeBlogPosts();
@@ -1924,6 +1934,62 @@ export class MemStorage implements IStorage {
 
   async deleteHeroContent(id: string): Promise<void> {
     this.heroContent.delete(id);
+  }
+
+  // Sector Content operations
+  async getSectorContent(sectorKey: string): Promise<SectorContent | undefined> {
+    return this.sectorContent.get(sectorKey);
+  }
+
+  async createSectorContent(content: InsertSectorContent): Promise<SectorContent> {
+    const id = randomUUID();
+    const newContent: SectorContent = {
+      ...content,
+      id,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.sectorContent.set(content.sectorKey, newContent);
+    return newContent;
+  }
+
+  async updateSectorContent(sectorKey: string, content: Partial<SectorContent>): Promise<SectorContent> {
+    const existing = this.sectorContent.get(sectorKey);
+    if (!existing) {
+      // Create default content if doesn't exist
+      const defaultContent: SectorContent = {
+        id: randomUUID(),
+        sectorKey,
+        title: content.title || { tr: '', en: '', fr: '', ar: '', ru: '', de: '' },
+        description: content.description || { tr: '', en: '', fr: '', ar: '', ru: '', de: '' },
+        solutions: content.solutions || { tr: '', en: '', fr: '', ar: '', ru: '', de: '' },
+        benefits: content.benefits || { tr: '', en: '', fr: '', ar: '', ru: '', de: '' },
+        efficiencyRate: content.efficiencyRate || 86,
+        features: content.features || [],
+        successStories: content.successStories || { tr: '', en: '', fr: '', ar: '', ru: '', de: '' },
+        integrations: content.integrations || [],
+        isActive: content.isActive ?? true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      this.sectorContent.set(sectorKey, defaultContent);
+      return defaultContent;
+    }
+
+    const updated: SectorContent = {
+      ...existing,
+      ...content,
+      updatedAt: new Date()
+    };
+
+    this.sectorContent.set(sectorKey, updated);
+    return updated;
+  }
+
+  async getAllSectorContent(): Promise<SectorContent[]> {
+    return Array.from(this.sectorContent.values())
+      .filter(content => content.isActive)
+      .sort((a, b) => a.sectorKey.localeCompare(b.sectorKey));
   }
 }
 

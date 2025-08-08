@@ -1106,6 +1106,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Sector Content Management API endpoints
+  app.get("/api/admin/sectors/:sectorKey", authenticateAdmin, async (req, res) => {
+    try {
+      const { sectorKey } = req.params;
+      const content = await storage.getSectorContent(sectorKey);
+      res.json(content);
+    } catch (error) {
+      console.error('Error fetching sector content:', error);
+      res.status(500).json({ message: "Sektör içeriği alınamadı" });
+    }
+  });
+
+  app.put("/api/admin/sectors/:sectorKey", authenticateAdmin, async (req, res) => {
+    try {
+      const { sectorKey } = req.params;
+      const content = await storage.updateSectorContent(sectorKey, req.body);
+      res.json({ success: true, data: content });
+    } catch (error) {
+      console.error('Error updating sector content:', error);
+      res.status(500).json({ message: "Sektör içeriği güncellenemedi" });
+    }
+  });
+
+  app.get("/api/admin/sectors", authenticateAdmin, async (req, res) => {
+    try {
+      const sectors = await storage.getAllSectorContent();
+      res.json(sectors);
+    } catch (error) {
+      console.error('Error fetching all sectors:', error);
+      res.status(500).json({ message: "Sektörler alınamadı" });
+    }
+  });
+
+  app.post("/api/admin/sectors", authenticateAdmin, async (req, res) => {
+    try {
+      const content = await storage.createSectorContent(req.body);
+      res.status(201).json({ success: true, data: content });
+    } catch (error) {
+      console.error('Error creating sector content:', error);
+      res.status(500).json({ message: "Sektör içeriği oluşturulamadı" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
