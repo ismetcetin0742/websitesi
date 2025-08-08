@@ -119,25 +119,23 @@ export default function AdminDashboard() {
       {/* Admin Sections */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {adminSections.map((section) => (
-          <Card key={section.href} className="hover:shadow-lg transition-shadow cursor-pointer">
-            <Link href={section.href}>
-              <a className="block">
-                <CardHeader>
-                  <div className="flex items-center space-x-3">
-                    <div className={`p-2 rounded-lg text-white ${section.color}`}>
-                      {section.icon}
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">{section.title}</CardTitle>
-                    </div>
+          <Link key={section.href} href={section.href}>
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader>
+                <div className="flex items-center space-x-3">
+                  <div className={`p-2 rounded-lg text-white ${section.color}`}>
+                    {section.icon}
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription>{section.description}</CardDescription>
-                </CardContent>
-              </a>
-            </Link>
-          </Card>
+                  <div>
+                    <CardTitle className="text-lg">{section.title}</CardTitle>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>{section.description}</CardDescription>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </div>
     </div>
