@@ -813,6 +813,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Hero Content endpoints
+  app.get('/api/hero-content', async (req, res) => {
+    try {
+      const content = await storage.getHeroContent();
+      res.json(content);
+    } catch (error) {
+      console.error('Error fetching hero content:', error);
+      res.status(500).json({ error: 'Failed to fetch hero content' });
+    }
+  });
+
+  app.get('/api/admin/hero-content', authenticateAdmin, async (req, res) => {
+    try {
+      const content = await storage.getHeroContent();
+      res.json(content);
+    } catch (error) {
+      console.error('Error fetching hero content:', error);
+      res.status(500).json({ error: 'Failed to fetch hero content' });
+    }
+  });
+
+  app.post('/api/admin/hero-content', authenticateAdmin, async (req, res) => {
+    try {
+      const content = await storage.createHeroContent(req.body);
+      res.status(201).json(content);
+    } catch (error) {
+      console.error('Error creating hero content:', error);
+      res.status(500).json({ error: 'Failed to create hero content' });
+    }
+  });
+
+  app.put('/api/admin/hero-content/:id', authenticateAdmin, async (req, res) => {
+    try {
+      const content = await storage.updateHeroContent(req.params.id, req.body);
+      res.json(content);
+    } catch (error) {
+      console.error('Error updating hero content:', error);
+      res.status(500).json({ error: 'Failed to update hero content' });
+    }
+  });
+
+  app.delete('/api/admin/hero-content/:id', authenticateAdmin, async (req, res) => {
+    try {
+      await storage.deleteHeroContent(req.params.id);
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.error('Error deleting hero content:', error);
+      res.status(500).json({ error: 'Failed to delete hero content' });
+    }
+  });
+
   // Contact Content endpoints
   app.get('/api/contact-content', async (req, res) => {
     try {

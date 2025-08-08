@@ -42,6 +42,7 @@ import AdminHomepage from "@/pages/admin/homepage/index";
 import AdminHomepageStatistics from "@/pages/admin/homepage/statistics";
 import AdminHomepageSolutions from "@/pages/admin/homepage/solutions";
 import AdminHomepageAboutContent from "@/pages/admin/homepage/about-content";
+import AdminHeroContent from "@/pages/admin/homepage/hero-content";
 import AdminSolutions from "@/pages/admin/solutions";
 import AdminSectors from "@/pages/admin/sectors";
 import AdminContent from "@/pages/admin/content";
@@ -219,6 +220,11 @@ function Router() {
         <Route path="/admin/homepage/about-content">
           <AdminLayout>
             <AdminHomepageAboutContent />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/homepage/hero-content">
+          <AdminLayout>
+            <AdminHeroContent />
           </AdminLayout>
         </Route>
         

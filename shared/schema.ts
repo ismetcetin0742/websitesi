@@ -319,6 +319,20 @@ export const contactContent = pgTable("contact_content", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Hero Section schema - for managing homepage hero content
+export const heroContent = pgTable("hero_content", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  section: varchar("section").notNull(), // 'solutions_intro', 'main_banner', etc.
+  title: jsonb("title").notNull(), // Multi-language title
+  description: jsonb("description"), // Multi-language description
+  buttonText: jsonb("button_text"), // Multi-language button text
+  buttonLink: text("button_link"),
+  isActive: boolean("is_active").notNull().default(true),
+  displayOrder: integer("display_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Contact Info schema - for managing contact details (address, phone, email, hours)
 export const contactInfo = pgTable("contact_info", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -344,10 +358,18 @@ export const insertContactInfoSchema = createInsertSchema(contactInfo).omit({
   updatedAt: true,
 });
 
+export const insertHeroContentSchema = createInsertSchema(heroContent).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export type ContactContent = typeof contactContent.$inferSelect;
 export type InsertContactContent = z.infer<typeof insertContactContentSchema>;
 export type ContactInfo = typeof contactInfo.$inferSelect;
 export type InsertContactInfo = z.infer<typeof insertContactInfoSchema>;
+export type HeroContent = typeof heroContent.$inferSelect;
+export type InsertHeroContent = z.infer<typeof insertHeroContentSchema>;
 
 export const insertCompanyStatsSchema = createInsertSchema(companyStats).omit({
   id: true,

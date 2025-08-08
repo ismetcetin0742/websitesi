@@ -36,7 +36,9 @@ import {
   type ContactInfo,
   type InsertContactInfo,
   type HomepageSolution,
-  type InsertHomepageSolution
+  type InsertHomepageSolution,
+  type HeroContent,
+  type InsertHeroContent
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -136,6 +138,12 @@ export interface IStorage {
   createHomepageSolution(data: InsertHomepageSolution): Promise<HomepageSolution>;
   updateHomepageSolution(id: string, data: Partial<HomepageSolution>): Promise<HomepageSolution>;
   deleteHomepageSolution(id: string): Promise<void>;
+
+  // Hero Content operations
+  getHeroContent(): Promise<HeroContent[]>;
+  createHeroContent(data: InsertHeroContent): Promise<HeroContent>;
+  updateHeroContent(id: string, data: Partial<HeroContent>): Promise<HeroContent>;
+  deleteHeroContent(id: string): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -157,6 +165,7 @@ export class MemStorage implements IStorage {
   private contactContent: Map<string, ContactContent>;
   private contactInfo: Map<string, ContactInfo>;
   private homepageSolutions: Map<string, HomepageSolution>;
+  private heroContent: Map<string, HeroContent>;
 
   constructor() {
     this.users = new Map();
@@ -177,6 +186,7 @@ export class MemStorage implements IStorage {
     this.contactContent = new Map();
     this.contactInfo = new Map();
     this.homepageSolutions = new Map();
+    this.heroContent = new Map();
     
     // Initialize with sample data
     this.initializeBlogPosts();
@@ -193,6 +203,7 @@ export class MemStorage implements IStorage {
     this.initializeContactContent();
     this.initializeContactInfo();
     this.initializeHomepageSolutions();
+    this.initializeHeroContent();
   }
 
   private initializeCareerContent() {
@@ -1795,6 +1806,48 @@ export class MemStorage implements IStorage {
     });
   }
 
+  private initializeHeroContent() {
+    const heroData: HeroContent[] = [
+      {
+        id: "1",
+        section: "solutions_intro",
+        title: {
+          tr: "Çözümlerimizle Tanışmak İster Misiniz?",
+          en: "Would You Like to Meet Our Solutions?",
+          fr: "Souhaiteriez-vous rencontrer nos solutions?",
+          ar: "هل تود التعرف على حلولنا؟",
+          ru: "Хотите познакомиться с нашими решениями?",
+          de: "Möchten Sie unsere Lösungen kennenlernen?"
+        },
+        description: {
+          tr: "Dijital dönüşüm yolculuğunuzda size rehberlik edecek, iş süreçlerinizi optimize edecek ve teknoloji gücüyle işletmenizi geleceğe taşıyacak çözümlerimizi keşfedin.",
+          en: "Discover our solutions that will guide you on your digital transformation journey, optimize your business processes, and carry your business to the future with the power of technology.",
+          fr: "Découvrez nos solutions qui vous guideront dans votre parcours de transformation numérique, optimiseront vos processus métier et porteront votre entreprise vers l'avenir grâce à la puissance de la technologie.",
+          ar: "اكتشف حلولنا التي ستوجهك في رحلة التحول الرقمي، وتحسن عمليات عملك، وتحمل عملك إلى المستقبل بقوة التكنولوجيا.",
+          ru: "Откройте для себя наши решения, которые будут направлять вас на пути цифровой трансформации, оптимизировать ваши бизнес-процессы и перенести ваш бизнес в будущее с помощью технологий.",
+          de: "Entdecken Sie unsere Lösungen, die Sie auf Ihrer digitalen Transformationsreise leiten, Ihre Geschäftsprozesse optimieren und Ihr Unternehmen mit der Kraft der Technologie in die Zukunft führen werden."
+        },
+        buttonText: {
+          tr: "Demo İsteyin",
+          en: "Request Demo",
+          fr: "Demander une démo",
+          ar: "طلب عرض توضيحي",
+          ru: "Запросить демо",
+          de: "Demo anfordern"
+        },
+        buttonLink: "/demo-request",
+        displayOrder: 1,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    heroData.forEach(content => {
+      this.heroContent.set(content.id, content);
+    });
+  }
+
   // Homepage Solutions operations
   async getHomepageSolutions(): Promise<HomepageSolution[]> {
     return Array.from(this.homepageSolutions.values())
@@ -1832,6 +1885,45 @@ export class MemStorage implements IStorage {
 
   async deleteHomepageSolution(id: string): Promise<void> {
     this.homepageSolutions.delete(id);
+  }
+
+  // Hero Content operations
+  async getHeroContent(): Promise<HeroContent[]> {
+    return Array.from(this.heroContent.values())
+      .filter(content => content.isActive)
+      .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+  }
+
+  async createHeroContent(data: InsertHeroContent): Promise<HeroContent> {
+    const id = randomUUID();
+    const content: HeroContent = {
+      ...data,
+      id,
+      displayOrder: data.displayOrder ?? 0,
+      isActive: data.isActive ?? true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.heroContent.set(id, content);
+    return content;
+  }
+
+  async updateHeroContent(id: string, data: Partial<HeroContent>): Promise<HeroContent> {
+    const existing = this.heroContent.get(id);
+    if (!existing) {
+      throw new Error('Hero content not found');
+    }
+    const updated = {
+      ...existing,
+      ...data,
+      updatedAt: new Date()
+    };
+    this.heroContent.set(id, updated);
+    return updated;
+  }
+
+  async deleteHeroContent(id: string): Promise<void> {
+    this.heroContent.delete(id);
   }
 }
 

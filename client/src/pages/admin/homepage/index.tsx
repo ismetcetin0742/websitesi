@@ -64,17 +64,18 @@ export default function AdminHomepage() {
           </Link>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer opacity-50">
-          <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-            <CardTitle className="text-lg font-medium">Hero Bölümü</CardTitle>
-            <TrendingUp className="h-6 w-6 ml-auto text-gray-400" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-600">
-              Ana sayfadaki hero bölümü içeriklerini düzenleyin
-            </p>
-            <p className="text-xs text-gray-500 mt-2">Yakında eklenecek</p>
-          </CardContent>
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <Link href="/admin/homepage/hero-content">
+            <CardHeader className="flex flex-row items-center space-y-0 pb-2">
+              <CardTitle className="text-lg font-medium">Hero Bölümü</CardTitle>
+              <TrendingUp className="h-6 w-6 ml-auto text-primary" />
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600">
+                Ana sayfadaki hero bölümü içeriklerini düzenleyin ("Çözümlerimizle Tanışmak İster Misiniz?" vb.)
+              </p>
+            </CardContent>
+          </Link>
         </Card>
       </div>
     </div>
