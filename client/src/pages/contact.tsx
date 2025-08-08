@@ -158,8 +158,8 @@ export default function Contact() {
                 </p>
               </div>
               
-              <div className="grid md:grid-cols-3 gap-6">
-                {activeContactInfo.map((info) => {
+              <div className="grid md:grid-cols-2 gap-6">
+                {activeContactInfo.filter(info => info.type !== 'hours').map((info) => {
                   const IconComponent = getIcon(info.iconName);
                   return (
                     <Card key={info.id} className="border border-gray-200 hover:shadow-lg transition-shadow">
@@ -177,6 +177,28 @@ export default function Contact() {
                             </p>
                           ))}
                         </div>
+                        {info.type === 'email' && (
+                          <div className="mt-4 pt-4 border-t border-gray-200">
+                            {activeContactInfo.filter(item => item.type === 'hours').map((hoursInfo) => {
+                              const HoursIcon = getIcon(hoursInfo.iconName);
+                              return (
+                                <div key={hoursInfo.id}>
+                                  <div className="flex items-center justify-center mb-2">
+                                    <HoursIcon className="h-5 w-5 text-blue-600 mr-2" />
+                                    <span className="font-semibold text-gray-900">{hoursInfo.title}</span>
+                                  </div>
+                                  <div className="space-y-1">
+                                    {hoursInfo.content.map((line, index) => (
+                                      <p key={index} className="text-sm text-gray-600">
+                                        {line}
+                                      </p>
+                                    ))}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
                   );
@@ -296,15 +318,6 @@ export default function Contact() {
 
               {/* Map Section */}
               <div className="bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden">
-                <div className="p-6 border-b border-gray-200">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    Ofis Konumumuz
-                  </h3>
-                  <p className="text-gray-600">
-                    Barbaros Mahallesi'ndeki ofisimizi ziyaret edebilirsiniz
-                  </p>
-                </div>
-                
                 <div className="h-96 w-full">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.5659436842447!2d29.124249776137195!3d41.01912061928851!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac84c8e1a4b35%3A0x2d2b14c8e1a4b35!2sNidakule%20Ata%C5%9Fehir%20Bat%C4%B1%2C%20Barbaros%20Mh.%2C%20Begonya%20Sok.%20No%3A1%2C%2034746%20Ata%C5%9Fehir%2F%C4%B0stanbul!5e0!3m2!1str!2str!4v1708012345678!5m2!1str!2str"
@@ -316,6 +329,15 @@ export default function Contact() {
                     referrerPolicy="no-referrer-when-downgrade"
                     title="Algotrom Ofis Konumu"
                   ></iframe>
+                </div>
+                <div className="p-4">
+                  <Button 
+                    onClick={() => window.open('https://maps.app.goo.gl/uZzZrFV61pR3h5xdA', '_blank')}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors"
+                  >
+                    <MapPin className="h-4 w-4 mr-2" />
+                    Harita'da Aç
+                  </Button>
                 </div>
               </div>
             </div>
