@@ -74,41 +74,7 @@ export default function AdminDashboard() {
       href: "/admin/references",
       color: "bg-orange-500",
     },
-    {
-      title: "Site İçerikleri",
-      description: "Ana sayfa, hakkımızda ve diğer sayfa içeriklerini düzenleyin",
-      icon: <Globe className="h-6 w-6" />,
-      href: "/admin/content",
-      color: "bg-blue-500",
-    },
-    {
-      title: "Blog Yazıları",
-      description: "Blog yazılarını yönetin ve yeni yazılar ekleyin",
-      icon: <FileText className="h-6 w-6" />,
-      href: "/admin/blog",
-      color: "bg-green-500",
-    },
-    {
-      title: "Çözümler",
-      description: "E-Flow BPM ve DMS çözümlerini yönetin",
-      icon: <Target className="h-6 w-6" />,
-      href: "/admin/solutions",
-      color: "bg-orange-500",
-    },
-    {
-      title: "Sektörler",
-      description: "Sektör sayfalarını ve içeriklerini yönetin",
-      icon: <Building className="h-6 w-6" />,
-      href: "/admin/sectors",
-      color: "bg-cyan-500",
-    },
-    {
-      title: "İletişim Mesajları",
-      description: "Gelen iletişim formlarını görüntüleyin",
-      icon: <MessageSquare className="h-6 w-6" />,
-      href: "/admin/contacts",
-      color: "bg-red-500",
-    },
+
     {
       title: "İletişim Sayfası Yönetimi",
       description: "İletişim sayfası içerikleri ve bilgilerini yönetin",
@@ -130,13 +96,7 @@ export default function AdminDashboard() {
       href: "/admin/careers",
       color: "bg-pink-500",
     },
-    {
-      title: "İş Başvuruları",
-      description: "Kariyer başvurularını görüntüleyin",
-      icon: <Users className="h-6 w-6" />,
-      href: "/admin/applications",
-      color: "bg-teal-500",
-    },
+
   ];
 
   return (
@@ -154,50 +114,7 @@ export default function AdminDashboard() {
         </Button>
       </div>
 
-      {/* Stats Cards */}
-      {!isLoading && stats && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Toplam İletişim</CardTitle>
-              <MessageSquare className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.contactMessages || 0}</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Demo Talepleri</CardTitle>
-              <BarChart3 className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.demoRequests || 0}</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Blog Yazıları</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.blogPosts || 0}</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">İş Başvuruları</CardTitle>
-              <Briefcase className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.jobApplications || 0}</div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
+
 
       {/* Admin Sections */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
