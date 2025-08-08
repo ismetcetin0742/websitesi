@@ -295,33 +295,6 @@ export default function Contact() {
               </Form>
             </div>
           </div>
-
-          {/* Map Section */}
-          <div className="mt-12">
-            <div className="bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden">
-              <div className="p-6 border-b border-gray-200">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  Ofis Konumumuz
-                </h3>
-                <p className="text-gray-600">
-                  Barbaros Mahallesi'ndeki ofisimizi ziyaret edebilirsiniz
-                </p>
-              </div>
-              
-              <div className="h-80 w-full">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.5659436842447!2d29.124249776137195!3d41.01912061928851!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac84c8e1a4b35%3A0x2d2b14c8e1a4b35!2sNidakule%20Ata%C5%9Fehir%20Bat%C4%B1%2C%20Barbaros%20Mh.%2C%20Begonya%20Sok.%20No%3A1%2C%2034746%20Ata%C5%9Fehir%2F%C4%B0stanbul!5e0!3m2!1str!2str!4v1708012345678!5m2!1str!2str"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Algotrom Ofis Konumu"
-                ></iframe>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
     </div>
