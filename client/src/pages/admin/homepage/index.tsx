@@ -1,11 +1,20 @@
 import { Link } from 'wouter';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart3, TrendingUp, Settings, FileText } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { BarChart3, TrendingUp, Settings, FileText, ArrowLeft } from 'lucide-react';
 
 export default function AdminHomepage() {
   return (
     <div className="container mx-auto p-6">
       <div className="mb-8">
+        <div className="flex items-center gap-2 mb-2">
+          <Link href="/admin">
+            <Button variant="ghost" size="sm">
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              Geri
+            </Button>
+          </Link>
+        </div>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Ana Sayfa Yönetimi</h1>
         <p className="text-gray-600">
           Ana sayfa bileşenlerini ve içeriklerini yönetin
