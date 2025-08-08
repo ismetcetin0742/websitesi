@@ -298,7 +298,7 @@ export default function Contact() {
               <div className="bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden">
                 <div className="h-96 w-full">
                   <iframe
-                    src="https://maps.google.com/maps?q=41.0191,29.1267+(Algotrom+Yazılım+Ve+Teknoloji)&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.6568486842447!2d29.128573915!3d41.0201!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac84e3e0d3b1f%3A0x8a3d1e2c3a2b1c1d!2sAlgotrom%20Yaz%C4%B1l%C4%B1m%20Ve%20Teknoloji!5e0!3m2!1str!2str!4v1708012345678!5m2!1str!2str"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -310,7 +310,7 @@ export default function Contact() {
                 </div>
                 <div className="p-4">
                   <Button 
-                    onClick={() => window.open('https://maps.app.goo.gl/uZzZrFV61pR3h5xdA', '_blank')}
+                    onClick={() => window.open('https://maps.app.goo.gl/EfvnBZwZQxaHfUSm9', '_blank')}
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors"
                   >
                     <MapPin className="h-4 w-4 mr-2" />
