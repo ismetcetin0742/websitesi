@@ -51,14 +51,17 @@ export default function AdminHomepage() {
         </Card>
 
         <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-          <Link href="/admin/homepage/solutions">
+          <Link href="/admin/homepage/solutions-order">
             <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-              <CardTitle className="text-lg font-medium">Çözümlerimiz Yönetimi</CardTitle>
+              <CardTitle className="text-lg font-medium">Çözümler Sıralaması</CardTitle>
               <Settings className="h-6 w-6 ml-auto text-primary" />
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-600">
-                Ana sayfadaki "Çözümlerimiz" bölümünü yönetin (E-Flow BPM, E-Flow DMS, vb.)
+                Ana sayfadaki çözümler bölümünün gösterim sırasını düzenleyin
+              </p>
+              <p className="text-xs text-blue-600 mt-1">
+                İçerik düzenlemesi ayrı bölümden yapılacak
               </p>
             </CardContent>
           </Link>
