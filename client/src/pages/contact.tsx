@@ -308,12 +308,13 @@ export default function Contact() {
                     title="Algotrom Yazılım Ve Teknoloji - Ataşehir"
                   ></iframe>
                 </div>
-                <div className="p-4">
+                <div className="p-4 flex justify-center">
                   <Button 
                     onClick={() => window.open('https://maps.app.goo.gl/EfvnBZwZQxaHfUSm9', '_blank')}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors"
+                    size="sm"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm rounded-lg transition-colors"
                   >
-                    <MapPin className="h-4 w-4 mr-2" />
+                    <MapPin className="h-3 w-3 mr-1" />
                     Harita'da Aç
                   </Button>
                 </div>
