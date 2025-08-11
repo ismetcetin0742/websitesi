@@ -1143,6 +1143,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/admin/sectors/:sectorKey", authenticateAdmin, async (req, res) => {
     try {
       const { sectorKey } = req.params;
+      console.log('Update sector request body:', JSON.stringify(req.body, null, 2));
+      
+      if (!req.body || typeof req.body !== 'object') {
+        return res.status(400).json({ message: "Geçersiz veri formatı" });
+      }
+      
       const content = await storage.updateSectorContent(sectorKey, req.body);
       res.json({ success: true, data: content });
     } catch (error) {
@@ -1163,6 +1169,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/sectors", authenticateAdmin, async (req, res) => {
     try {
+      console.log('Create sector request body:', JSON.stringify(req.body, null, 2));
+      
+      if (!req.body || typeof req.body !== 'object') {
+        return res.status(400).json({ message: "Geçersiz veri formatı" });
+      }
+      
       const content = await storage.createSectorContent(req.body);
       res.status(201).json({ success: true, data: content });
     } catch (error) {

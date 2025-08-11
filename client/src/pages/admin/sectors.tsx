@@ -227,7 +227,7 @@ export default function AdminSectors() {
     setFormData(prev => ({
       ...prev,
       [field]: {
-        ...prev[field as keyof typeof prev],
+        ...(prev[field as keyof typeof prev] as any),
         [language]: value
       }
     }));
@@ -269,7 +269,7 @@ export default function AdminSectors() {
             <Label htmlFor={`title-${lang}`}>{lang.toUpperCase()}</Label>
             <Input
               id={`title-${lang}`}
-              value={value}
+              value={value || ''}
               onChange={(e) => updateMultilingualField('title', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} başlık`}
             />
@@ -285,7 +285,7 @@ export default function AdminSectors() {
             <Label htmlFor={`description-${lang}`}>{lang.toUpperCase()}</Label>
             <Textarea
               id={`description-${lang}`}
-              value={value}
+              value={value || ''}
               onChange={(e) => updateMultilingualField('description', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} açıklama`}
               rows={3}
@@ -302,7 +302,7 @@ export default function AdminSectors() {
             <Label htmlFor={`solutions-${lang}`}>{lang.toUpperCase()}</Label>
             <Textarea
               id={`solutions-${lang}`}
-              value={value}
+              value={value || ''}
               onChange={(e) => updateMultilingualField('solutions', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} çözümler (• ile başlayın)`}
               rows={5}
@@ -319,7 +319,7 @@ export default function AdminSectors() {
             <Label htmlFor={`benefits-${lang}`}>{lang.toUpperCase()}</Label>
             <Textarea
               id={`benefits-${lang}`}
-              value={value}
+              value={value || ''}
               onChange={(e) => updateMultilingualField('benefits', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} faydalar (• ile başlayın)`}
               rows={4}
@@ -336,7 +336,7 @@ export default function AdminSectors() {
             <Label htmlFor={`successStories-${lang}`}>{lang.toUpperCase()}</Label>
             <Textarea
               id={`successStories-${lang}`}
-              value={value}
+              value={value || ''}
               onChange={(e) => updateMultilingualField('successStories', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} başarı hikayesi`}
               rows={4}
