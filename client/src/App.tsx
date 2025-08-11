@@ -285,6 +285,7 @@ function Router() {
         <Route path="/solutions/integration" component={lazy(() => import('./pages/solutions/integration'))} />
         <Route path="/solutions/:slug" component={Solutions} />
         <Route path="/sectors" component={Sectors} />
+        <Route path="/sectors/:sectorKey" component={Sectors} />
         <Route path="/sectors/manufacturing" component={lazy(() => import('./pages/sectors/manufacturing'))} />
         <Route path="/sectors/service" component={lazy(() => import('./pages/sectors/service'))} />
         <Route path="/sectors/energy" component={lazy(() => import('./pages/sectors/energy'))} />
