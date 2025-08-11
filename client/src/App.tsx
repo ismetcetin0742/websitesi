@@ -267,7 +267,7 @@ function Router() {
         </Route>
         <Route path="/admin/sectors">
           <AdminLayout>
-            <SectorsManagement />
+            <AdminSectors />
           </AdminLayout>
         </Route>
         <Route path="/admin/sectors/banking">

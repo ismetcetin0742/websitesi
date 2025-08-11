@@ -1171,6 +1171,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.delete("/api/admin/sectors/:sectorKey", authenticateAdmin, async (req, res) => {
+    try {
+      const { sectorKey } = req.params;
+      await storage.deleteSectorContent(sectorKey);
+      res.json({ success: true, message: "Sektör başarıyla silindi" });
+    } catch (error) {
+      console.error('Error deleting sector content:', error);
+      res.status(500).json({ message: "Sektör silinemedi" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

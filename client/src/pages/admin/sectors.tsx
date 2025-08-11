@@ -1,201 +1,507 @@
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Building2, Plus, Edit, TrendingUp } from "lucide-react";
-import { Link } from "wouter";
-import { EditModal } from "@/components/EditModal";
-import { useToast } from "@/hooks/use-toast";
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import { apiRequest } from '@/lib/queryClient';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Building2,
+  Factory,
+  ShoppingCart,
+  Settings,
+  Zap,
+  Truck,
+  TrendingUp,
+  Save,
+  X
+} from 'lucide-react';
 
-// Static sectors data - in a real app this would come from the database
-const sectors = [
-  {
-    id: "1",
-    name: "İmalat Sanayi",
-    nameEn: "Manufacturing",
-    description: "Üretim süreçlerinizi dijitalleştirin ve verimliliği artırın",
-    descriptionEn: "Digitize your production processes and increase efficiency",
-    icon: "🏭",
-    efficiency: "86%",
-    solutions: ["E-Flow BPM", "E-Flow DMS", "Kalite Yönetimi"],
-    clients: 25
-  },
-  {
-    id: "2",
-    name: "Hizmet Sektörü", 
-    nameEn: "Service Sector",
-    description: "Müşteri deneyimini iyileştirin ve operasyonel verimliliği artırın",
-    descriptionEn: "Improve customer experience and increase operational efficiency",
-    icon: "🏢",
-    efficiency: "86%",
-    solutions: ["E-Flow BPM", "Müşteri Yönetimi", "Rezervasyon Sistemi"],
-    clients: 18
-  },
-  {
-    id: "3",
-    name: "Enerji",
-    nameEn: "Energy",
-    description: "Enerji operasyonlarınızı optimize edin ve sürdürülebilirliği artırın",
-    descriptionEn: "Optimize your energy operations and increase sustainability", 
-    icon: "⚡",
-    efficiency: "86%",
-    solutions: ["E-Flow BPM", "Enerji İzleme", "Bakım Yönetimi"],
-    clients: 12
-  },
-  {
-    id: "4",
-    name: "Perakende",
-    nameEn: "Retail",
-    description: "Satış süreçlerinizi dijitalleştirin ve müşteri memnuniyetini artırın",
-    descriptionEn: "Digitize your sales processes and increase customer satisfaction",
-    icon: "🛍️",
-    efficiency: "86%",
-    solutions: ["E-Flow BPM", "Stok Yönetimi", "POS Entegrasyonu"],
-    clients: 22
-  }
-];
+// Multi-language content helper
+const createEmptyMultilingualContent = () => ({
+  tr: '',
+  en: '',
+  fr: '',
+  ar: '',
+  ru: '',
+  de: ''
+});
+
+// Sector icon mapping
+const sectorIcons = {
+  banking: Building2,
+  manufacturing: Factory,
+  retail: ShoppingCart,
+  service: Settings,
+  energy: Zap,
+  logistics: Truck,
+  default: Building2
+};
 
 export default function AdminSectors() {
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [selectedSector, setSelectedSector] = useState<any>(null);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editingSector, setEditingSector] = useState<any>(null);
 
-  const handleEdit = (sector: any) => {
-    setSelectedSector(sector);
-    setEditModalOpen(true);
-  };
+  // Form state for new/edit sector
+  const [formData, setFormData] = useState({
+    sectorKey: '',
+    title: createEmptyMultilingualContent(),
+    description: createEmptyMultilingualContent(),
+    solutions: createEmptyMultilingualContent(),
+    benefits: createEmptyMultilingualContent(),
+    successStories: createEmptyMultilingualContent(),
+    efficiencyRate: 86,
+    isActive: true
+  });
 
-  const handleSave = async (data: any) => {
-    try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch(`/api/admin/sectors/${data.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
+  // Fetch sectors
+  const { data: sectors, isLoading } = useQuery({
+    queryKey: ['/api/admin/sectors'],
+    staleTime: 5 * 60 * 1000,
+  });
+
+  // Create sector mutation
+  const createSectorMutation = useMutation({
+    mutationFn: async (data: any) => {
+      return apiRequest('/api/admin/sectors', {
+        method: 'POST',
+        body: data
       });
-
-      if (response.ok) {
-        toast({
-          title: "Başarılı",
-          description: "Sektör bilgileri güncellendi.",
-        });
-        // Update local data to reflect changes
-        // In a real app, you would refetch the data or update the cache
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Güncelleme başarısız');
-      }
-    } catch (error) {
-      console.error('Update error:', error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/sectors'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/sectors'] });
+      toast({
+        title: "Başarılı",
+        description: "Yeni sektör başarıyla eklendi.",
+      });
+      setIsCreateDialogOpen(false);
+      resetForm();
+    },
+    onError: (error: any) => {
       toast({
         title: "Hata",
-        description: error instanceof Error ? error.message : "Güncelleme sırasında bir hata oluştu.",
+        description: error.message || "Sektör eklenirken bir hata oluştu.",
         variant: "destructive",
       });
+    },
+  });
+
+  // Update sector mutation
+  const updateSectorMutation = useMutation({
+    mutationFn: async ({ sectorKey, data }: { sectorKey: string; data: any }) => {
+      return apiRequest(`/api/admin/sectors/${sectorKey}`, {
+        method: 'PUT',
+        body: data
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/sectors'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/sectors'] });
+      toast({
+        title: "Başarılı",
+        description: "Sektör başarıyla güncellendi.",
+      });
+      setIsEditDialogOpen(false);
+      setEditingSector(null);
+      resetForm();
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Hata",
+        description: error.message || "Sektör güncellenirken bir hata oluştu.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Delete sector mutation
+  const deleteSectorMutation = useMutation({
+    mutationFn: async (sectorKey: string) => {
+      return apiRequest(`/api/admin/sectors/${sectorKey}`, {
+        method: 'DELETE'
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/sectors'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/sectors'] });
+      toast({
+        title: "Başarılı",
+        description: "Sektör başarıyla silindi.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Hata",
+        description: error.message || "Sektör silinirken bir hata oluştu.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const resetForm = () => {
+    setFormData({
+      sectorKey: '',
+      title: createEmptyMultilingualContent(),
+      description: createEmptyMultilingualContent(),
+      solutions: createEmptyMultilingualContent(),
+      benefits: createEmptyMultilingualContent(),
+      successStories: createEmptyMultilingualContent(),
+      efficiencyRate: 86,
+      isActive: true
+    });
+  };
+
+  const handleEdit = (sector: any) => {
+    setEditingSector(sector);
+    setFormData({
+      sectorKey: sector.sectorKey,
+      title: sector.title,
+      description: sector.description,
+      solutions: sector.solutions,
+      benefits: sector.benefits,
+      successStories: sector.successStories,
+      efficiencyRate: sector.efficiencyRate,
+      isActive: sector.isActive
+    });
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSubmit = () => {
+    if (!formData.sectorKey.trim()) {
+      toast({
+        title: "Hata",
+        description: "Sektör anahtarı gereklidir.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!formData.title.tr.trim()) {
+      toast({
+        title: "Hata",
+        description: "Türkçe başlık gereklidir.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (editingSector) {
+      updateSectorMutation.mutate({
+        sectorKey: editingSector.sectorKey,
+        data: formData
+      });
+    } else {
+      createSectorMutation.mutate(formData);
     }
   };
 
-  const editFields = [
-    { key: 'name', label: 'Sektör Adı', type: 'text' as const, required: true },
-    { key: 'nameEn', label: 'Sektör Adı (İngilizce)', type: 'text' as const },
-    { key: 'description', label: 'Açıklama', type: 'textarea' as const, required: true },
-    { key: 'descriptionEn', label: 'Açıklama (İngilizce)', type: 'textarea' as const },
-    { key: 'efficiency', label: 'Verimlilik (%)', type: 'text' as const },
-    { key: 'clients', label: 'Müşteri Sayısı', type: 'number' as const },
-  ];
+  const updateMultilingualField = (field: string, language: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: {
+        ...prev[field as keyof typeof prev],
+        [language]: value
+      }
+    }));
+  };
 
-  return (
-    <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-4">
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/admin/dashboard">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Geri Dön
-            </Link>
-          </Button>
-          <h1 className="text-3xl font-bold">Sektörler</h1>
+  const SectorForm = () => (
+    <div className="space-y-6 max-h-[70vh] overflow-y-auto">
+      {/* Basic Info */}
+      <div className="space-y-4">
+        <div>
+          <Label htmlFor="sectorKey">Sektör Anahtarı (İngilizce, küçük harf)</Label>
+          <Input
+            id="sectorKey"
+            value={formData.sectorKey}
+            onChange={(e) => setFormData(prev => ({ ...prev, sectorKey: e.target.value.toLowerCase() }))}
+            placeholder="banking, manufacturing, retail..."
+            disabled={!!editingSector}
+          />
         </div>
-        <div className="flex items-center space-x-2">
-          <Badge variant="secondary">
-            {sectors.length} Sektör
-          </Badge>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Yeni Sektör
-          </Button>
+        
+        <div>
+          <Label htmlFor="efficiencyRate">Verimlilik Oranı (%)</Label>
+          <Input
+            id="efficiencyRate"
+            type="number"
+            value={formData.efficiencyRate}
+            onChange={(e) => setFormData(prev => ({ ...prev, efficiencyRate: parseInt(e.target.value) || 86 }))}
+            min="1"
+            max="100"
+          />
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        {sectors.map((sector) => (
-          <Card key={sector.id}>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="space-y-2">
-                  <CardTitle className="flex items-center space-x-2">
-                    <span className="text-2xl">{sector.icon}</span>
-                    <span>{sector.name}</span>
-                  </CardTitle>
-                  <CardDescription>
-                    <div className="space-y-1">
-                      <div>{sector.description}</div>
-                      <div className="text-xs text-gray-400">{sector.descriptionEn}</div>
-                    </div>
-                  </CardDescription>
-                </div>
-                <Button variant="outline" size="sm" onClick={() => handleEdit(sector)}>
-                  <Edit className="h-3 w-3 mr-1" />
-                  Düzenle
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <TrendingUp className="h-4 w-4 text-green-600" />
-                    <span className="text-sm font-medium">Verimlilik</span>
-                  </div>
-                  <Badge variant="secondary">{sector.efficiency}</Badge>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Building2 className="h-4 w-4 text-blue-600" />
-                    <span className="text-sm font-medium">Müşteri Sayısı</span>
-                  </div>
-                  <Badge variant="outline">{sector.clients} Firma</Badge>
-                </div>
-
-                <div>
-                  <p className="text-sm font-medium text-gray-700 mb-2">Çözümler</p>
-                  <div className="flex flex-wrap gap-2">
-                    {sector.solutions.map((solution, index) => (
-                      <Badge key={index} variant="outline" className="text-xs">
-                        {solution}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+      {/* Multilingual Title */}
+      <div className="space-y-4">
+        <h4 className="font-semibold">Başlık (Tüm Diller)</h4>
+        {Object.entries(formData.title).map(([lang, value]) => (
+          <div key={lang}>
+            <Label htmlFor={`title-${lang}`}>{lang.toUpperCase()}</Label>
+            <Input
+              id={`title-${lang}`}
+              value={value}
+              onChange={(e) => updateMultilingualField('title', lang, e.target.value)}
+              placeholder={`${lang.toUpperCase()} başlık`}
+            />
+          </div>
         ))}
       </div>
 
-      {selectedSector && (
-        <EditModal
-          isOpen={editModalOpen}
-          onClose={() => setEditModalOpen(false)}
-          title={`${selectedSector.name} - Düzenle`}
-          data={selectedSector}
-          onSave={handleSave}
-          fields={editFields}
-        />
+      {/* Multilingual Description */}
+      <div className="space-y-4">
+        <h4 className="font-semibold">Açıklama (Tüm Diller)</h4>
+        {Object.entries(formData.description).map(([lang, value]) => (
+          <div key={lang}>
+            <Label htmlFor={`description-${lang}`}>{lang.toUpperCase()}</Label>
+            <Textarea
+              id={`description-${lang}`}
+              value={value}
+              onChange={(e) => updateMultilingualField('description', lang, e.target.value)}
+              placeholder={`${lang.toUpperCase()} açıklama`}
+              rows={3}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Multilingual Solutions */}
+      <div className="space-y-4">
+        <h4 className="font-semibold">Çözümler (Tüm Diller)</h4>
+        {Object.entries(formData.solutions).map(([lang, value]) => (
+          <div key={lang}>
+            <Label htmlFor={`solutions-${lang}`}>{lang.toUpperCase()}</Label>
+            <Textarea
+              id={`solutions-${lang}`}
+              value={value}
+              onChange={(e) => updateMultilingualField('solutions', lang, e.target.value)}
+              placeholder={`${lang.toUpperCase()} çözümler (• ile başlayın)`}
+              rows={5}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Multilingual Benefits */}
+      <div className="space-y-4">
+        <h4 className="font-semibold">Faydalar (Tüm Diller)</h4>
+        {Object.entries(formData.benefits).map(([lang, value]) => (
+          <div key={lang}>
+            <Label htmlFor={`benefits-${lang}`}>{lang.toUpperCase()}</Label>
+            <Textarea
+              id={`benefits-${lang}`}
+              value={value}
+              onChange={(e) => updateMultilingualField('benefits', lang, e.target.value)}
+              placeholder={`${lang.toUpperCase()} faydalar (• ile başlayın)`}
+              rows={4}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Multilingual Success Stories */}
+      <div className="space-y-4">
+        <h4 className="font-semibold">Başarı Hikayeleri (Tüm Diller)</h4>
+        {Object.entries(formData.successStories).map(([lang, value]) => (
+          <div key={lang}>
+            <Label htmlFor={`successStories-${lang}`}>{lang.toUpperCase()}</Label>
+            <Textarea
+              id={`successStories-${lang}`}
+              value={value}
+              onChange={(e) => updateMultilingualField('successStories', lang, e.target.value)}
+              placeholder={`${lang.toUpperCase()} başarı hikayesi`}
+              rows={4}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Sektör Yönetimi</h1>
+          <p className="text-gray-600">Sektörel çözümlerinizi yönetin</p>
+        </div>
+        
+        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+          <DialogTrigger asChild>
+            <Button onClick={resetForm}>
+              <Plus className="mr-2 h-4 w-4" />
+              Yeni Sektör Ekle
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-4xl">
+            <DialogHeader>
+              <DialogTitle>Yeni Sektör Ekle</DialogTitle>
+            </DialogHeader>
+            <SectorForm />
+            <div className="flex gap-2 pt-4">
+              <Button 
+                onClick={handleSubmit}
+                disabled={createSectorMutation.isPending}
+              >
+                <Save className="mr-2 h-4 w-4" />
+                {createSectorMutation.isPending ? 'Kaydediliyor...' : 'Kaydet'}
+              </Button>
+              <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
+                <X className="mr-2 h-4 w-4" />
+                İptal
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      {/* Sectors Grid */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {sectors?.map((sector: any) => {
+          const IconComponent = sectorIcons[sector.sectorKey as keyof typeof sectorIcons] || sectorIcons.default;
+          
+          return (
+            <Card key={sector.id} className="hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      <IconComponent className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">{sector.title?.tr || 'Başlık Yok'}</CardTitle>
+                      <Badge variant="secondary">{sector.sectorKey}</Badge>
+                    </div>
+                  </div>
+                  <Badge className="bg-green-100 text-green-700">
+                    %{sector.efficiencyRate}
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                  {sector.description?.tr || 'Açıklama yok'}
+                </p>
+                
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleEdit(sector)}
+                  >
+                    <Edit className="h-4 w-4 mr-1" />
+                    Düzenle
+                  </Button>
+                  
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button size="sm" variant="outline" className="text-red-600 hover:text-red-700">
+                        <Trash2 className="h-4 w-4 mr-1" />
+                        Sil
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Sektörü Sil</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          "{sector.title?.tr}" sektörünü silmek istediğinizden emin misiniz? 
+                          Bu işlem geri alınamaz.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>İptal</AlertDialogCancel>
+                        <AlertDialogAction
+                          className="bg-red-600 hover:bg-red-700"
+                          onClick={() => deleteSectorMutation.mutate(sector.sectorKey)}
+                          disabled={deleteSectorMutation.isPending}
+                        >
+                          {deleteSectorMutation.isPending ? 'Siliniyor...' : 'Sil'}
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      {/* Edit Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>Sektör Düzenle: {editingSector?.title?.tr}</DialogTitle>
+          </DialogHeader>
+          <SectorForm />
+          <div className="flex gap-2 pt-4">
+            <Button 
+              onClick={handleSubmit}
+              disabled={updateSectorMutation.isPending}
+            >
+              <Save className="mr-2 h-4 w-4" />
+              {updateSectorMutation.isPending ? 'Güncelleniyor...' : 'Güncelle'}
+            </Button>
+            <Button variant="outline" onClick={() => {
+              setIsEditDialogOpen(false);
+              setEditingSector(null);
+              resetForm();
+            }}>
+              <X className="mr-2 h-4 w-4" />
+              İptal
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {sectors?.length === 0 && (
+        <div className="text-center py-12">
+          <TrendingUp className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Henüz sektör yok</h3>
+          <p className="text-gray-600 mb-4">İlk sektörünüzü ekleyerek başlayın</p>
+          <Button onClick={() => setIsCreateDialogOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            İlk Sektörü Ekle
+          </Button>
+        </div>
       )}
     </div>
   );

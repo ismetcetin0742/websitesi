@@ -152,6 +152,7 @@ export interface IStorage {
   createSectorContent(content: InsertSectorContent): Promise<SectorContent>;
   updateSectorContent(sectorKey: string, content: Partial<SectorContent>): Promise<SectorContent>;
   getAllSectorContent(): Promise<SectorContent[]>;
+  deleteSectorContent(sectorKey: string): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -1991,6 +1992,14 @@ export class MemStorage implements IStorage {
     return Array.from(this.sectorContent.values())
       .filter(content => content.isActive)
       .sort((a, b) => a.sectorKey.localeCompare(b.sectorKey));
+  }
+
+  async deleteSectorContent(sectorKey: string): Promise<void> {
+    const existing = Array.from(this.sectorContent.values()).find(content => content.sectorKey === sectorKey);
+    if (!existing) {
+      throw new Error(`Sector content not found: ${sectorKey}`);
+    }
+    this.sectorContent.delete(existing.id);
   }
 
   private initializeSectorContent() {
