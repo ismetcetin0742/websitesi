@@ -214,6 +214,7 @@ export class MemStorage implements IStorage {
     this.initializeContactInfo();
     this.initializeHomepageSolutions();
     this.initializeHeroContent();
+    this.initializeSectorContent();
   }
 
   private initializeCareerContent() {
@@ -1990,6 +1991,165 @@ export class MemStorage implements IStorage {
     return Array.from(this.sectorContent.values())
       .filter(content => content.isActive)
       .sort((a, b) => a.sectorKey.localeCompare(b.sectorKey));
+  }
+
+  private initializeSectorContent() {
+    const sectors: SectorContent[] = [
+      {
+        id: "1",
+        sectorKey: "banking",
+        title: {
+          tr: "Bankacılık & Finans",
+          en: "Banking & Finance",
+          fr: "Banque et Finance",
+          ar: "المصرفية والتمويل",
+          ru: "Банковское дело и финансы",
+          de: "Banking & Finanzen"
+        },
+        description: {
+          tr: "Finansal kurumlar için güvenli ve uyumlu dijital çözümler",
+          en: "Secure and compliant digital solutions for financial institutions",
+          fr: "Solutions numériques sécurisées et conformes pour les institutions financières",
+          ar: "حلول رقمية آمنة ومتوافقة للمؤسسات المالية",
+          ru: "Безопасные и соответствующие требованиям цифровые решения для финансовых институтов",
+          de: "Sichere und konforme digitale Lösungen für Finanzinstitute"
+        },
+        solutions: {
+          tr: "• Core Banking Sistemleri\n• Dijital Bankacılık Platformları\n• Risk Yönetim Çözümleri\n• Regulatory Compliance Araçları\n• Mobile Banking Uygulamaları\n• API Management",
+          en: "• Core Banking Systems\n• Digital Banking Platforms\n• Risk Management Solutions\n• Regulatory Compliance Tools\n• Mobile Banking Applications\n• API Management",
+          fr: "• Systèmes bancaires de base\n• Plateformes bancaires numériques\n• Solutions de gestion des risques\n• Outils de conformité réglementaire\n• Applications bancaires mobiles\n• Gestion API",
+          ar: "• أنظمة البنوك الأساسية\n• منصات البنوك الرقمية\n• حلول إدارة المخاطر\n• أدوات الامتثال التنظيمي\n• تطبيقات البنوك المحمولة\n• إدارة واجهة برمجة التطبيقات",
+          ru: "• Основные банковские системы\n• Цифровые банковские платформы\n• Решения для управления рисками\n• Инструменты соблюдения нормативных требований\n• Мобильные банковские приложения\n• Управление API",
+          de: "• Kernbanksysteme\n• Digitale Banking-Plattformen\n• Risikomanagement-Lösungen\n• Compliance-Tools\n• Mobile Banking-Anwendungen\n• API-Management"
+        },
+        benefits: {
+          tr: "• İşlemsel verimlilikte %86 artış\n• Müşteri onboarding süresinde %60 azalma\n• Operasyonel maliyetlerde %40 tasarruf\n• Regulatory compliance %100",
+          en: "• 86% increase in transaction efficiency\n• 60% reduction in customer onboarding time\n• 40% savings in operational costs\n• 100% regulatory compliance",
+          fr: "• Augmentation de 86% de l'efficacité des transactions\n• Réduction de 60% du temps d'intégration client\n• Économies de 40% sur les coûts opérationnels\n• Conformité réglementaire à 100%",
+          ar: "• زيادة بنسبة 86% في كفاءة المعاملات\n• تقليل بنسبة 60% في وقت إدخال العملاء\n• توفير بنسبة 40% في التكاليف التشغيلية\n• امتثال تنظيمي بنسبة 100%",
+          ru: "• Увеличение эффективности транзакций на 86%\n• Сокращение времени привлечения клиентов на 60%\n• Экономия операционных затрат на 40%\n• 100% соблюдение нормативных требований",
+          de: "• 86% Steigerung der Transaktionseffizienz\n• 60% Reduzierung der Kundeneinführungszeit\n• 40% Einsparungen bei den Betriebskosten\n• 100% Compliance"
+        },
+        efficiencyRate: 86,
+        features: [],
+        successStories: {
+          tr: "ABC Bank ile gerçekleştirilen dijital dönüşüm projesi sonucunda müşteri memnuniyeti %95'e yükseldi ve operasyonel verimlilik %86 arttı.",
+          en: "The digital transformation project with ABC Bank resulted in customer satisfaction rising to 95% and operational efficiency increasing by 86%.",
+          fr: "Le projet de transformation numérique avec ABC Bank a permis d'augmenter la satisfaction client à 95% et l'efficacité opérationnelle de 86%.",
+          ar: "نتج عن مشروع التحول الرقمي مع بنك ABC ارتفاع رضا العملاء إلى 95% وزيادة الكفاءة التشغيلية بنسبة 86%.",
+          ru: "Проект цифровой трансформации с ABC Bank привел к повышению удовлетворенности клиентов до 95% и увеличению операционной эффективности на 86%.",
+          de: "Das digitale Transformationsprojekt mit ABC Bank führte zu einer Kundenzufriedenheit von 95% und einer Steigerung der operativen Effizienz um 86%."
+        },
+        integrations: [],
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "2",
+        sectorKey: "manufacturing",
+        title: {
+          tr: "Üretim & Sanayi",
+          en: "Manufacturing & Industry",
+          fr: "Fabrication et Industrie",
+          ar: "التصنيع والصناعة",
+          ru: "Производство и промышленность",
+          de: "Fertigung & Industrie"
+        },
+        description: {
+          tr: "Üretim süreçlerini optimize eden akıllı çözümler",
+          en: "Smart solutions that optimize manufacturing processes",
+          fr: "Solutions intelligentes qui optimisent les processus de fabrication",
+          ar: "حلول ذكية تحسن عمليات التصنيع",
+          ru: "Умные решения, оптимизирующие производственные процессы",
+          de: "Intelligente Lösungen zur Optimierung von Fertigungsprozessen"
+        },
+        solutions: {
+          tr: "• MES (Manufacturing Execution Systems)\n• IoT Sensör Entegrasyonu\n• Predictive Maintenance\n• Quality Management Systems\n• Supply Chain Optimization\n• Real-time Production Monitoring",
+          en: "• MES (Manufacturing Execution Systems)\n• IoT Sensor Integration\n• Predictive Maintenance\n• Quality Management Systems\n• Supply Chain Optimization\n• Real-time Production Monitoring",
+          fr: "• MES (Systèmes d'exécution de fabrication)\n• Intégration de capteurs IoT\n• Maintenance prédictive\n• Systèmes de gestion de la qualité\n• Optimisation de la chaîne d'approvisionnement\n• Surveillance de production en temps réel",
+          ar: "• أنظمة تنفيذ التصنيع (MES)\n• تكامل أجهزة استشعار إنترنت الأشياء\n• الصيانة التنبؤية\n• أنظمة إدارة الجودة\n• تحسين سلسلة التوريد\n• مراقبة الإنتاج في الوقت الفعلي",
+          ru: "• MES (Системы управления производством)\n• Интеграция IoT-датчиков\n• Прогнозное обслуживание\n• Системы управления качеством\n• Оптимизация цепочки поставок\n• Мониторинг производства в реальном времени",
+          de: "• MES (Manufacturing Execution Systems)\n• IoT-Sensor-Integration\n• Vorausschauende Wartung\n• Qualitätsmanagementsysteme\n• Supply Chain-Optimierung\n• Echtzeit-Produktionsüberwachung"
+        },
+        benefits: {
+          tr: "• Üretim verimliliğinde %86 artış\n• Kalite hatalarında %70 azalma\n• Makine duruş sürelerinde %45 düşüş\n• Operasyonel maliyetlerde %25 tasarruf",
+          en: "• 86% increase in production efficiency\n• 70% reduction in quality errors\n• 45% decrease in machine downtime\n• 25% savings in operational costs",
+          fr: "• Augmentation de 86% de l'efficacité de production\n• Réduction de 70% des erreurs de qualité\n• Diminution de 45% des temps d'arrêt machine\n• Économies de 25% sur les coûts opérationnels",
+          ar: "• زيادة بنسبة 86% في كفاءة الإنتاج\n• تقليل بنسبة 70% في أخطاء الجودة\n• انخفاض بنسبة 45% في توقف الآلات\n• توفير بنسبة 25% في التكاليف التشغيلية",
+          ru: "• Увеличение эффективности производства на 86%\n• Сокращение ошибок качества на 70%\n• Уменьшение простоев оборудования на 45%\n• Экономия операционных затрат на 25%",
+          de: "• 86% Steigerung der Produktionseffizienz\n• 70% Reduzierung von Qualitätsfehlern\n• 45% Verringerung der Maschinenstillstandszeiten\n• 25% Einsparungen bei den Betriebskosten"
+        },
+        efficiencyRate: 86,
+        features: [],
+        successStories: {
+          tr: "XYZ Üretim ile yapılan akıllı fabrika dönüşümü sonrasında üretim verimliliği %86 arttı ve kalite kontrol süreçleri tam otomatikleşti.",
+          en: "After the smart factory transformation with XYZ Manufacturing, production efficiency increased by 86% and quality control processes became fully automated.",
+          fr: "Après la transformation d'usine intelligente avec XYZ Manufacturing, l'efficacité de production a augmenté de 86% et les processus de contrôle qualité sont devenus entièrement automatisés.",
+          ar: "بعد التحول إلى المصنع الذكي مع شركة XYZ للتصنيع، زادت كفاءة الإنتاج بنسبة 86% وأصبحت عمليات مراقبة الجودة مؤتمتة بالكامل.",
+          ru: "После трансформации умного завода с XYZ Manufacturing эффективность производства увеличилась на 86%, а процессы контроля качества стали полностью автоматизированными.",
+          de: "Nach der Smart Factory-Transformation mit XYZ Manufacturing stieg die Produktionseffizienz um 86% und die Qualitätskontrollprozesse wurden vollständig automatisiert."
+        },
+        integrations: [],
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: "3",
+        sectorKey: "retail",
+        title: {
+          tr: "Perakende & E-Ticaret",
+          en: "Retail & E-Commerce",
+          fr: "Vente au détail et commerce électronique",
+          ar: "التجزئة والتجارة الإلكترونية",
+          ru: "Розничная торговля и электронная коммерция",
+          de: "Einzelhandel & E-Commerce"
+        },
+        description: {
+          tr: "Müşteri deneyimini artıran omnichannel çözümler",
+          en: "Omnichannel solutions that enhance customer experience",
+          fr: "Solutions omnicanales qui améliorent l'expérience client",
+          ar: "حلول متعددة القنوات تعزز تجربة العملاء",
+          ru: "Омниканальные решения, улучшающие клиентский опыт",
+          de: "Omnichannel-Lösungen zur Verbesserung der Kundenerfahrung"
+        },
+        solutions: {
+          tr: "• E-Commerce Platformları\n• POS Sistemleri\n• Inventory Management\n• Customer Analytics\n• Loyalty Programs\n• Multi-channel Integration",
+          en: "• E-Commerce Platforms\n• POS Systems\n• Inventory Management\n• Customer Analytics\n• Loyalty Programs\n• Multi-channel Integration",
+          fr: "• Plateformes de commerce électronique\n• Systèmes de point de vente\n• Gestion des stocks\n• Analyses clients\n• Programmes de fidélité\n• Intégration multicanal",
+          ar: "• منصات التجارة الإلكترونية\n• أنظمة نقاط البيع\n• إدارة المخزون\n• تحليلات العملاء\n• برامج الولاء\n• التكامل متعدد القنوات",
+          ru: "• E-commerce платформы\n• POS-системы\n• Управление запасами\n• Аналитика клиентов\n• Программы лояльности\n• Многоканальная интеграция",
+          de: "• E-Commerce-Plattformen\n• POS-Systeme\n• Bestandsmanagement\n• Kundenanalytik\n• Treueprogramme\n• Multi-Channel-Integration"
+        },
+        benefits: {
+          tr: "• Satış performansında %86 artış\n• Müşteri memnuniyetinde %65 iyileşme\n• Stok dönüş hızında %50 artış\n• Operasyonel maliyetlerde %30 tasarruf",
+          en: "• 86% increase in sales performance\n• 65% improvement in customer satisfaction\n• 50% increase in inventory turnover\n• 30% savings in operational costs",
+          fr: "• Augmentation de 86% des performances de vente\n• Amélioration de 65% de la satisfaction client\n• Augmentation de 50% de la rotation des stocks\n• Économies de 30% sur les coûts opérationnels",
+          ar: "• زيادة بنسبة 86% في أداء المبيعات\n• تحسن بنسبة 65% في رضا العملاء\n• زيادة بنسبة 50% في دوران المخزون\n• توفير بنسبة 30% في التكاليف التشغيلية",
+          ru: "• Увеличение производительности продаж на 86%\n• Улучшение удовлетворенности клиентов на 65%\n• Увеличение оборачиваемости запасов на 50%\n• Экономия операционных затрат на 30%",
+          de: "• 86% Steigerung der Verkaufsleistung\n• 65% Verbesserung der Kundenzufriedenheit\n• 50% Steigerung der Lagerumschlagshäufigkeit\n• 30% Einsparungen bei den Betriebskosten"
+        },
+        efficiencyRate: 86,
+        features: [],
+        successStories: {
+          tr: "DEF Retail zinciri ile yapılan omnichannel dönüşüm sonrasında online satışlar %200 arttı ve müşteri deneyimi skorları %86 yükseldi.",
+          en: "After the omnichannel transformation with DEF Retail chain, online sales increased by 200% and customer experience scores rose by 86%.",
+          fr: "Après la transformation omnicanale avec la chaîne DEF Retail, les ventes en ligne ont augmenté de 200% et les scores d'expérience client ont augmenté de 86%.",
+          ar: "بعد التحول متعدد القنوات مع سلسلة DEF Retail، زادت المبيعات عبر الإنترنت بنسبة 200% وارتفعت درجات تجربة العملاء بنسبة 86%.",
+          ru: "После омниканальной трансформации с сетью DEF Retail онлайн-продажи увеличились на 200%, а оценки клиентского опыта выросли на 86%.",
+          de: "Nach der Omnichannel-Transformation mit der DEF Retail-Kette stiegen die Online-Verkäufe um 200% und die Kundenerfahrungswerte um 86%."
+        },
+        integrations: [],
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    sectors.forEach(sector => {
+      this.sectorContent.set(sector.sectorKey, sector);
+    });
   }
 }
 
