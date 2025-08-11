@@ -45,6 +45,10 @@ import AdminHomepageAboutContent from "@/pages/admin/homepage/about-content";
 import AdminHeroContent from "@/pages/admin/homepage/hero-content";
 import AdminHomepageSolutionsOrder from "@/pages/admin/homepage/solutions-order";
 import ProductsSolutionsManagement from "@/pages/admin/products-solutions/index";
+const ProductsManagement = lazy(() => import("@/pages/admin/products-solutions/products"));
+const SolutionsManagement = lazy(() => import("@/pages/admin/products-solutions/solutions"));
+const SectoralSolutionsManagement = lazy(() => import("@/pages/admin/products-solutions/sectors"));
+const CategoriesManagement = lazy(() => import("@/pages/admin/products-solutions/categories"));
 import SectorsManagement from "@/pages/admin/sectors/index";
 import BankingSectorManagement from "@/pages/admin/sectors/banking";
 import AdminSolutions from "@/pages/admin/solutions";
@@ -239,6 +243,26 @@ function Router() {
         <Route path="/admin/products-solutions">
           <AdminLayout>
             <ProductsSolutionsManagement />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/products-solutions/products">
+          <AdminLayout>
+            <ProductsManagement />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/products-solutions/solutions">
+          <AdminLayout>
+            <SolutionsManagement />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/products-solutions/sectors">
+          <AdminLayout>
+            <SectoralSolutionsManagement />
+          </AdminLayout>
+        </Route>
+        <Route path="/admin/products-solutions/categories">
+          <AdminLayout>
+            <CategoriesManagement />
           </AdminLayout>
         </Route>
         <Route path="/admin/sectors">
