@@ -269,13 +269,13 @@ export default function AdminSectors() {
         {Object.entries(formData.title).map(([lang, value]) => (
           <div key={`title-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`title-${lang}`}>{lang.toUpperCase()}</Label>
-            <Input
+            <input
               key={`title-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`title-${lang}`}
               defaultValue={value || ''}
-              onBlur={(e) => updateMultilingualField('title', lang, e.target.value)}
               onChange={(e) => updateMultilingualField('title', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} başlık`}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
         ))}
@@ -287,13 +287,14 @@ export default function AdminSectors() {
         {Object.entries(formData.description).map(([lang, value]) => (
           <div key={`desc-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`description-${lang}`}>{lang.toUpperCase()}</Label>
-            <Textarea
+            <textarea
               key={`desc-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`description-${lang}`}
               defaultValue={value || ''}
               onChange={(e) => updateMultilingualField('description', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} açıklama`}
               rows={3}
+              className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
         ))}
@@ -305,13 +306,14 @@ export default function AdminSectors() {
         {Object.entries(formData.solutions).map(([lang, value]) => (
           <div key={`sol-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`solutions-${lang}`}>{lang.toUpperCase()}</Label>
-            <Textarea
+            <textarea
               key={`sol-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`solutions-${lang}`}
               defaultValue={value || ''}
               onChange={(e) => updateMultilingualField('solutions', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} çözümler (• ile başlayın)`}
               rows={5}
+              className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
         ))}
@@ -323,13 +325,14 @@ export default function AdminSectors() {
         {Object.entries(formData.benefits).map(([lang, value]) => (
           <div key={`ben-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`benefits-${lang}`}>{lang.toUpperCase()}</Label>
-            <Textarea
+            <textarea
               key={`ben-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`benefits-${lang}`}
               defaultValue={value || ''}
               onChange={(e) => updateMultilingualField('benefits', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} faydalar (• ile başlayın)`}
               rows={4}
+              className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
         ))}
@@ -341,13 +344,14 @@ export default function AdminSectors() {
         {Object.entries(formData.successStories).map(([lang, value]) => (
           <div key={`suc-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`successStories-${lang}`}>{lang.toUpperCase()}</Label>
-            <Textarea
+            <textarea
               key={`suc-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`successStories-${lang}`}
               defaultValue={value || ''}
               onChange={(e) => updateMultilingualField('successStories', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} başarı hikayesi`}
               rows={4}
+              className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
         ))}
