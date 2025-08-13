@@ -225,14 +225,13 @@ export default function AdminSectors() {
 
   const updateMultilingualField = (field: string, language: string, value: string) => {
     setFormData(prev => {
-      const currentFieldValue = prev[field as keyof typeof prev] as any;
-      return {
-        ...prev,
-        [field]: {
-          ...currentFieldValue,
-          [language]: value
-        }
-      };
+      const newFormData = { ...prev };
+      const currentField = newFormData[field as keyof typeof newFormData] as any;
+      newFormData[field as keyof typeof newFormData] = {
+        ...currentField,
+        [language]: value
+      } as any;
+      return newFormData;
     });
   };
 
@@ -273,7 +272,8 @@ export default function AdminSectors() {
             <Input
               key={`title-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`title-${lang}`}
-              value={value || ''}
+              defaultValue={value || ''}
+              onBlur={(e) => updateMultilingualField('title', lang, e.target.value)}
               onChange={(e) => updateMultilingualField('title', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} başlık`}
             />
@@ -290,7 +290,7 @@ export default function AdminSectors() {
             <Textarea
               key={`desc-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`description-${lang}`}
-              value={value || ''}
+              defaultValue={value || ''}
               onChange={(e) => updateMultilingualField('description', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} açıklama`}
               rows={3}
@@ -308,7 +308,7 @@ export default function AdminSectors() {
             <Textarea
               key={`sol-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`solutions-${lang}`}
-              value={value || ''}
+              defaultValue={value || ''}
               onChange={(e) => updateMultilingualField('solutions', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} çözümler (• ile başlayın)`}
               rows={5}
@@ -326,7 +326,7 @@ export default function AdminSectors() {
             <Textarea
               key={`ben-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`benefits-${lang}`}
-              value={value || ''}
+              defaultValue={value || ''}
               onChange={(e) => updateMultilingualField('benefits', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} faydalar (• ile başlayın)`}
               rows={4}
@@ -344,7 +344,7 @@ export default function AdminSectors() {
             <Textarea
               key={`suc-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`successStories-${lang}`}
-              value={value || ''}
+              defaultValue={value || ''}
               onChange={(e) => updateMultilingualField('successStories', lang, e.target.value)}
               placeholder={`${lang.toUpperCase()} başarı hikayesi`}
               rows={4}
