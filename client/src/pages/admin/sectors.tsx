@@ -1,47 +1,42 @@
-import { useState, useRef, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
-import { apiRequest } from '@/lib/queryClient';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import {
-  Plus,
-  Edit,
-  Trash2,
-  Building2,
-  Factory,
-  ShoppingCart,
-  Settings,
-  Zap,
-  Truck,
-  TrendingUp,
-  Save,
-  X
-} from 'lucide-react';
+import React, { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { ArrowLeft, Plus, Edit, Trash2, Save, X, TrendingUp } from "lucide-react";
+import { 
+  Building2, 
+  Heart, 
+  ShoppingCart, 
+  GraduationCap, 
+  Car, 
+  Plane, 
+  Home,
+  HardHat,
+  Briefcase
+} from "lucide-react";
+import { Link } from "wouter";
+import { useToast } from "@/hooks/use-toast";
 
-// Multi-language content helper
+// Sector icons mapping
+const sectorIcons = {
+  banking: Building2,
+  healthcare: Heart,
+  retail: ShoppingCart,
+  education: GraduationCap,
+  automotive: Car,
+  aviation: Plane,
+  realestate: Home,
+  manufacturing: HardHat,
+  insurance: Briefcase,
+  default: Building2,
+};
+
+// Create empty multilingual content structure
 const createEmptyMultilingualContent = () => ({
   tr: '',
   en: '',
@@ -51,66 +46,84 @@ const createEmptyMultilingualContent = () => ({
   de: ''
 });
 
-// Sector icon mapping
-const sectorIcons = {
-  banking: Building2,
-  manufacturing: Factory,
-  retail: ShoppingCart,
-  service: Settings,
-  energy: Zap,
-  logistics: Truck,
-  default: Building2
-};
-
 export default function AdminSectors() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  
+  // Dialog states
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingSector, setEditingSector] = useState<any>(null);
 
-  // Form state for new/edit sector
-  const [formData, setFormData] = useState({
-    sectorKey: '',
-    title: createEmptyMultilingualContent(),
-    description: createEmptyMultilingualContent(),
-    solutions: createEmptyMultilingualContent(),
-    benefits: createEmptyMultilingualContent(),
-    successStories: createEmptyMultilingualContent(),
-    efficiencyRate: 86,
-    isActive: true
-  });
-
-  const [formKey, setFormKey] = useState(0);
+  // Form fields
+  const [sectorKey, setSectorKey] = useState('');
+  const [titleTr, setTitleTr] = useState('');
+  const [titleEn, setTitleEn] = useState('');
+  const [titleFr, setTitleFr] = useState('');
+  const [titleAr, setTitleAr] = useState('');
+  const [titleRu, setTitleRu] = useState('');
+  const [titleDe, setTitleDe] = useState('');
+  
+  const [descTr, setDescTr] = useState('');
+  const [descEn, setDescEn] = useState('');
+  const [descFr, setDescFr] = useState('');
+  const [descAr, setDescAr] = useState('');
+  const [descRu, setDescRu] = useState('');
+  const [descDe, setDescDe] = useState('');
+  
+  const [solTr, setSolTr] = useState('');
+  const [solEn, setSolEn] = useState('');
+  const [solFr, setSolFr] = useState('');
+  const [solAr, setSolAr] = useState('');
+  const [solRu, setSolRu] = useState('');
+  const [solDe, setSolDe] = useState('');
+  
+  const [benTr, setBenTr] = useState('');
+  const [benEn, setBenEn] = useState('');
+  const [benFr, setBenFr] = useState('');
+  const [benAr, setBenAr] = useState('');
+  const [benRu, setBenRu] = useState('');
+  const [benDe, setBenDe] = useState('');
+  
+  const [sucTr, setSucTr] = useState('');
+  const [sucEn, setSucEn] = useState('');
+  const [sucFr, setSucFr] = useState('');
+  const [sucAr, setSucAr] = useState('');
+  const [sucRu, setSucRu] = useState('');
+  const [sucDe, setSucDe] = useState('');
+  
+  const [efficiencyRate, setEfficiencyRate] = useState(86);
+  const [isActive, setIsActive] = useState(true);
 
   // Fetch sectors
   const { data: sectors, isLoading } = useQuery({
     queryKey: ['/api/admin/sectors'],
-    staleTime: 5 * 60 * 1000,
   });
 
   // Create sector mutation
   const createSectorMutation = useMutation({
     mutationFn: async (data: any) => {
-      return apiRequest('/api/admin/sectors', {
+      return await apiRequest('/api/admin/sectors', {
         method: 'POST',
-        body: data
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/sectors'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/sectors'] });
-      toast({
-        title: "Başarılı",
-        description: "Yeni sektör başarıyla eklendi.",
-      });
       setIsCreateDialogOpen(false);
       resetForm();
+      toast({
+        title: "Başarılı",
+        description: "Sektör başarıyla oluşturuldu",
+      });
     },
     onError: (error: any) => {
       toast({
         title: "Hata",
-        description: error.message || "Sektör eklenirken bir hata oluştu.",
+        description: error.message || "Sektör oluşturulamadı",
         variant: "destructive",
       });
     },
@@ -118,27 +131,29 @@ export default function AdminSectors() {
 
   // Update sector mutation
   const updateSectorMutation = useMutation({
-    mutationFn: async ({ sectorKey, data }: { sectorKey: string; data: any }) => {
-      return apiRequest(`/api/admin/sectors/${sectorKey}`, {
+    mutationFn: async (data: any) => {
+      return await apiRequest(`/api/admin/sectors/${editingSector?.sectorKey}`, {
         method: 'PUT',
-        body: data
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/sectors'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/sectors'] });
-      toast({
-        title: "Başarılı",
-        description: "Sektör başarıyla güncellendi.",
-      });
       setIsEditDialogOpen(false);
       setEditingSector(null);
       resetForm();
+      toast({
+        title: "Başarılı",
+        description: "Sektör başarıyla güncellendi",
+      });
     },
     onError: (error: any) => {
       toast({
         title: "Hata",
-        description: error.message || "Sektör güncellenirken bir hata oluştu.",
+        description: error.message || "Sektör güncellenemedi",
         variant: "destructive",
       });
     },
@@ -147,229 +162,277 @@ export default function AdminSectors() {
   // Delete sector mutation
   const deleteSectorMutation = useMutation({
     mutationFn: async (sectorKey: string) => {
-      return apiRequest(`/api/admin/sectors/${sectorKey}`, {
-        method: 'DELETE'
+      return await apiRequest(`/api/admin/sectors/${sectorKey}`, {
+        method: 'DELETE',
       });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/sectors'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/sectors'] });
       toast({
         title: "Başarılı",
-        description: "Sektör başarıyla silindi.",
+        description: "Sektör başarıyla silindi",
       });
     },
     onError: (error: any) => {
       toast({
         title: "Hata",
-        description: error.message || "Sektör silinirken bir hata oluştu.",
+        description: error.message || "Sektör silinemedi",
         variant: "destructive",
       });
     },
   });
 
   const resetForm = () => {
-    const newData = {
-      sectorKey: '',
-      title: createEmptyMultilingualContent(),
-      description: createEmptyMultilingualContent(),
-      solutions: createEmptyMultilingualContent(),
-      benefits: createEmptyMultilingualContent(),
-      successStories: createEmptyMultilingualContent(),
-      efficiencyRate: 86,
-      isActive: true
-    };
-    setFormData(newData);
-    setFormKey(prev => prev + 1);
+    setSectorKey('');
+    setTitleTr(''); setTitleEn(''); setTitleFr(''); setTitleAr(''); setTitleRu(''); setTitleDe('');
+    setDescTr(''); setDescEn(''); setDescFr(''); setDescAr(''); setDescRu(''); setDescDe('');
+    setSolTr(''); setSolEn(''); setSolFr(''); setSolAr(''); setSolRu(''); setSolDe('');
+    setBenTr(''); setBenEn(''); setBenFr(''); setBenAr(''); setBenRu(''); setBenDe('');
+    setSucTr(''); setSucEn(''); setSucFr(''); setSucAr(''); setSucRu(''); setSucDe('');
+    setEfficiencyRate(86);
+    setIsActive(true);
   };
 
   const handleEdit = (sector: any) => {
     setEditingSector(sector);
-    const newData = {
-      sectorKey: sector.sectorKey,
-      title: sector.title,
-      description: sector.description,
-      solutions: sector.solutions,
-      benefits: sector.benefits,
-      successStories: sector.successStories,
-      efficiencyRate: sector.efficiencyRate,
-      isActive: sector.isActive
-    };
-    setFormData(newData);
-    setFormKey(prev => prev + 1);
+    setSectorKey(sector.sectorKey);
+    setTitleTr(sector.title?.tr || ''); setTitleEn(sector.title?.en || ''); setTitleFr(sector.title?.fr || '');
+    setTitleAr(sector.title?.ar || ''); setTitleRu(sector.title?.ru || ''); setTitleDe(sector.title?.de || '');
+    setDescTr(sector.description?.tr || ''); setDescEn(sector.description?.en || ''); setDescFr(sector.description?.fr || '');
+    setDescAr(sector.description?.ar || ''); setDescRu(sector.description?.ru || ''); setDescDe(sector.description?.de || '');
+    setSolTr(sector.solutions?.tr || ''); setSolEn(sector.solutions?.en || ''); setSolFr(sector.solutions?.fr || '');
+    setSolAr(sector.solutions?.ar || ''); setSolRu(sector.solutions?.ru || ''); setSolDe(sector.solutions?.de || '');
+    setBenTr(sector.benefits?.tr || ''); setBenEn(sector.benefits?.en || ''); setBenFr(sector.benefits?.fr || '');
+    setBenAr(sector.benefits?.ar || ''); setBenRu(sector.benefits?.ru || ''); setBenDe(sector.benefits?.de || '');
+    setSucTr(sector.successStories?.tr || ''); setSucEn(sector.successStories?.en || ''); setSucFr(sector.successStories?.fr || '');
+    setSucAr(sector.successStories?.ar || ''); setSucRu(sector.successStories?.ru || ''); setSucDe(sector.successStories?.de || '');
+    setEfficiencyRate(sector.efficiencyRate);
+    setIsActive(sector.isActive);
     setIsEditDialogOpen(true);
   };
 
   const handleSubmit = () => {
-    if (!formData.sectorKey.trim()) {
-      toast({
-        title: "Hata",
-        description: "Sektör anahtarı gereklidir.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!formData.title.tr.trim()) {
-      toast({
-        title: "Hata",
-        description: "Türkçe başlık gereklidir.",
-        variant: "destructive",
-      });
-      return;
-    }
+    const formData = {
+      sectorKey,
+      title: { tr: titleTr, en: titleEn, fr: titleFr, ar: titleAr, ru: titleRu, de: titleDe },
+      description: { tr: descTr, en: descEn, fr: descFr, ar: descAr, ru: descRu, de: descDe },
+      solutions: { tr: solTr, en: solEn, fr: solFr, ar: solAr, ru: solRu, de: solDe },
+      benefits: { tr: benTr, en: benEn, fr: benFr, ar: benAr, ru: benRu, de: benDe },
+      successStories: { tr: sucTr, en: sucEn, fr: sucFr, ar: sucAr, ru: sucRu, de: sucDe },
+      efficiencyRate,
+      isActive
+    };
 
     if (editingSector) {
-      updateSectorMutation.mutate({
-        sectorKey: editingSector.sectorKey,
-        data: formData
-      });
+      updateSectorMutation.mutate(formData);
     } else {
       createSectorMutation.mutate(formData);
     }
   };
 
-  const updateMultilingualField = (field: string, language: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: {
-        ...(prev[field as keyof typeof prev] as any),
-        [language]: value
-      }
-    }));
-  };
-
-  // Create refs for all inputs
-  const inputRefs = useRef<{[key: string]: HTMLInputElement | HTMLTextAreaElement}>({});
-
   const SectorForm = () => (
-    <div key={formKey} className="space-y-6 max-h-[70vh] overflow-y-auto">
+    <div className="space-y-6 max-h-[70vh] overflow-y-auto">
       {/* Basic Info */}
       <div className="space-y-4">
         <div>
-          <Label htmlFor="sectorKey">Sektör Anahtarı (İngilizce, küçük harf)</Label>
-          <Input
+          <Label htmlFor="sectorKey">Sektör Anahtarı</Label>
+          <input
             id="sectorKey"
-            value={formData.sectorKey}
-            onChange={(e) => setFormData(prev => ({ ...prev, sectorKey: e.target.value.toLowerCase() }))}
-            placeholder="banking, manufacturing, retail..."
-            disabled={!!editingSector}
+            value={sectorKey}
+            onChange={(e) => setSectorKey(e.target.value)}
+            placeholder="banking, healthcare, retail..."
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           />
         </div>
-        
-        <div>
-          <Label htmlFor="efficiencyRate">Verimlilik Oranı (%)</Label>
-          <Input
-            id="efficiencyRate"
-            type="number"
-            value={formData.efficiencyRate}
-            onChange={(e) => setFormData(prev => ({ ...prev, efficiencyRate: parseInt(e.target.value) || 86 }))}
-            min="1"
-            max="100"
-          />
-        </div>
-      </div>
 
-      {/* Multilingual Title */}
-      <div className="space-y-4">
-        <h4 className="font-semibold">Başlık (Tüm Diller)</h4>
-        {Object.entries(formData.title).map(([lang, value]) => (
-          <div key={`title-${lang}-${editingSector?.sectorKey || 'new'}`}>
-            <Label htmlFor={`title-${lang}`}>{lang.toUpperCase()}</Label>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="efficiencyRate">Verimlilik Oranı (%)</Label>
             <input
-              key={`title-${lang}-${formKey}`}
-              id={`title-${lang}`}
-              defaultValue={value || ''}
-              onChange={(e) => updateMultilingualField('title', lang, e.target.value)}
-              placeholder={`${lang.toUpperCase()} başlık`}
+              id="efficiencyRate"
+              type="number"
+              value={efficiencyRate}
+              onChange={(e) => setEfficiencyRate(Number(e.target.value))}
+              min="0"
+              max="100"
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
-        ))}
+          
+          <div className="flex items-center space-x-2 pt-6">
+            <input
+              id="isActive"
+              type="checkbox"
+              checked={isActive}
+              onChange={(e) => setIsActive(e.target.checked)}
+              className="rounded"
+            />
+            <Label htmlFor="isActive">Aktif</Label>
+          </div>
+        </div>
       </div>
 
-      {/* Multilingual Description */}
+      {/* Title Fields */}
+      <div className="space-y-4">
+        <h4 className="font-semibold">Başlık (Tüm Diller)</h4>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label>TR</Label>
+            <input value={titleTr} onChange={(e) => setTitleTr(e.target.value)} placeholder="Türkçe başlık" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>EN</Label>
+            <input value={titleEn} onChange={(e) => setTitleEn(e.target.value)} placeholder="English title" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>FR</Label>
+            <input value={titleFr} onChange={(e) => setTitleFr(e.target.value)} placeholder="Titre français" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>AR</Label>
+            <input value={titleAr} onChange={(e) => setTitleAr(e.target.value)} placeholder="عنوان عربي" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>RU</Label>
+            <input value={titleRu} onChange={(e) => setTitleRu(e.target.value)} placeholder="Русский заголовок" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>DE</Label>
+            <input value={titleDe} onChange={(e) => setTitleDe(e.target.value)} placeholder="Deutscher Titel" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+        </div>
+      </div>
+
+      {/* Description Fields */}
       <div className="space-y-4">
         <h4 className="font-semibold">Açıklama (Tüm Diller)</h4>
-        {Object.entries(formData.description).map(([lang, value]) => (
-          <div key={`desc-${lang}-${editingSector?.sectorKey || 'new'}`}>
-            <Label htmlFor={`description-${lang}`}>{lang.toUpperCase()}</Label>
-            <textarea
-              key={`description-${lang}-${formKey}`}
-              id={`description-${lang}`}
-              defaultValue={value || ''}
-              onChange={(e) => updateMultilingualField('description', lang, e.target.value)}
-              placeholder={`${lang.toUpperCase()} açıklama`}
-              rows={3}
-              className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            />
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label>TR</Label>
+            <textarea value={descTr} onChange={(e) => setDescTr(e.target.value)} placeholder="Türkçe açıklama" rows={3} className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
           </div>
-        ))}
+          <div>
+            <Label>EN</Label>
+            <textarea value={descEn} onChange={(e) => setDescEn(e.target.value)} placeholder="English description" rows={3} className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>FR</Label>
+            <textarea value={descFr} onChange={(e) => setDescFr(e.target.value)} placeholder="Description française" rows={3} className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>AR</Label>
+            <textarea value={descAr} onChange={(e) => setDescAr(e.target.value)} placeholder="وصف عربي" rows={3} className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>RU</Label>
+            <textarea value={descRu} onChange={(e) => setDescRu(e.target.value)} placeholder="Русское описание" rows={3} className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>DE</Label>
+            <textarea value={descDe} onChange={(e) => setDescDe(e.target.value)} placeholder="Deutsche Beschreibung" rows={3} className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+        </div>
       </div>
 
-      {/* Multilingual Solutions */}
+      {/* Solutions Fields */}
       <div className="space-y-4">
         <h4 className="font-semibold">Çözümler (Tüm Diller)</h4>
-        {Object.entries(formData.solutions).map(([lang, value]) => (
-          <div key={`sol-${lang}-${editingSector?.sectorKey || 'new'}`}>
-            <Label htmlFor={`solutions-${lang}`}>{lang.toUpperCase()}</Label>
-            <textarea
-              key={`solutions-${lang}-${formKey}`}
-              id={`solutions-${lang}`}
-              defaultValue={value || ''}
-              onChange={(e) => updateMultilingualField('solutions', lang, e.target.value)}
-              placeholder={`${lang.toUpperCase()} çözümler (• ile başlayın)`}
-              rows={5}
-              className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            />
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label>TR</Label>
+            <textarea value={solTr} onChange={(e) => setSolTr(e.target.value)} placeholder="• Çözüm 1&#10;• Çözüm 2" rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
           </div>
-        ))}
+          <div>
+            <Label>EN</Label>
+            <textarea value={solEn} onChange={(e) => setSolEn(e.target.value)} placeholder="• Solution 1&#10;• Solution 2" rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>FR</Label>
+            <textarea value={solFr} onChange={(e) => setSolFr(e.target.value)} placeholder="• Solution 1&#10;• Solution 2" rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>AR</Label>
+            <textarea value={solAr} onChange={(e) => setSolAr(e.target.value)} placeholder="• حل 1&#10;• حل 2" rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>RU</Label>
+            <textarea value={solRu} onChange={(e) => setSolRu(e.target.value)} placeholder="• Решение 1&#10;• Решение 2" rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>DE</Label>
+            <textarea value={solDe} onChange={(e) => setSolDe(e.target.value)} placeholder="• Lösung 1&#10;• Lösung 2" rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+        </div>
       </div>
 
-      {/* Multilingual Benefits */}
+      {/* Benefits Fields */}
       <div className="space-y-4">
         <h4 className="font-semibold">Faydalar (Tüm Diller)</h4>
-        {Object.entries(formData.benefits).map(([lang, value]) => (
-          <div key={`ben-${lang}-${editingSector?.sectorKey || 'new'}`}>
-            <Label htmlFor={`benefits-${lang}`}>{lang.toUpperCase()}</Label>
-            <textarea
-              key={`benefits-${lang}-${formKey}`}
-              id={`benefits-${lang}`}
-              defaultValue={value || ''}
-              onChange={(e) => updateMultilingualField('benefits', lang, e.target.value)}
-              placeholder={`${lang.toUpperCase()} faydalar (• ile başlayın)`}
-              rows={4}
-              className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            />
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label>TR</Label>
+            <textarea value={benTr} onChange={(e) => setBenTr(e.target.value)} placeholder="• Fayda 1&#10;• Fayda 2" rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
           </div>
-        ))}
+          <div>
+            <Label>EN</Label>
+            <textarea value={benEn} onChange={(e) => setBenEn(e.target.value)} placeholder="• Benefit 1&#10;• Benefit 2" rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>FR</Label>
+            <textarea value={benFr} onChange={(e) => setBenFr(e.target.value)} placeholder="• Avantage 1&#10;• Avantage 2" rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>AR</Label>
+            <textarea value={benAr} onChange={(e) => setBenAr(e.target.value)} placeholder="• فائدة 1&#10;• فائدة 2" rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>RU</Label>
+            <textarea value={benRu} onChange={(e) => setBenRu(e.target.value)} placeholder="• Преимущество 1&#10;• Преимущество 2" rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>DE</Label>
+            <textarea value={benDe} onChange={(e) => setBenDe(e.target.value)} placeholder="• Vorteil 1&#10;• Vorteil 2" rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+        </div>
       </div>
 
-      {/* Multilingual Success Stories */}
+      {/* Success Stories Fields */}
       <div className="space-y-4">
         <h4 className="font-semibold">Başarı Hikayeleri (Tüm Diller)</h4>
-        {Object.entries(formData.successStories).map(([lang, value]) => (
-          <div key={`suc-${lang}-${editingSector?.sectorKey || 'new'}`}>
-            <Label htmlFor={`successStories-${lang}`}>{lang.toUpperCase()}</Label>
-            <textarea
-              key={`successStories-${lang}-${formKey}`}
-              id={`successStories-${lang}`}
-              defaultValue={value || ''}
-              onChange={(e) => updateMultilingualField('successStories', lang, e.target.value)}
-              placeholder={`${lang.toUpperCase()} başarı hikayesi`}
-              rows={4}
-              className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            />
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label>TR</Label>
+            <textarea value={sucTr} onChange={(e) => setSucTr(e.target.value)} placeholder="Başarı hikayesi..." rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
           </div>
-        ))}
+          <div>
+            <Label>EN</Label>
+            <textarea value={sucEn} onChange={(e) => setSucEn(e.target.value)} placeholder="Success story..." rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>FR</Label>
+            <textarea value={sucFr} onChange={(e) => setSucFr(e.target.value)} placeholder="Histoire de succès..." rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>AR</Label>
+            <textarea value={sucAr} onChange={(e) => setSucAr(e.target.value)} placeholder="قصة نجاح..." rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>RU</Label>
+            <textarea value={sucRu} onChange={(e) => setSucRu(e.target.value)} placeholder="История успеха..." rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+          <div>
+            <Label>DE</Label>
+            <textarea value={sucDe} onChange={(e) => setSucDe(e.target.value)} placeholder="Erfolgsgeschichte..." rows={4} className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+          </div>
+        </div>
       </div>
     </div>
   );
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -378,16 +441,13 @@ export default function AdminSectors() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <Button 
-            variant="outline" 
-            onClick={() => window.history.back()}
-            className="flex items-center"
-          >
-            ← Geri
+        <Link href="/admin/dashboard">
+          <Button variant="outline" size="sm">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Geri
           </Button>
-        </div>
-        
+        </Link>
+
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={resetForm}>
@@ -424,7 +484,7 @@ export default function AdminSectors() {
 
       {/* Sectors Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sectors?.map((sector: any) => {
+        {sectors && Array.isArray(sectors) && sectors.map((sector: any) => {
           const IconComponent = sectorIcons[sector.sectorKey as keyof typeof sectorIcons] || sectorIcons.default;
           
           return (
@@ -471,18 +531,16 @@ export default function AdminSectors() {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Sektörü Sil</AlertDialogTitle>
                         <AlertDialogDescription>
-                          "{sector.title?.tr}" sektörünü silmek istediğinizden emin misiniz? 
-                          Bu işlem geri alınamaz.
+                          "{sector.title?.tr}" sektörünü silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>İptal</AlertDialogCancel>
                         <AlertDialogAction
-                          className="bg-red-600 hover:bg-red-700"
                           onClick={() => deleteSectorMutation.mutate(sector.sectorKey)}
-                          disabled={deleteSectorMutation.isPending}
+                          className="bg-red-600 hover:bg-red-700"
                         >
-                          {deleteSectorMutation.isPending ? 'Siliniyor...' : 'Sil'}
+                          Sil
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -521,7 +579,7 @@ export default function AdminSectors() {
         </DialogContent>
       </Dialog>
 
-      {sectors?.length === 0 && (
+      {sectors && Array.isArray(sectors) && sectors.length === 0 && (
         <div className="text-center py-12">
           <TrendingUp className="h-12 w-12 text-gray-400 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Henüz sektör yok</h3>
