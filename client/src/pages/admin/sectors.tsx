@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -224,16 +224,17 @@ export default function AdminSectors() {
   };
 
   const updateMultilingualField = (field: string, language: string, value: string) => {
-    setFormData(prev => {
-      const newFormData = { ...prev };
-      const currentField = newFormData[field as keyof typeof newFormData] as any;
-      newFormData[field as keyof typeof newFormData] = {
-        ...currentField,
+    setFormData(prev => ({
+      ...prev,
+      [field]: {
+        ...(prev[field as keyof typeof prev] as any),
         [language]: value
-      } as any;
-      return newFormData;
-    });
+      }
+    }));
   };
+
+  // Create refs for all inputs
+  const inputRefs = useRef<{[key: string]: HTMLInputElement | HTMLTextAreaElement}>({});
 
   const SectorForm = () => (
     <div className="space-y-6 max-h-[70vh] overflow-y-auto">
@@ -270,10 +271,10 @@ export default function AdminSectors() {
           <div key={`title-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`title-${lang}`}>{lang.toUpperCase()}</Label>
             <input
-              key={`title-input-${lang}-${editingSector?.sectorKey || 'new'}`}
+              ref={(el) => { if (el) inputRefs.current[`title-${lang}`] = el; }}
               id={`title-${lang}`}
               defaultValue={value || ''}
-              onChange={(e) => updateMultilingualField('title', lang, e.target.value)}
+              onInput={(e) => updateMultilingualField('title', lang, (e.target as HTMLInputElement).value)}
               placeholder={`${lang.toUpperCase()} başlık`}
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             />
@@ -288,10 +289,10 @@ export default function AdminSectors() {
           <div key={`desc-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`description-${lang}`}>{lang.toUpperCase()}</Label>
             <textarea
-              key={`desc-input-${lang}-${editingSector?.sectorKey || 'new'}`}
+              ref={(el) => { if (el) inputRefs.current[`description-${lang}`] = el; }}
               id={`description-${lang}`}
               defaultValue={value || ''}
-              onChange={(e) => updateMultilingualField('description', lang, e.target.value)}
+              onInput={(e) => updateMultilingualField('description', lang, (e.target as HTMLTextAreaElement).value)}
               placeholder={`${lang.toUpperCase()} açıklama`}
               rows={3}
               className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -307,10 +308,10 @@ export default function AdminSectors() {
           <div key={`sol-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`solutions-${lang}`}>{lang.toUpperCase()}</Label>
             <textarea
-              key={`sol-input-${lang}-${editingSector?.sectorKey || 'new'}`}
+              ref={(el) => { if (el) inputRefs.current[`solutions-${lang}`] = el; }}
               id={`solutions-${lang}`}
               defaultValue={value || ''}
-              onChange={(e) => updateMultilingualField('solutions', lang, e.target.value)}
+              onInput={(e) => updateMultilingualField('solutions', lang, (e.target as HTMLTextAreaElement).value)}
               placeholder={`${lang.toUpperCase()} çözümler (• ile başlayın)`}
               rows={5}
               className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -326,10 +327,10 @@ export default function AdminSectors() {
           <div key={`ben-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`benefits-${lang}`}>{lang.toUpperCase()}</Label>
             <textarea
-              key={`ben-input-${lang}-${editingSector?.sectorKey || 'new'}`}
+              ref={(el) => { if (el) inputRefs.current[`benefits-${lang}`] = el; }}
               id={`benefits-${lang}`}
               defaultValue={value || ''}
-              onChange={(e) => updateMultilingualField('benefits', lang, e.target.value)}
+              onInput={(e) => updateMultilingualField('benefits', lang, (e.target as HTMLTextAreaElement).value)}
               placeholder={`${lang.toUpperCase()} faydalar (• ile başlayın)`}
               rows={4}
               className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -345,10 +346,10 @@ export default function AdminSectors() {
           <div key={`suc-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`successStories-${lang}`}>{lang.toUpperCase()}</Label>
             <textarea
-              key={`suc-input-${lang}-${editingSector?.sectorKey || 'new'}`}
+              ref={(el) => { if (el) inputRefs.current[`successStories-${lang}`] = el; }}
               id={`successStories-${lang}`}
               defaultValue={value || ''}
-              onChange={(e) => updateMultilingualField('successStories', lang, e.target.value)}
+              onInput={(e) => updateMultilingualField('successStories', lang, (e.target as HTMLTextAreaElement).value)}
               placeholder={`${lang.toUpperCase()} başarı hikayesi`}
               rows={4}
               className="flex min-h-[96px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -371,9 +372,18 @@ export default function AdminSectors() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Sektör Yönetimi</h1>
-          <p className="text-gray-600">Sektörel çözümlerinizi yönetin</p>
+        <div className="flex items-center space-x-4">
+          <Button 
+            variant="outline" 
+            onClick={() => window.history.back()}
+            className="flex items-center"
+          >
+            ← Geri
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Sektör Yönetimi</h1>
+            <p className="text-gray-600">Sektörel çözümlerinizi yönetin</p>
+          </div>
         </div>
         
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
