@@ -224,13 +224,16 @@ export default function AdminSectors() {
   };
 
   const updateMultilingualField = (field: string, language: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: {
-        ...(prev[field as keyof typeof prev] as any),
-        [language]: value
-      }
-    }));
+    setFormData(prev => {
+      const currentFieldValue = prev[field as keyof typeof prev] as any;
+      return {
+        ...prev,
+        [field]: {
+          ...currentFieldValue,
+          [language]: value
+        }
+      };
+    });
   };
 
   const SectorForm = () => (
@@ -265,9 +268,10 @@ export default function AdminSectors() {
       <div className="space-y-4">
         <h4 className="font-semibold">Başlık (Tüm Diller)</h4>
         {Object.entries(formData.title).map(([lang, value]) => (
-          <div key={lang}>
+          <div key={`title-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`title-${lang}`}>{lang.toUpperCase()}</Label>
             <Input
+              key={`title-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`title-${lang}`}
               value={value || ''}
               onChange={(e) => updateMultilingualField('title', lang, e.target.value)}
@@ -281,9 +285,10 @@ export default function AdminSectors() {
       <div className="space-y-4">
         <h4 className="font-semibold">Açıklama (Tüm Diller)</h4>
         {Object.entries(formData.description).map(([lang, value]) => (
-          <div key={lang}>
+          <div key={`desc-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`description-${lang}`}>{lang.toUpperCase()}</Label>
             <Textarea
+              key={`desc-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`description-${lang}`}
               value={value || ''}
               onChange={(e) => updateMultilingualField('description', lang, e.target.value)}
@@ -298,9 +303,10 @@ export default function AdminSectors() {
       <div className="space-y-4">
         <h4 className="font-semibold">Çözümler (Tüm Diller)</h4>
         {Object.entries(formData.solutions).map(([lang, value]) => (
-          <div key={lang}>
+          <div key={`sol-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`solutions-${lang}`}>{lang.toUpperCase()}</Label>
             <Textarea
+              key={`sol-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`solutions-${lang}`}
               value={value || ''}
               onChange={(e) => updateMultilingualField('solutions', lang, e.target.value)}
@@ -315,9 +321,10 @@ export default function AdminSectors() {
       <div className="space-y-4">
         <h4 className="font-semibold">Faydalar (Tüm Diller)</h4>
         {Object.entries(formData.benefits).map(([lang, value]) => (
-          <div key={lang}>
+          <div key={`ben-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`benefits-${lang}`}>{lang.toUpperCase()}</Label>
             <Textarea
+              key={`ben-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`benefits-${lang}`}
               value={value || ''}
               onChange={(e) => updateMultilingualField('benefits', lang, e.target.value)}
@@ -332,9 +339,10 @@ export default function AdminSectors() {
       <div className="space-y-4">
         <h4 className="font-semibold">Başarı Hikayeleri (Tüm Diller)</h4>
         {Object.entries(formData.successStories).map(([lang, value]) => (
-          <div key={lang}>
+          <div key={`suc-${lang}-${editingSector?.sectorKey || 'new'}`}>
             <Label htmlFor={`successStories-${lang}`}>{lang.toUpperCase()}</Label>
             <Textarea
+              key={`suc-input-${lang}-${editingSector?.sectorKey || 'new'}`}
               id={`successStories-${lang}`}
               value={value || ''}
               onChange={(e) => updateMultilingualField('successStories', lang, e.target.value)}
