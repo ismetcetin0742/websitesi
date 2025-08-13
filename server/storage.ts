@@ -1995,11 +1995,10 @@ export class MemStorage implements IStorage {
   }
 
   async deleteSectorContent(sectorKey: string): Promise<void> {
-    const existing = Array.from(this.sectorContent.values()).find(content => content.sectorKey === sectorKey);
-    if (!existing) {
+    if (!this.sectorContent.has(sectorKey)) {
       throw new Error(`Sector content not found: ${sectorKey}`);
     }
-    this.sectorContent.delete(existing.id);
+    this.sectorContent.delete(sectorKey);
   }
 
   private initializeSectorContent() {
